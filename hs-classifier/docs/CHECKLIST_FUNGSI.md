@@ -144,15 +144,16 @@ Catatan P2 — perubahan perilaku di luar tampilan (semua atas instruksi Anda):
 
 ### H — Riwayat (`HistoryPage`)
 
-| ID | Perilaku | Status |
+| ID | Perilaku | Status P3 |
 |---|---|---|
-| H1 | Filter `q`, `status`, `from`, `to`; setiap perubahan filter mereset halaman ke 1 | ⬜ |
-| H2 | Paginasi 20 per halaman; kontrol halaman hanya tampil bila > 1 halaman; tombol disabled di ujung | ⬜ |
-| H3 | Indikator "Memuat…" / "N total case" (`aria-live="polite"`), empty state "Belum ada case", error list `role="alert"` | ⬜ |
-| H4 | Baris case: nama barang (fallback `Case #id`), StatusBadge, kode final (monospace, `—` bila kosong), tanggal `id-ID`, nama user hanya untuk Admin/ExpertReviewer | ⬜ |
-| H5 | Klik case → muat detail (`loadCase`), baris terpilih ditandai | ⬜ |
-| H6 | Detail: kartu fakta (label Indonesia per key, hanya nilai truthy), riwayat keputusan ahli, lalu `ResultPanel` | ⬜ |
-| H7 | Aksi di detail (mis. minta review) → daftar di-refresh **dan** case yang terbuka dimuat ulang | ⬜ |
+| H1 | Filter `q`, `status`, `from`, `to`; setiap perubahan filter mereset halaman ke 1 | ✅ request berurutan `q` → `status` → `from` → `to`, semuanya `page=1` |
+| H2 | Paginasi 20 per halaman; kontrol halaman hanya tampil bila > 1 halaman; tombol disabled di ujung | ✅ 20 item (hal. 1) / 5 item (hal. 2), total 25; `Sebelumnya` disabled di hal. 1; pager hilang saat hasil 0 |
+| H3 | Indikator "Memuat…" / "N total case" (`aria-live="polite"`), empty state "Belum ada case", error list `role="alert"` | ✅ "25 case", "0 case" + "Belum ada case", alert berisi pesan API apa adanya |
+| H4 | Baris case: nama barang (fallback `Case #id`), StatusBadge, kode final (monospace, `—` bila kosong), tanggal `id-ID`, nama user hanya untuk Admin/ExpertReviewer | ✅ tanggal + badge (4 status) + nama + kode + user |
+| H5 | Klik case → muat detail (`loadCase`), baris terpilih ditandai | ✅ `.case-card.selected` + `aria-current="true"` |
+| H6 | Detail: kartu fakta (label Indonesia per key, hanya nilai truthy), riwayat keputusan ahli, lalu `ResultPanel` | ✅ tabel fakta 6 baris, tabel keputusan ahli 1 baris, ResultPanel (kode tampil); **tanpa tab** (Q7), **tanpa blok statistik** (Q5) |
+| H7 | Aksi di detail (mis. minta review) → daftar di-refresh **dan** case yang terbuka dimuat ulang | ⬜ belum diuji (butuh aksi review nyata — dibahas di P4) |
+
 
 ### E — Review Ahli (`ReviewPage`)
 

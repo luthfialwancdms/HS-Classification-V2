@@ -434,4 +434,22 @@ button { cursor: pointer; }
 .review-request { display: flex; flex-direction: column; gap: 10px; border-top: 1px solid var(--line); padding-top: 15px; }
 .review-request .result-actions { padding-top: 0; }
 
+/* ── Tambahan P3 (INTERPRETASI — tidak ada di acuan v0) ────────────────────── */
+/* Toolbar riwayat: acuan memakai tombol filter dekoratif; di sini kontrol nyata
+   (cari, status, rentang tanggal) memakai gaya yang sama. */
+.toolbar { align-items: flex-end; flex-wrap: wrap; }
+.toolbar .field { margin-bottom: 0; }
+.toolbar .search { min-width: 210px; max-width: none; }
+.toolbar .select-wrap select { width: auto; height: 35px; padding: 0 30px 0 10px; }
+.toolbar .select-wrap svg { top: 10px; }
+.toolbar input[type=date] { width: auto; height: 35px; padding: 0 10px; font-size: 11px; border: 1px solid var(--line); border-radius: 7px; background: #fff; color: var(--foreground); }
+.case-date { color: var(--muted); font-size: 9px; }
+/* v0: `.case-card-top span:first-child` juga mengenai titik badge; kembalikan warnanya. */
+.case-card-top .badge span { color: inherit; font-size: inherit; }
+.pager { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-top: 14px; font-size: 11px; color: var(--muted); }
+.pager .outline-button { height: 30px; padding: 6px 10px; font-size: 10px; }
+.detail-column { display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+.empty-state.compact { min-height: 220px; }
+
+
 
