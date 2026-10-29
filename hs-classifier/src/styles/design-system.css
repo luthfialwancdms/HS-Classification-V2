@@ -460,6 +460,19 @@ button { cursor: pointer; }
   .case-list { max-height: 620px; overflow-y: auto; padding-right: 4px; }
 }
 
+/* ── Tambahan P4 (INTERPRETASI — tidak ada di acuan v0) ────────────────────── */
+/* Panel keputusan ahli memakai .expert-panel v0; di sini ia duduk di kolom
+   detail (acuan menaruhnya berdampingan dengan antrian). */
+.expert-panel .panel-help { margin: 8px 0 12px; }
+.expert-panel .candidate { cursor: pointer; }
+.expert-panel .candidate > div > span { font-size: 9px; color: var(--muted); }
+.expert-panel .field { margin-bottom: 10px; }
+.expert-panel .inline-input { margin: 2px 0 8px 22px; }
+.expert-panel .inline-input input { font-family: monospace; font-size: 11px; }
+.expert-panel .notice { margin: 6px 0 10px; }
+.expert-panel .primary-button.full { margin-top: 4px; }
+
+
 
 
 

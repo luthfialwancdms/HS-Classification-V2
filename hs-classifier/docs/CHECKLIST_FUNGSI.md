@@ -152,19 +152,22 @@ Catatan P2 — perubahan perilaku di luar tampilan (semua atas instruksi Anda):
 | H4 | Baris case: nama barang (fallback `Case #id`), StatusBadge, kode final (monospace, `—` bila kosong), tanggal `id-ID`, nama user hanya untuk Admin/ExpertReviewer | ✅ tanggal + badge (4 status) + nama + kode + user |
 | H5 | Klik case → muat detail (`loadCase`), baris terpilih ditandai | ✅ `.case-card.selected` + `aria-current="true"` |
 | H6 | Detail: kartu fakta (label Indonesia per key, hanya nilai truthy), riwayat keputusan ahli, lalu `ResultPanel` | ✅ tabel fakta 6 baris, tabel keputusan ahli 1 baris, ResultPanel (kode tampil); **tanpa tab** (Q7), **tanpa blok statistik** (Q5) |
-| H7 | Aksi di detail (mis. minta review) → daftar di-refresh **dan** case yang terbuka dimuat ulang | ⬜ belum diuji (butuh aksi review nyata — dibahas di P4) |
+| H7 | Aksi di detail (mis. minta review) → daftar di-refresh **dan** case yang terbuka dimuat ulang | ✅ (P4, stub) urutan call: `POST /api/review/{id}/approve` → `GET /api/classification/{id}` → `GET .../reasoning` → `GET /api/classification/cases?...` |
 
 
 ### E — Review Ahli (`ReviewPage`)
 
-| ID | Perilaku | Status |
+| ID | Perilaku | Status P4 |
 |---|---|---|
-| E1 | Halaman = `HistoryPage` dengan filter status awal `NeedExpertReview`, judul "Case Expert Review", kolom user tampil | ⬜ |
-| E2 | Panel keputusan hanya untuk status `NEED_EXPERT_REVIEW` | ⬜ |
-| E3 | Kandidat yang bisa dipilih hanya yang cocok `^\d{4}\.\d{2}\.\d{2}$`; heading 4 digit ditampilkan terpisah sebagai hint | ⬜ |
-| E4 | Mode override: input kode manual + tombol `Cek di BTKI` → preview uraian atau "tidak ditemukan di BTKI aktif"; catatan EXPERT_OVERRIDE saat override | ⬜ |
-| E5 | `Setujui` disabled kecuali alasan ≥ 5 karakter **dan** format kode valid; `Tolak` disabled kecuali alasan ≥ 5 karakter | ⬜ |
-| E6 | Setujui/Tolak memanggil endpoint masing-masing, menampilkan notice/error, lalu memuat ulang case + list | ⬜ |
+| E1 | Halaman = `HistoryPage` dengan filter status awal `NeedExpertReview`, judul "Case Expert Review", kolom user tampil | ✅ judul, eyebrow `EXPERT WORKFLOW`, subtitle, 2 kartu semuanya "Review ahli", user tampil |
+| E2 | Panel keputusan hanya untuk status `NEED_EXPERT_REVIEW` | ✅ kondisi `if (detail.status !== 'NEED_EXPERT_REVIEW') return null` tidak berubah; panel tampil untuk status itu |
+| E3 | Kandidat yang bisa dipilih hanya yang cocok `^\d{4}\.\d{2}\.\d{2}$`; heading 4 digit ditampilkan terpisah sebagai hint | ✅ 2 radio kandidat + 1 radio override; hint "Heading kandidat: 8429" |
+| E4 | Mode override: input kode manual + tombol `Cek di BTKI` → preview uraian atau "tidak ditemukan di BTKI aktif"; catatan EXPERT_OVERRIDE saat override | ✅ valid → kotak hijau + uraian; format salah & kode tak ada → notice bahaya "tidak ditemukan di BTKI aktif" |
+| E5 | `Setujui` disabled kecuali alasan ≥ 5 karakter **dan** format kode valid; `Tolak` disabled kecuali alasan ≥ 5 karakter | ✅ keduanya disabled di awal; aktif setelah alasan; `Setujui` kembali disabled saat kode override kosong |
+| E6 | Setujui/Tolak memanggil endpoint masing-masing, menampilkan notice/error, lalu memuat ulang case + list | ✅ (stub) `POST /api/review/{id}/approve` + reload; error 500 → `role="alert"` berisi pesan API, tanpa reload |
+
+Catatan P4 (perilaku lama, bukan regresi): notice "Case disetujui." praktis tidak sempat terlihat karena `loadCase` mengosongkan `detail` lebih dulu sehingga panel remount. Bisa dirapikan di P6 bila Anda mau.
+
 
 ### A — Admin Data Center (`AdminDashboard`)
 

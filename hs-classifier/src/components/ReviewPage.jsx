@@ -1,10 +1,12 @@
 import { useState } from 'react'
+import { Check, ShieldCheck } from 'lucide-react'
 import HistoryPage from './HistoryPage'
 import { approveCase, lookupCode, rejectCase } from '../services/apiClient'
 
 // Case Expert Review — the history list filtered to NeedExpertReview, plus a decision panel.
 
 const CODE_FORMAT = /^\d{4}\.\d{2}\.\d{2}$/
+const cx = (...parts) => parts.filter(Boolean).join(' ')
 
 function ReviewActions({ detail, onDone }) {
   const candidates = (detail.candidateCodes || []).filter(c => CODE_FORMAT.test(c))
@@ -36,65 +38,74 @@ function ReviewActions({ detail, onDone }) {
   const codeOk = CODE_FORMAT.test(code.trim())
 
   return (
-    <section aria-labelledby="review-title" className="bg-white rounded-2xl border-2 border-blue-200 shadow-sm p-5">
-      <h3 id="review-title" className="text-sm font-semibold text-gray-800 mb-3">Keputusan ahli</h3>
+    <section aria-labelledby="review-title" className="expert-panel">
+      <div className="subheading">
+        <div><ShieldCheck size={17} aria-hidden="true" /><span id="review-title">Keputusan ahli</span></div>
+        <span className="pending-pill">PENDING</span>
+      </div>
+      <p className="panel-help">Pilih kandidat yang paling sesuai atau masukkan kode HS manual.</p>
 
-      <fieldset className="flex flex-col gap-1.5 mb-3">
-        <legend className="text-xs text-gray-600 mb-1">Kode HS final</legend>
+      <fieldset className="field">
+        <legend className="field-label">Kode HS final</legend>
         {candidates.map(c => (
-          <label key={c} className="flex items-center gap-2 text-sm">
+          <label key={c} className={cx('candidate', !override && code === c && 'selected')}>
             <input type="radio" name="review-code" checked={!override && code === c}
               onChange={() => { setOverride(false); setCode(c); setPreview(null) }} />
-            <span className="font-mono">{c}</span> <span className="text-xs text-gray-500">(kandidat sistem)</span>
+            <div><code>{c}</code><span>kandidat sistem</span></div>
           </label>
         ))}
-        <label className="flex items-center gap-2 text-sm">
+        <label className={cx('candidate', override && 'selected')}>
           <input type="radio" name="review-code" checked={override}
             onChange={() => { setOverride(true); setCode(''); setPreview(null) }} />
-          Kode lain (override)
+          <div><span>Kode lain (override)</span></div>
         </label>
+
         {override && (
-          <div className="flex gap-2 ml-6">
+          <div className="inline-input">
             <label htmlFor="review-override" className="sr-only">Kode HS override</label>
             <input id="review-override" value={code} onChange={e => { setCode(e.target.value); setPreview(null) }}
-              placeholder="XXXX.XX.XX" className="text-sm font-mono border border-gray-300 rounded p-1.5 w-36" />
-            <button type="button" onClick={checkCode} className="text-sm px-2 rounded border border-gray-300">Cek di BTKI</button>
+              placeholder="XXXX.XX.XX" />
+            <button type="button" onClick={checkCode} className="ghost-button">Cek di BTKI</button>
           </div>
         )}
-        {preview && (
-          <p className={`text-xs ml-6 ${preview.missing ? 'text-red-600' : 'text-green-700'}`} role="status">
-            {preview.missing ? `${preview.code} tidak ditemukan di BTKI aktif` : `${preview.code} — ${preview.text}`}
-          </p>
-        )}
+
+        {preview && (preview.missing
+          ? <p role="status" className="notice danger"><span>{preview.code} tidak ditemukan di BTKI aktif</span></p>
+          : (
+            <div role="status" className="btki-check">
+              <Check size={15} aria-hidden="true" />
+              <div><strong>Kode aktif di BTKI</strong><span>{preview.code} — {preview.text}</span></div>
+            </div>
+          ))}
+
         {/* Headings (4-digit) from the engine are hints: a code under them still counts as a candidate */}
         {(detail.candidateCodes || []).some(c => !CODE_FORMAT.test(c)) && (
-          <p className="text-xs text-gray-500 ml-6">
-            Heading kandidat: <span className="font-mono">{detail.candidateCodes.filter(c => !CODE_FORMAT.test(c)).join(', ')}</span>
+          <p className="hint">
+            Heading kandidat: <span className="mono">{detail.candidateCodes.filter(c => !CODE_FORMAT.test(c)).join(', ')}</span>
           </p>
         )}
-        {override && <p className="text-xs text-purple-700 ml-6">Kode di luar heading kandidat dicatat sebagai EXPERT_OVERRIDE.</p>}
+        {override && <p className="hint">Kode di luar heading kandidat dicatat sebagai EXPERT_OVERRIDE.</p>}
       </fieldset>
 
-      <label htmlFor="review-reason" className="block text-xs text-gray-600 mb-1">Alasan keputusan (wajib)</label>
-      <textarea id="review-reason" rows={3} value={reason} onChange={e => setReason(e.target.value)}
-        placeholder="Dasar hukum / pertimbangan, mis. Catatan Bab 85, uraian subpos 8517.13"
-        className="w-full text-sm border border-gray-300 rounded p-2 mb-3" />
+      <label className="field">
+        <span>Alasan keputusan <em>*</em></span>
+        <textarea id="review-reason" rows={3} value={reason} onChange={e => setReason(e.target.value)}
+          placeholder="Dasar hukum / pertimbangan, mis. Catatan Bab 85, uraian subpos 8517.13" />
+      </label>
 
-      {error && <p role="alert" className="text-sm text-red-600 mb-2">{error}</p>}
-      {notice && <p role="status" className="text-sm text-green-700 mb-2">{notice}</p>}
+      {error && <p role="alert" className="notice danger"><span>{error}</span></p>}
+      {notice && <p role="status" className="notice success"><span>{notice}</span></p>}
 
-      <div className="flex gap-2">
-        <button disabled={busy || !reasonOk || !codeOk}
-          onClick={() => act(() => approveCase(detail.caseId, code.trim(), reason), 'Case disetujui.')}
-          className="px-3 py-1.5 text-sm rounded-lg font-medium bg-green-600 text-white disabled:opacity-50">
-          Setujui
-        </button>
-        <button disabled={busy || !reasonOk}
-          onClick={() => act(() => rejectCase(detail.caseId, reason), 'Case ditolak.')}
-          className="px-3 py-1.5 text-sm rounded-lg font-medium bg-red-600 text-white disabled:opacity-50">
-          Tolak
-        </button>
-      </div>
+      <button disabled={busy || !reasonOk || !codeOk}
+        onClick={() => act(() => approveCase(detail.caseId, code.trim(), reason), 'Case disetujui.')}
+        className="primary-button full">
+        Setujui
+      </button>
+      <button disabled={busy || !reasonOk}
+        onClick={() => act(() => rejectCase(detail.caseId, reason), 'Case ditolak.')}
+        className="danger-button full">
+        Tolak
+      </button>
     </section>
   )
 }
@@ -106,6 +117,7 @@ export default function ReviewPage() {
       initialStatus="NeedExpertReview"
       title="Case Expert Review"
       subtitle="Antrian case yang menunggu keputusan ahli kepabeanan"
+      eyebrow="EXPERT WORKFLOW"
       renderDetail={(detail, afterChange) => (
         <ReviewActions key={detail.caseId} detail={detail} onDone={afterChange} />
       )}
