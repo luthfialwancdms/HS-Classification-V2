@@ -256,3 +256,25 @@ POST /api/admin/template/validate | preview/{versionId} | commit/{versionId}
 
 Catatan lokasi: dokumen ini dan `DESIGN.md` disimpan di `hs-classifier/docs/` agar tidak tercecer di folder induk. Folder acuan `ui-design-for-hs-classification-intelligence/` tidak ikut di-commit.
 
+---
+
+## 9. Verifikasi responsif P6 (1280 / 1050 / 720 / 390)
+
+Semua diukur lewat iframe berukuran tepat (DOM + computed style), bukan penilaian visual.
+
+| Aspek | 1280 | 1050 | 720 | 390 |
+|---|---|---|---|---|
+| Overflow horizontal (klasifikasi/riwayat/review/admin) | tidak ada | tidak ada | tidak ada | tidak ada |
+| `.classify-grid` | `grid` 2 kolom | `flex` (menumpuk) | `flex` | `flex` |
+| `.result-column` | `sticky` | `static` | `static` | `static` |
+| Sidebar | 240px, statis | 205px, statis | fixed off-canvas (`-240px`) | fixed off-canvas |
+| Tombol burger | `none` | `none` | `block` | `block` |
+| `.master-detail` | `grid` 330px+1fr | `grid` | `flex` kolom | `flex` kolom |
+| `.case-list` max-height | 620px | 620px | `none` | `none` |
+| `.admin-nav` + `aria-orientation` | `block` / `vertical` | `flex` / `horizontal` | `flex` / `horizontal` | `flex` / `horizontal` |
+| Drawer 390: buka/tutup | — | — | — | overlay muncul, `left 0`; tutup → `left -240px`, fokus kembali ke `.mobile-menu` |
+| Auto-scroll hasil (390) | — | — | — | `scrollY` bergerak, hasil di `top 80px` |
+
+Konsistensi terukur: `.panel`/`.result-panel` radius **16px**, tombol **7px**, input & chip **6px**, topbar **68px**, sidebar **240px**; 18 ikon semua punya atribut `width/height` eksplisit (13–26px). Fokus keyboard terlihat pada tombol (outline 2px), input (ring teal), chip, kartu riwayat.
+
+

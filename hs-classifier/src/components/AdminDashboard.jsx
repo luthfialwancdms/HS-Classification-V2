@@ -41,6 +41,18 @@ function Feedback({ error, notice }) {
   return null
 }
 
+/** Orientasi nav admin mengikuti breakpoint v0: vertikal >1050px, horizontal ≤1050px. */
+function useNarrow(query = '(max-width: 1050px)') {
+  const [narrow, setNarrow] = useState(() => matchMedia(query).matches)
+  useEffect(() => {
+    const mq = matchMedia(query)
+    const onChange = (e) => setNarrow(e.matches)
+    mq.addEventListener('change', onChange)
+    return () => mq.removeEventListener('change', onChange)
+  }, [query])
+  return narrow
+}
+
 export default function AdminDashboard() {
   const [tab, setTab] = useState('versions')
   const [versions, setVersions] = useState([])
@@ -49,6 +61,7 @@ export default function AdminDashboard() {
 
   const tabRefs = useRef([])
   const tabIds = TABS.map(([id]) => id)
+  const narrow = useNarrow()
 
   const reload = () => apiFetch('/api/admin/versions').then(setVersions, e => setLoadError(e.message))
   useEffect(() => { reload() }, [])
@@ -80,7 +93,7 @@ export default function AdminDashboard() {
       {loadError && <p role="alert" className="notice danger"><span>{loadError}</span></p>}
 
       <div className="admin-layout">
-        <div className="admin-nav" role="tablist" aria-orientation="vertical" aria-label="Bagian Admin Data Center"
+        <div className="admin-nav" role="tablist" aria-orientation={narrow ? 'horizontal' : 'vertical'} aria-label="Bagian Admin Data Center"
           onKeyDown={onTabKeyDown}>
           {TABS.map(([id, label, Icon], i) => (
             <button key={id} role="tab" id={`admin-tab-${id}`} aria-controls={`admin-panel-${id}`}
