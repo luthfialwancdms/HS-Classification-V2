@@ -75,19 +75,25 @@ Env: `VITE_API_URL` (default `http://localhost:5284`) — satu-satunya variabel 
 
 ### G — Shell, auth, navigasi (`App.jsx`)
 
-| ID | Perilaku yang harus tetap | Status |
+| ID | Perilaku yang harus tetap | Status P1 |
 |---|---|---|
-| G1 | Tanpa `hs_token` di localStorage → hanya layar Login, header/nav tidak dirender | ⬜ |
-| G2 | Login: field email (`type=email`, `autoComplete=username`) + password (`autoComplete=current-password`), keduanya `required` | ⬜ |
-| G3 | Login sukses → simpan `hs_token` + `hs_role`, masuk ke shell | ⬜ |
-| G4 | Login gagal → pesan error dari API tampil (`role="alert"`), tombol jadi `Memproses...` selama request | ⬜ |
-| G5 | 401 dari endpoint non-login → token dihapus, kembali ke layar Login | ⬜ |
-| G6 | Nav 4 view + filter role: Klasifikasi & Riwayat = semua; Review Ahli = `Admin`,`ExpertReviewer`; Admin Data Center = `Admin` | ⬜ |
-| G7 | View aktif ditandai `aria-current="page"` | ⬜ |
-| G8 | Badge `V2 · Database Mode` tetap tampil di header | ⬜ |
-| G9 | Routing: path `/`, `/riwayat`, `/review`, `/admin`; tombol back/forward browser bekerja; URL langsung membuka view yang benar | ⬜ |
-| G10 | `Keluar` menghapus token/role serta mengosongkan hasil & state klarifikasi | ⬜ |
-| G11 | Footer disclaimer "rekomendasi, bukan penetapan resmi DJBC" tetap ada | ⬜ |
+| G1 | Tanpa `hs_token` di localStorage → hanya layar Login, header/nav tidak dirender | ✅ `hasHeader:false`, `.login-card` tampil |
+| G2 | Login: field email (`type=email`, `autoComplete=username`) + password (`autoComplete=current-password`), keduanya `required` | ✅ atribut & asosiasi label (1 label per input) terverifikasi |
+| G3 | Login sukses → simpan `hs_token` + `hs_role`, masuk ke shell | ⬜ belum diuji dengan kredensial nyata (kode `login()` tidak berubah; shell terbukti render saat token ada) |
+| G4 | Login gagal → pesan error dari API tampil (`role="alert"`), tombol jadi `Memproses...` selama request | ⬜ belum diuji (butuh login gagal sungguhan); markup error = `.notice.danger` + `role="alert"` |
+| G5 | 401 dari endpoint non-login → token dihapus, kembali ke layar Login | ✅ teramati saat token dummy dipakai (401 → token/role `null` → login) |
+| G6 | Nav 4 view + filter role: Klasifikasi & Riwayat = semua; Review Ahli = `Admin`,`ExpertReviewer`; Admin Data Center = `Admin` | ✅ Admin 4 item · ExpertReviewer 3 · Classifier 2 (nav di sidebar) |
+| G7 | View aktif ditandai `aria-current="page"` | ✅ `aria-current=page` pada Klasifikasi saat aktif |
+| G8 | Badge `V2 · DATABASE MODE` tetap tampil di header | ✅ ada di `.brand-name` (`.beta`) |
+| G9 | Routing: path `/`, `/riwayat`, `/review`, `/admin`; tombol back/forward browser bekerja; URL langsung membuka view yang benar | ✅ `pushState` → `/riwayat`; `history.back()` → `/`; `viewFromPath` tidak berubah |
+| G10 | `Keluar` menghapus token/role serta mengosongkan hasil & state klarifikasi | ✅ klik Keluar → login, `hs_token`/`hs_role` = `null` |
+| G11 | Footer disclaimer "rekomendasi, bukan penetapan resmi DJBC" tetap ada | ✅ teks utuh di `.page-footer` |
+
+Catatan P1 — perubahan yang **bukan** tampilan:
+- `switchView` mendapat satu baris tambahan `setMenuOpen(false)` (menutup drawer mobile setelah pindah view). Logika `pushState` + `setView` tidak berubah.
+- State baru `menuOpen` (`useState`) khusus tampilan drawer mobile; tidak menyentuh state bisnis.
+- `h1` pindah dari brand header ke judul halaman (`Klasifikasi HS Code`); di layar login brand memakai `h1`.
+
 
 ### K — Layar Klasifikasi, form
 

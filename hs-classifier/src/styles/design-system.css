@@ -358,3 +358,30 @@ button { cursor: pointer; }
   .version-metric { margin-left: 45px; }
   .version-row .icon-button { margin-left: auto; }
 }
+
+/* ── Tambahan P1 (INTERPRETASI — tidak ada di acuan v0) ────────────────────── */
+/* Login: acuan v0 tidak punya layar login; kartu panel di tengah. */
+.login-page { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 24px; }
+.login-card { width: 100%; max-width: 390px; display: flex; flex-direction: column; gap: 4px; }
+.login-brand { gap: 11px; margin-bottom: 6px; }
+.login-sub { margin: 0 0 14px; color: var(--muted); font-size: 11px; }
+
+/* Footer disclaimer (sudah ada di aplikasi, acuan tidak punya). */
+.page-footer { border-top: 1px solid var(--line); padding: 18px 38px; text-align: center; }
+.page-footer p { margin: 0; color: var(--muted); font-size: 10px; }
+
+/* Banner klarifikasi: acuan hanya punya .notice; form di dalamnya perlu wadah. */
+.clarify-wrap { margin-bottom: 18px; }
+.clarify-panel { display: flex; flex-direction: column; gap: 12px; }
+.clarify-questions { display: flex; flex-direction: column; gap: 14px; }
+.clarify-panel .primary-button { align-self: flex-start; }
+.field-label { font-size: 11px; color: #536070; font-weight: 700; margin: 0; }
+.hint { color: var(--muted); font-size: 10px; line-height: 1.5; margin: 0; }
+
+/* Pilihan panjang (uraian BTKI): gaya .candidate, teks penuh. */
+.choice-list { display: flex; flex-direction: column; gap: 6px; border: 0; padding: 0; margin: 0; min-width: 0; }
+.choice { display: flex; align-items: flex-start; gap: 8px; border: 1px solid #dfe4ea; border-radius: 6px; padding: 9px 10px; font-size: 11px; color: var(--foreground); background: #fff; cursor: pointer; }
+.choice:hover { border-color: #96c8bf; background: #f8fcfb; }
+.choice:has(input:checked) { border-color: #96c8bf; background: var(--blue-bg); }
+.choice input { margin: 3px 0 0; accent-color: var(--primary); }
+

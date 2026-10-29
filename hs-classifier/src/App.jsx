@@ -1,4 +1,5 @@
-﻿import { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
+import { AlertTriangle, ClipboardCheck, History, LayoutDashboard, LogOut, Menu, Sparkles } from 'lucide-react'
 import ClassificationForm from './components/ClassificationForm'
 import ResultPanel from './components/ResultPanel'
 import AdminDashboard from './components/AdminDashboard'
@@ -16,6 +17,9 @@ const VIEWS = {
 const viewFromPath = () =>
   Object.entries(VIEWS).find(([k, [p]]) => k !== 'classify' && location.pathname.startsWith(p))?.[0] ?? 'classify'
 
+const NAV_ICON = { classify: Sparkles, history: History, review: ClipboardCheck, admin: LayoutDashboard }
+const cx = (...parts) => parts.filter(Boolean).join(' ')
+
 export default function App() {
   const [view,      setView]      = useState(viewFromPath)
   const [result,    setResult]    = useState(null)
@@ -23,6 +27,7 @@ export default function App() {
   const [clarifyState, setClarifyState] = useState(null) // { facts, questions, message, candidateCodes }
 
   const [authed, setAuthed] = useState(() => !!getToken())
+  const [menuOpen, setMenuOpen] = useState(false) // tampilan saja: drawer navigasi di mobile
   const role = authed ? getRole() : null
   const allowed = (v) => !VIEWS[v][2] || VIEWS[v][2].includes(role)
   const isAdmin = role === 'Admin'
@@ -40,6 +45,7 @@ export default function App() {
   const switchView = (v) => {
     history.pushState(null, '', VIEWS[v][0])
     setView(v)
+    setMenuOpen(false)
   }
 
   const handle = async (run) => {
@@ -62,78 +68,102 @@ export default function App() {
   if (!authed) return <LoginScreen onLoggedIn={() => setAuthed(true)} />
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <header className="bg-white border-b border-gray-200 shadow-sm sticky top-0 z-10">
-        <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-9 h-9 bg-blue-600 rounded-lg flex items-center justify-center text-white font-bold text-sm">
-              HS
-            </div>
-            <div>
-              <h1 className="text-base font-bold text-gray-900 leading-tight">
-                AI HS Classification Intelligence
-              </h1>
-              <p className="text-xs text-gray-500">SMART · BTKI 2022 · PMK 26/2022</p>
-            </div>
+    <div className="app-shell">
+      <header className="topbar">
+        <div className="brand">
+          <button type="button" className="mobile-menu" aria-label="Buka menu navigasi"
+            aria-expanded={menuOpen} aria-controls="app-nav"
+            onClick={() => setMenuOpen(open => !open)}>
+            <Menu size={20} aria-hidden="true" />
+          </button>
+          <div className="brand-mark"><span>HS</span></div>
+          <div>
+            <div className="brand-name">HS Intelligence <span className="beta">V2 · DATABASE MODE</span></div>
+            <div className="brand-sub">BTKI 2022 · PMK 26/2022</div>
           </div>
-          <nav className="flex items-center gap-2" aria-label="Navigasi utama">
-            <span className="text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full font-medium">V2 · Database Mode</span>
-            {Object.keys(VIEWS).filter(allowed).map(v => (
-              <button
-                key={v}
-                onClick={() => switchView(v)}
-                aria-current={view === v ? 'page' : undefined}
-                className={`text-sm px-3 py-1.5 rounded-lg font-medium ${view === v ? 'bg-blue-600 text-white' : 'text-gray-600 hover:bg-gray-100'}`}
-              >
-                {VIEWS[v][1]}
-              </button>
-            ))}
-            <button onClick={logout} className="text-sm px-3 py-1.5 rounded-lg text-gray-500 hover:bg-gray-100">Keluar</button>
-          </nav>
+        </div>
+        <div className="top-actions">
+          <div className="user-menu">
+            <div className="avatar">{String(role || '?').slice(0, 2).toUpperCase()}</div>
+            <div className="user-copy"><strong>{role}</strong><span>Sesi aktif</span></div>
+          </div>
+          <button type="button" onClick={logout} className="ghost-button"><LogOut size={15} aria-hidden="true" /> Keluar</button>
         </div>
       </header>
 
-      {view === 'admin' && isAdmin ? <AdminDashboard />
-        : view === 'history' ? <HistoryPage showUser={['Admin', 'ExpertReviewer'].includes(role)} />
-        : view === 'review' && allowed('review') ? <ReviewPage />
-        : (
-        <>
-          {clarifyState && (
-            <div className="max-w-7xl mx-auto px-6 pt-6">
-              <ClarificationBanner
-                key={clarifyState.questions.map(q => q.questionText).join('|')}
-                state={clarifyState}
-                onSubmit={handleAnswers}
-                isLoading={isLoading}
-              />
+      <div className="body-shell">
+        <aside id="app-nav" className={cx('sidebar', menuOpen && 'sidebar-open')}
+          onKeyDown={e => { if (e.key === 'Escape') setMenuOpen(false) }}>
+          <div className="nav-label">MENU</div>
+          <nav aria-label="Navigasi utama">
+            {Object.keys(VIEWS).filter(allowed).map(v => {
+              const Icon = NAV_ICON[v]
+              return (
+                <button key={v} onClick={() => switchView(v)}
+                  aria-current={view === v ? 'page' : undefined}
+                  className={cx('nav-item', view === v && 'active')}>
+                  <Icon size={18} aria-hidden="true" />
+                  <span>{VIEWS[v][1]}</span>
+                </button>
+              )
+            })}
+          </nav>
+          <div className="sidebar-bottom">
+            <div className="version-card">
+              <div className="version-top"><span className="status-dot" /> <span>BTKI 2022</span><span className="live">V2</span></div>
+              <p>Mode database · kode &amp; tarif dibaca dari backend</p>
+            </div>
+          </div>
+        </aside>
+
+        <main className="main-content">
+          {view === 'admin' && isAdmin ? <AdminDashboard />
+            : view === 'history' ? <HistoryPage showUser={['Admin', 'ExpertReviewer'].includes(role)} />
+            : view === 'review' && allowed('review') ? <ReviewPage />
+            : (
+            <div className="view">
+              <div className="page-title">
+                <div>
+                  <div className="eyebrow">AI-POWERED CLASSIFICATION</div>
+                  <h1>Klasifikasi HS Code</h1>
+                  <p>Identifikasi kode HS barang impor berdasarkan BTKI 2022 dan KUM HS.</p>
+                </div>
+              </div>
+
+              {clarifyState && (
+                <div className="clarify-wrap">
+                  <ClarificationBanner
+                    key={clarifyState.questions.map(q => q.questionText).join('|')}
+                    state={clarifyState}
+                    onSubmit={handleAnswers}
+                    isLoading={isLoading}
+                  />
+                </div>
+              )}
+
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
+                <div>
+                  <div className="mb-4">
+                    <h2 className="text-lg font-semibold text-gray-900">Data Barang</h2>
+                    <p className="text-sm text-gray-500">Isi informasi barang selengkap mungkin untuk hasil yang akurat</p>
+                  </div>
+                  <ClassificationForm onSubmit={handleSubmit} isLoading={isLoading} />
+                </div>
+                <div className="lg:sticky lg:top-24">
+                  <div className="mb-4">
+                    <h2 className="text-lg font-semibold text-gray-900">Hasil Analisis</h2>
+                    <p className="text-sm text-gray-500">Rekomendasi kode HS + reasoning KUM HS</p>
+                  </div>
+                  <ResultPanel result={result} isLoading={isLoading} />
+                </div>
+              </div>
             </div>
           )}
+        </main>
+      </div>
 
-          <main className="max-w-7xl mx-auto px-6 py-8">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
-              <div>
-                <div className="mb-4">
-                  <h2 className="text-lg font-semibold text-gray-900">Data Barang</h2>
-                  <p className="text-sm text-gray-500">Isi informasi barang selengkap mungkin untuk hasil yang akurat</p>
-                </div>
-                <ClassificationForm onSubmit={handleSubmit} isLoading={isLoading} />
-              </div>
-              <div className="lg:sticky lg:top-24">
-                <div className="mb-4">
-                  <h2 className="text-lg font-semibold text-gray-900">Hasil Analisis</h2>
-                  <p className="text-sm text-gray-500">Rekomendasi kode HS + reasoning KUM HS</p>
-                </div>
-                <ResultPanel result={result} isLoading={isLoading} />
-              </div>
-            </div>
-          </main>
-        </>
-      )}
-
-      <footer className="border-t border-gray-200 mt-12 py-4 text-center">
-        <p className="text-xs text-gray-400">
-          Output merupakan rekomendasi, bukan penetapan resmi DJBC. Selalu verifikasi dengan ahli kepabeanan.
-        </p>
+      <footer className="page-footer">
+        <p>Output merupakan rekomendasi, bukan penetapan resmi DJBC. Selalu verifikasi dengan ahli kepabeanan.</p>
       </footer>
     </div>
   )
@@ -151,40 +181,41 @@ function ClarificationBanner({ state, onSubmit, isLoading }) {
   const allAnswered = questions.every(q => answers[q.factType]?.trim())
 
   return (
-    <section aria-labelledby="clarify-title" className="bg-amber-50 border border-amber-300 rounded-xl p-4 mb-2">
-      <h3 id="clarify-title" className="text-sm font-semibold text-amber-800 mb-1">
-        ⚠️ Informasi tambahan diperlukan sebelum kode HS dapat ditentukan
-      </h3>
-      {message && <p className="text-xs text-amber-700 mb-2">{message}</p>}
+    <section aria-labelledby="clarify-title" className="panel clarify-panel">
+      <div className="notice">
+        <AlertTriangle size={16} aria-hidden="true" />
+        <span>
+          <strong id="clarify-title">Informasi tambahan diperlukan sebelum kode HS dapat ditentukan.</strong>
+          {message && <> {message}</>}
+        </span>
+      </div>
       {candidateCodes?.length > 0 && (
-        <p className="text-xs text-amber-700 mb-3">
-          Kandidat heading saat ini: <span className="font-mono">{candidateCodes.join(', ')}</span>
-        </p>
+        <p className="hint">Kandidat heading saat ini: <span className="mono">{candidateCodes.join(', ')}</span></p>
       )}
-      <div className="space-y-3">
+      <div className="clarify-questions">
         {questions.map((q, i) => {
           const id = `clarify-${i}`
           const impact = q.impact || {}
           return (
-            <div key={q.factType}>
+            <div key={q.factType} className="field">
               {q.choices?.length
-                ? <p aria-hidden="true" className="text-sm text-amber-900 font-medium mb-1">{q.questionText}</p>
-                : <label htmlFor={id} className="text-sm text-amber-900 font-medium block mb-1">{q.questionText}</label>}
+                ? <p aria-hidden="true" className="field-label">{q.questionText}</p>
+                : <label htmlFor={id} className="field-label">{q.questionText}</label>}
               {impact.candidatesAffected > 0 && (
-                <p className="text-xs text-amber-600 mb-1">
+                <p className="hint">
                   Mempengaruhi {impact.candidatesAffected} kandidat
-                  {impact.retainedCodes?.length > 0 && <> · tetap: <span className="font-mono">{impact.retainedCodes.join(', ')}</span></>}
-                  {impact.eliminatedCodes?.length > 0 && <> · tereliminasi: <span className="font-mono">{impact.eliminatedCodes.join(', ')}</span></>}
+                  {impact.retainedCodes?.length > 0 && <> · tetap: <span className="mono">{impact.retainedCodes.join(', ')}</span></>}
+                  {impact.eliminatedCodes?.length > 0 && <> · tereliminasi: <span className="mono">{impact.eliminatedCodes.join(', ')}</span></>}
                 </p>
               )}
               {q.choices?.length ? (
                 // Official BTKI texts are long → radio list instead of a select
-                <fieldset aria-describedby={`${id}-hint`} className="flex flex-col gap-1.5">
+                <fieldset className="choice-list" aria-describedby={`${id}-hint`}>
                   <legend className="sr-only">{q.questionText}</legend>
-                  <p id={`${id}-hint`} className="text-xs text-amber-700">Pilihan diambil dari uraian resmi BTKI.</p>
+                  <p id={`${id}-hint`} className="hint">Pilihan diambil dari uraian resmi BTKI.</p>
                   {q.choices.map(c => (
-                    <label key={c.value} className="flex items-start gap-2 text-sm text-amber-900 bg-white border border-amber-200 rounded p-2 cursor-pointer has-[:checked]:border-amber-500 has-[:checked]:bg-amber-100">
-                      <input type="radio" name={id} value={c.value} className="mt-1"
+                    <label key={c.value} className="choice">
+                      <input type="radio" name={id} value={c.value}
                         checked={answers[q.factType] === c.value}
                         onChange={() => handleChange(q.factType, c.value)} />
                       <span>{c.label}</span>
@@ -192,33 +223,21 @@ function ClarificationBanner({ state, onSubmit, isLoading }) {
                   ))}
                 </fieldset>
               ) : q.options?.length ? (
-                <select
-                  id={id}
-                  className="w-full text-sm border border-amber-300 rounded p-2 bg-white"
-                  onChange={e => handleChange(q.factType, e.target.value)}
-                  defaultValue=""
-                >
-                  <option value="" disabled>Pilih jawaban...</option>
-                  {q.options.map(opt => <option key={opt}>{opt}</option>)}
-                </select>
+                <div className="select-wrap">
+                  <select id={id} onChange={e => handleChange(q.factType, e.target.value)} defaultValue="">
+                    <option value="" disabled>Pilih jawaban...</option>
+                    {q.options.map(opt => <option key={opt}>{opt}</option>)}
+                  </select>
+                </div>
               ) : (
-                <input
-                  id={id}
-                  type="text"
-                  placeholder="Ketik jawaban..."
-                  className="w-full text-sm border border-amber-300 rounded p-2 bg-white"
-                  onChange={e => handleChange(q.factType, e.target.value)}
-                />
+                <input id={id} type="text" placeholder="Ketik jawaban..."
+                  onChange={e => handleChange(q.factType, e.target.value)} />
               )}
             </div>
           )
         })}
       </div>
-      <button
-        onClick={() => onSubmit(answers)}
-        disabled={isLoading || !allAnswered}
-        className="mt-3 px-4 py-2 bg-amber-600 text-white text-sm rounded font-medium hover:bg-amber-700 disabled:opacity-50"
-      >
+      <button className="primary-button" onClick={() => onSubmit(answers)} disabled={isLoading || !allAnswered}>
         {isLoading ? 'Memproses...' : 'Kirim Jawaban'}
       </button>
     </section>
@@ -242,25 +261,30 @@ function LoginScreen({ onLoggedIn }) {
   }
 
   return (
-    <main className="min-h-screen bg-gray-50 flex items-center justify-center px-6">
-      <form onSubmit={submit} className="bg-white rounded-2xl border border-gray-200 shadow-sm p-8 w-full max-w-sm flex flex-col gap-4">
-        <div>
-          <h1 className="text-lg font-bold text-gray-900">AI HS Classification Intelligence</h1>
-          <p className="text-sm text-gray-500">Masuk untuk melanjutkan</p>
+    <main className="login-page">
+      <form onSubmit={submit} className="panel login-card">
+        <div className="brand login-brand">
+          <div className="brand-mark"><span>HS</span></div>
+          <div>
+            <h1 className="brand-name">HS Intelligence <span className="beta">V2 · DATABASE MODE</span></h1>
+            <div className="brand-sub">BTKI 2022 · PMK 26/2022</div>
+          </div>
         </div>
-        <div>
-          <label htmlFor="login-email" className="block text-sm text-gray-700 mb-1">Email</label>
+        <p className="login-sub">Masuk untuk melanjutkan</p>
+        <label className="field">
+          <span>Email</span>
           <input id="login-email" type="email" autoComplete="username" required value={email}
-            onChange={e => setEmail(e.target.value)} className="w-full text-sm border border-gray-300 rounded p-2" />
-        </div>
-        <div>
-          <label htmlFor="login-password" className="block text-sm text-gray-700 mb-1">Password</label>
+            onChange={e => setEmail(e.target.value)} />
+        </label>
+        <label className="field">
+          <span>Password</span>
           <input id="login-password" type="password" autoComplete="current-password" required value={password}
-            onChange={e => setPassword(e.target.value)} className="w-full text-sm border border-gray-300 rounded p-2" />
-        </div>
-        {error && <p role="alert" className="text-sm text-red-600">{error}</p>}
-        <button type="submit" disabled={busy}
-          className="px-4 py-2 bg-blue-600 text-white text-sm rounded-lg font-medium hover:bg-blue-700 disabled:opacity-50">
+            onChange={e => setPassword(e.target.value)} />
+        </label>
+        {error && (
+          <p role="alert" className="notice danger"><AlertTriangle size={16} aria-hidden="true" /><span>{error}</span></p>
+        )}
+        <button type="submit" className="primary-button full" disabled={busy}>
           {busy ? 'Memproses...' : 'Masuk'}
         </button>
       </form>
