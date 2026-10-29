@@ -1,1 +1,11 @@
+/* Font dibundel lewat @fontsource (menggantikan @import Google Fonts di acuan v0). */
+@import "@fontsource/lexend/latin-400.css";
+@import "@fontsource/lexend/latin-500.css";
+@import "@fontsource/lexend/latin-600.css";
+@import "@fontsource/lexend/latin-700.css";
+@import "@fontsource/lexend/latin-800.css";
+
 @import "tailwindcss";
+
+/* Design system hasil ekstraksi dari referensi v0 — lihat docs/DESIGN.md */
+@import "./styles/design-system.css";
