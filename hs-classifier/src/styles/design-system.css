@@ -451,5 +451,15 @@ button { cursor: pointer; }
 .detail-column { display: flex; flex-direction: column; gap: 14px; min-width: 0; }
 .empty-state.compact { min-height: 220px; }
 
+/* ── Tambahan P3.1 (INTERPRETASI) ──────────────────────────────────────────── */
+/* Nama barang panjang: maksimum 2 baris, tidak memotong tinggi kartu.
+   Daftar kartu diberi tinggi maksimum + scroll sendiri; paginasi & pilih-kartu
+   tidak berubah. Hanya di desktop, karena di mobile halaman menumpuk. */
+.case-card strong { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; line-clamp: 2; overflow: hidden; }
+@media (min-width: 721px) {
+  .case-list { max-height: 620px; overflow-y: auto; padding-right: 4px; }
+}
+
+
 
 
