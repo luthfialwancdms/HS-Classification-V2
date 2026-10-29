@@ -1,20 +1,18 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import { AlertTriangle, BookOpen, Check, ChevronDown, Download, FileCheck2, FileText, UploadCloud } from 'lucide-react'
 import { apiFetch } from '../services/apiClient'
 
 // Admin Data Center (Task 18.2) — thin UI over the existing /api/admin endpoints.
 
 const TABS = [
-  ['versions', 'Versi Nomenklatur'],
-  ['docx',     'Upload Dokumen'],
-  ['reports',  'Laporan Validasi'],
-  ['ambiguity','Antrian Ambiguitas'],
-  ['template', 'Template CSV/Excel'],
+  ['versions', 'Versi Nomenklatur', BookOpen],
+  ['docx',     'Upload Dokumen', UploadCloud],
+  ['reports',  'Laporan Validasi', FileCheck2],
+  ['ambiguity','Antrian Ambiguitas', AlertTriangle],
+  ['template', 'Template CSV/Excel', FileText],
 ]
 
-const card = 'bg-white rounded-2xl border border-gray-200 shadow-sm p-6'
-const btn  = 'px-3 py-1.5 text-sm rounded-lg font-medium disabled:opacity-50'
-const primary = `${btn} bg-blue-600 text-white hover:bg-blue-700`
-const secondary = `${btn} border border-gray-300 text-gray-700 hover:bg-gray-50`
+const cx = (...parts) => parts.filter(Boolean).join(' ')
 
 /** `files` is one File or an array; the BTKI endpoints read the field "files", the others "file". */
 function upload(path, files, field = 'file') {
@@ -38,8 +36,8 @@ function useAction() {
 }
 
 function Feedback({ error, notice }) {
-  if (error)  return <p role="alert" className="text-sm text-red-600 bg-red-50 rounded p-2 mt-3">{error}</p>
-  if (notice) return <p role="status" className="text-sm text-green-700 bg-green-50 rounded p-2 mt-3">{notice}</p>
+  if (error)  return <p role="alert" className="notice danger"><AlertTriangle size={16} aria-hidden="true" /><span>{error}</span></p>
+  if (notice) return <p role="status" className="notice success"><Check size={16} aria-hidden="true" /><span>{notice}</span></p>
   return null
 }
 
@@ -49,35 +47,70 @@ export default function AdminDashboard() {
   const [loadError, setLoadError] = useState(null)
   const [batchId, setBatchId] = useState(null)
 
+  const tabRefs = useRef([])
+  const tabIds = TABS.map(([id]) => id)
+
   const reload = () => apiFetch('/api/admin/versions').then(setVersions, e => setLoadError(e.message))
   useEffect(() => { reload() }, [])
   const openBatch = (id) => { setBatchId(id); setTab('reports') }
 
+  // Panah atas/bawah (vertikal) + kiri/kanan (saat nav jadi horizontal <1050px) + Home/End.
+  const onTabKeyDown = (e) => {
+    const step = { ArrowDown: 1, ArrowRight: 1, ArrowUp: -1, ArrowLeft: -1 }[e.key]
+    let next = null
+    if (step) next = (tabIds.indexOf(tab) + step + tabIds.length) % tabIds.length
+    else if (e.key === 'Home') next = 0
+    else if (e.key === 'End') next = tabIds.length - 1
+    if (next === null) return
+    e.preventDefault()
+    setTab(tabIds[next])
+    tabRefs.current[next]?.focus()
+  }
+
   return (
-    <main className="max-w-7xl mx-auto px-6 py-8">
-      <h2 className="text-lg font-semibold text-gray-900 mb-4">Admin Data Center</h2>
-      <div role="tablist" className="flex gap-2 mb-6">
-        {TABS.map(([id, label]) => (
-          <button key={id} role="tab" aria-selected={tab === id} onClick={() => setTab(id)}
-            className={tab === id ? primary : secondary}>{label}</button>
-        ))}
+    <div className="view">
+      <div className="page-title">
+        <div>
+          <div className="eyebrow">ADMINISTRATION</div>
+          <h1>Admin Data Center</h1>
+          <p>Kelola nomenklatur, tarif, dan kualitas data BTKI.</p>
+        </div>
       </div>
-      {loadError && <p role="alert" className="text-sm text-red-600 mb-4">{loadError}</p>}
-      {tab === 'versions' && <VersionsPanel versions={versions} reload={reload} />}
-      {tab === 'docx'     && <DocxPanel versions={versions} reload={reload} openBatch={openBatch} />}
-      {tab === 'reports'  && <BatchesPanel versions={versions} reload={reload} batchId={batchId} setBatchId={setBatchId} />}
-      {tab === 'ambiguity'&& <BatchesPanel versions={versions} reload={reload} batchId={batchId} setBatchId={setBatchId} pendingOnly />}
-      {tab === 'template' && <TemplatePanel versions={versions} reload={reload} />}
-    </main>
+
+      {loadError && <p role="alert" className="notice danger"><span>{loadError}</span></p>}
+
+      <div className="admin-layout">
+        <div className="admin-nav" role="tablist" aria-orientation="vertical" aria-label="Bagian Admin Data Center"
+          onKeyDown={onTabKeyDown}>
+          {TABS.map(([id, label, Icon], i) => (
+            <button key={id} role="tab" id={`admin-tab-${id}`} aria-controls={`admin-panel-${id}`}
+              aria-selected={tab === id} aria-label={label} tabIndex={tab === id ? 0 : -1}
+              ref={el => { tabRefs.current[i] = el }}
+              onClick={() => setTab(id)}
+              className={tab === id ? 'active' : undefined}>
+              <Icon size={16} aria-hidden="true" /><span>{label}</span>
+            </button>
+          ))}
+        </div>
+
+        <div className="admin-content" role="tabpanel" id={`admin-panel-${tab}`} aria-labelledby={`admin-tab-${tab}`}>
+          {tab === 'versions' && <VersionsPanel versions={versions} reload={reload} />}
+          {tab === 'docx'     && <DocxPanel versions={versions} reload={reload} openBatch={openBatch} />}
+          {tab === 'reports'  && <BatchesPanel versions={versions} reload={reload} batchId={batchId} setBatchId={setBatchId} />}
+          {tab === 'ambiguity'&& <BatchesPanel versions={versions} reload={reload} batchId={batchId} setBatchId={setBatchId} pendingOnly />}
+          {tab === 'template' && <TemplatePanel versions={versions} reload={reload} />}
+        </div>
+      </div>
+    </div>
   )
 }
 
 // ─── Versions (Req 4.4, 4.6, 4.7) ────────────────────────────────────────────
 
-const STATE_COLOR = {
-  ACTIVE: 'bg-green-100 text-green-800', INDEXED: 'bg-blue-100 text-blue-800',
-  COMMITTED: 'bg-blue-50 text-blue-700', DRYRUNFAILED: 'bg-red-100 text-red-800',
+const STATE_TONE = {
+  ACTIVE: 'aktif', INDEXED: 'info', COMMITTED: 'info', DRYRUNFAILED: 'danger',
 }
+const stateTone = (v) => STATE_TONE[(v.isActive ? 'ACTIVE' : v.state).toUpperCase()] || 'inactive'
 
 const DIFF_KINDS = [
   ['added',   'Ditambah (hanya di versi ini)'],
@@ -101,58 +134,63 @@ function DiffView({ version, onClose }) {
 
   const c = data?.counts
   return (
-    <div className="mt-5 border-t border-gray-100 pt-4">
-      <div className="flex items-center justify-between">
-        <h3 className="text-sm font-semibold text-gray-700">
-          Beda "{version.name}" vs versi aktif{data ? ` "${data.baseline.name}"` : ''}
-        </h3>
-        <button className={secondary} onClick={onClose}>Tutup</button>
+    <div className="result-section">
+      <div className="subheading">
+        <div>Beda "{version.name}" vs versi aktif{data ? ` "${data.baseline.name}"` : ''}</div>
+        <button className="outline-button" onClick={onClose}>Tutup</button>
       </div>
-      {error && <p role="alert" className="text-sm text-red-600 bg-red-50 rounded p-2 mt-2">{error}</p>}
-      {!data && !error && <p className="text-xs text-gray-500 mt-2">Menghitung...</p>}
+      {error && <p role="alert" className="notice danger"><span>{error}</span></p>}
+      {!data && !error && <p className="hint">Menghitung...</p>}
       {data && (
         <>
-          <dl className="grid grid-cols-2 md:grid-cols-6 gap-3 text-sm mt-3">
+          <div className="metric-grid">
             {[['Versi aktif', c.baseline], ['Versi ini', c.candidate], ['Sama', c.unchanged],
               ['Ditambah', c.added], ['Dihapus', c.removed], ['Uraian berubah', c.changed]].map(([k, v]) => (
-              <div key={k} className="bg-gray-50 rounded p-2">
-                <dt className="text-xs text-gray-500">{k}</dt><dd className="font-mono">{v}</dd>
+              <div className="metric" key={k}>
+                <span>{k}</span><strong>{v}</strong>
               </div>
             ))}
-          </dl>
-          <p className="text-xs text-gray-500 mt-1">Beda OCR saja: {c.ocrOnly}. Spasi, tanda baca, dan huruf besar/kecil tidak dihitung sebagai beda.</p>
-
-          <div className="mt-3">
-            <label htmlFor="diff-chapter" className="text-xs text-gray-600 mr-2">Tampilkan Bab</label>
-            <select id="diff-chapter" value={chapter} onChange={e => setChapter(e.target.value)}
-              className="text-sm border border-gray-300 rounded p-1.5 bg-white">
-              <option value="">Semua Bab</option>
-              {data.perChapter.map(p => (
-                <option key={p.chapter} value={p.chapter}>
-                  {p.chapter} (+{p.added} −{p.removed} ~{p.changed + p.ocrOnly})
-                </option>
-              ))}
-            </select>
           </div>
+          <p className="hint">Beda OCR saja: {c.ocrOnly}. Spasi, tanda baca, dan huruf besar/kecil tidak dihitung sebagai beda.</p>
+
+          <label className="field">
+            <span>Tampilkan Bab</span>
+            <div className="select-wrap">
+              <select id="diff-chapter" value={chapter} onChange={e => setChapter(e.target.value)}>
+                <option value="">Semua Bab</option>
+                {data.perChapter.map(p => (
+                  <option key={p.chapter} value={p.chapter}>
+                    {p.chapter} (+{p.added} −{p.removed} ~{p.changed + p.ocrOnly})
+                  </option>
+                ))}
+              </select>
+              <ChevronDown size={15} aria-hidden="true" />
+            </div>
+          </label>
 
           {DIFF_KINDS.map(([key, label]) => (
-            <details key={key} className="mt-3">
-              <summary className="text-sm font-semibold text-gray-700 cursor-pointer">
+            <details key={key} className="diff-block">
+              <summary>
                 {label}: {data[key].total}{data[key].truncated && ` (menampilkan ${data[key].items.length})`}
               </summary>
-              <table className="w-full text-xs mt-2">
-                <thead><tr className="text-left text-gray-500">
-                  <th scope="col">Kode</th><th scope="col">Tingkat</th><th scope="col">Versi aktif</th><th scope="col">Versi ini</th>
-                </tr></thead>
-                <tbody>
-                  {data[key].items.map(e => (
-                    <tr key={e.code} className="border-t border-gray-50 align-top">
-                      <td className="font-mono py-1 pr-2">{e.code}</td><td className="pr-2">{e.level}</td>
-                      <td className="pr-2">{e.before}</td><td>{e.after}</td>
+              <div className="table-scroll">
+                <table className="data-table">
+                  <thead>
+                    <tr>
+                      <th scope="col">Kode</th><th scope="col">Tingkat</th>
+                      <th scope="col">Versi aktif</th><th scope="col">Versi ini</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody>
+                    {data[key].items.map(e => (
+                      <tr key={e.code}>
+                        <td className="mono">{e.code}</td><td>{e.level}</td>
+                        <td>{e.before}</td><td>{e.after}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             </details>
           ))}
         </>
@@ -171,48 +209,55 @@ function VersionsPanel({ versions, reload }) {
   })
 
   return (
-    <section className={card}>
-      <table className="w-full text-sm">
-        <caption className="text-left text-sm font-semibold text-gray-700 mb-3">Daftar versi BTKI</caption>
-        <thead>
-          <tr className="text-left text-xs text-gray-500">
-            <th scope="col" className="py-2">Nama</th><th scope="col">Edisi</th>
-            <th scope="col">Berlaku</th><th scope="col">Status Import</th><th scope="col">Aksi</th>
-          </tr>
-        </thead>
-        <tbody>
-          {versions.length === 0 && <tr><td colSpan={5} className="py-4 text-gray-400 text-center">Belum ada versi</td></tr>}
-          {versions.map(v => (
-            <tr key={v.id} className="border-t border-gray-100">
-              <td className="py-2 font-medium">{v.name}</td>
-              <td>{v.btkiEdition}</td>
-              <td className="text-xs">{v.effectiveFrom?.slice(0, 10)} – {v.effectiveTo?.slice(0, 10) || '∞'}</td>
-              <td>
-                <span className={`text-xs px-2 py-0.5 rounded-full ${STATE_COLOR[(v.isActive ? 'ACTIVE' : v.state).toUpperCase()] || 'bg-gray-100 text-gray-700'}`}>
-                  {v.isActive ? 'Active' : v.state}
-                </span>
-              </td>
-              <td className="py-2 flex gap-2">
-                {v.isActive
-                  ? <button className={secondary} disabled={busy} onClick={() => act(v.id, 'deactivate')}>Nonaktifkan / Rollback</button>
-                  : <>
-                      <button className={primary} disabled={busy || v.state !== 'Indexed'} onClick={() => act(v.id, 'activate')}
-                        title={v.state !== 'Indexed' ? 'Hanya versi berstatus Indexed yang dapat diaktifkan' : undefined}>Aktifkan</button>
-                      {['Indexed', 'Committed'].includes(v.state) &&
-                        <button className={secondary} onClick={() => setDiffId(v.id)}>Bandingkan</button>}
-                    </>}
-              </td>
+    <>
+      <div className="content-heading">
+        <div>
+          <h2>Versi Nomenklatur</h2>
+          <p>Kelola versi nomenklatur dan status publikasinya.</p>
+        </div>
+      </div>
+
+      <div className="table-scroll">
+        <table className="data-table">
+          <caption>Daftar versi BTKI</caption>
+          <thead>
+            <tr>
+              <th scope="col">Nama</th><th scope="col">Edisi</th><th scope="col">Berlaku</th>
+              <th scope="col">Status Import</th><th scope="col">Aksi</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
-      <p className="text-xs text-gray-500 mt-3">
-        Mengaktifkan versi menonaktifkan versi lain di rentang tanggal yang sama. Riwayat klasifikasi tetap tersimpan.
-      </p>
+          </thead>
+          <tbody>
+            {versions.length === 0 && (
+              <tr><td colSpan={5} className="hint">Belum ada versi</td></tr>
+            )}
+            {versions.map(v => (
+              <tr key={v.id}>
+                <td>{v.name}</td>
+                <td>{v.btkiEdition}</td>
+                <td className="mono">{v.effectiveFrom?.slice(0, 10)} – {v.effectiveTo?.slice(0, 10) || '∞'}</td>
+                <td><span className={`state ${stateTone(v)}`}>{v.isActive ? 'Active' : v.state}</span></td>
+                <td>
+                  <div className="row-actions">
+                    {v.isActive
+                      ? <button className="outline-button" disabled={busy} onClick={() => act(v.id, 'deactivate')}>Nonaktifkan / Rollback</button>
+                      : <>
+                          <button className="primary-button" disabled={busy || v.state !== 'Indexed'} onClick={() => act(v.id, 'activate')}
+                            title={v.state !== 'Indexed' ? 'Hanya versi berstatus Indexed yang dapat diaktifkan' : undefined}>Aktifkan</button>
+                          {['Indexed', 'Committed'].includes(v.state) &&
+                            <button className="outline-button" onClick={() => setDiffId(v.id)}>Bandingkan</button>}
+                        </>}
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <p className="hint">Mengaktifkan versi menonaktifkan versi lain di rentang tanggal yang sama. Riwayat klasifikasi tetap tersimpan.</p>
       <Feedback error={error} notice={notice} />
       {diffVersion && <DiffView key={diffVersion.id} version={diffVersion} onClose={() => setDiffId(null)} />}
       <NewVersionForm reload={reload} />
-    </section>
+    </>
   )
 }
 
@@ -234,24 +279,23 @@ function NewVersionForm({ reload }) {
   }
 
   const field = (k, label, type = 'text', required = false) => (
-    <div>
-      <label htmlFor={`nv-${k}`} className="block text-xs text-gray-600 mb-1">{label}{required && ' *'}</label>
-      <input id={`nv-${k}`} type={type} required={required} value={f[k]} onChange={set(k)}
-        className="w-full text-sm border border-gray-300 rounded p-2" />
-    </div>
+    <label className="field" key={k}>
+      <span>{label}{required && <em> *</em>}</span>
+      <input id={`nv-${k}`} type={type} required={required} value={f[k]} onChange={set(k)} />
+    </label>
   )
 
   return (
-    <form onSubmit={submit} className="mt-6 border-t border-gray-100 pt-4">
-      <h3 className="text-sm font-semibold text-gray-700 mb-2">Tambah Versi</h3>
-      <div className="grid grid-cols-2 md:grid-cols-5 gap-3 items-end">
+    <form onSubmit={submit} className="result-section">
+      <div className="subheading"><div>Tambah Versi</div></div>
+      <div className="form-grid">
         {field('name', 'Nama', 'text', true)}
         {field('btkiEdition', 'Edisi')}
         {field('regulationNumber', 'No. regulasi')}
         {field('effectiveFrom', 'Berlaku mulai', 'date', true)}
         {field('effectiveTo', 'Berlaku sampai', 'date')}
       </div>
-      <button type="submit" className={`${primary} mt-3`} disabled={busy}>Tambah Versi</button>
+      <button type="submit" className="primary-button" disabled={busy}>Tambah Versi</button>
       <Feedback error={error} notice={notice} />
     </form>
   )
@@ -259,8 +303,8 @@ function NewVersionForm({ reload }) {
 
 // ─── Laporan Validasi & Antrian Ambiguitas (Req 1.4, 1.9, 1.11) ───────────────
 
-const DECISION_STYLE = {
-  Pending: 'bg-amber-100 text-amber-800', Approved: 'bg-green-100 text-green-800', Rejected: 'bg-red-100 text-red-800',
+const DECISION_TONE = {
+  Pending: 'warning', Approved: 'success', Rejected: 'danger',
 }
 
 function BatchesPanel({ versions, reload, batchId, setBatchId, pendingOnly = false }) {
@@ -289,45 +333,57 @@ function BatchesPanel({ versions, reload, batchId, setBatchId, pendingOnly = fal
   const refresh = async () => { setReloadKey(k => k + 1); await reload() }
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
-      <section className={card}>
-        <label htmlFor="batch-version" className="block text-xs text-gray-600 mb-1">Filter versi</label>
-        <select id="batch-version" value={versionId} onChange={e => setVersionId(e.target.value)}
-          className="w-full text-sm border border-gray-300 rounded p-2 bg-white mb-3">
-          <option value="">Semua versi</option>
-          {versions.map(v => <option key={v.id} value={v.id}>{v.name}</option>)}
-        </select>
-        {listError && <p role="alert" className="text-sm text-red-600">{listError}</p>}
-        <ul className="flex flex-col divide-y divide-gray-100">
-          {shown.length === 0 && (
-            <li className="py-4 text-sm text-gray-400 text-center">
-              {pendingOnly ? 'Tidak ada ambiguitas yang menunggu keputusan' : 'Belum ada laporan validasi'}
-            </li>
-          )}
-          {shown.map(b => (
-            <li key={b.id}>
-              <button onClick={() => setBatchId(b.id)} aria-current={batchId === b.id ? 'true' : undefined}
-                className={`w-full text-left py-2 px-2 rounded-lg hover:bg-gray-50 ${batchId === b.id ? 'bg-blue-50' : ''}`}>
-                <span className="block text-sm font-medium text-gray-900 truncate">{b.fileName}</span>
-                <span className="block text-xs text-gray-500">
-                  {versionName(b.versionId)} · {new Date(b.createdAt).toLocaleString('id-ID')}
-                </span>
-                <span className="block text-xs mt-0.5">
-                  <span className={b.errorCount ? 'text-red-600' : 'text-gray-500'}>{b.errorCount} error</span> ·{' '}
-                  <span className={b.pending ? 'text-amber-700 font-medium' : 'text-gray-500'}>{b.pending}/{b.ambiguous} ambiguitas pending</span>
-                </span>
-              </button>
-            </li>
-          ))}
-        </ul>
-      </section>
+    <>
+      <div className="content-heading">
+        <div>
+          <h2>{pendingOnly ? 'Antrian Ambiguitas' : 'Laporan Validasi'}</h2>
+          <p>{pendingOnly ? 'Node yang menunggu keputusan struktur.' : 'Ringkasan hasil parsing dan validasi impor.'}</p>
+        </div>
+      </div>
 
-      <section className={`${card} lg:col-span-2`}>
-        {!batchId && <p className="text-sm text-gray-500">Pilih laporan di sebelah kiri.</p>}
-        {detail?.error && <p role="alert" className="text-sm text-red-600">{detail.error}</p>}
-        {detail && !detail.error && <BatchDetail detail={detail} pendingOnly={pendingOnly} onDecided={refresh} />}
-      </section>
-    </div>
+      <div className="master-detail">
+        <section>
+          <label className="field">
+            <span>Filter versi</span>
+            <div className="select-wrap">
+              <select id="batch-version" value={versionId} onChange={e => setVersionId(e.target.value)}>
+                <option value="">Semua versi</option>
+                {versions.map(v => <option key={v.id} value={v.id}>{v.name}</option>)}
+              </select>
+              <ChevronDown size={15} aria-hidden="true" />
+            </div>
+          </label>
+          {listError && <p role="alert" className="notice danger"><span>{listError}</span></p>}
+          <div className="case-list">
+            {shown.length === 0 && (
+              <p className="hint">
+                {pendingOnly ? 'Tidak ada ambiguitas yang menunggu keputusan' : 'Belum ada laporan validasi'}
+              </p>
+            )}
+            {shown.map(b => (
+              <button key={b.id} onClick={() => setBatchId(b.id)} aria-current={batchId === b.id ? 'true' : undefined}
+                className={cx('case-card', batchId === b.id && 'selected')}>
+                <div className="case-card-top">
+                  <span className="case-date">{new Date(b.createdAt).toLocaleString('id-ID')}</span>
+                  {b.pending > 0 && <span className="badge warning"><span className="dot" aria-hidden="true" />{b.pending} pending</span>}
+                </div>
+                <strong>{b.fileName}</strong>
+                <div className="case-card-bottom">
+                  <span>{versionName(b.versionId)}</span>
+                  <span className={b.errorCount ? 'text-danger' : undefined}>{b.errorCount} error</span>
+                </div>
+              </button>
+            ))}
+          </div>
+        </section>
+
+        <section>
+          {!batchId && <p className="hint">Pilih laporan di sebelah kiri.</p>}
+          {detail?.error && <p role="alert" className="notice danger"><span>{detail.error}</span></p>}
+          {detail && !detail.error && <BatchDetail detail={detail} pendingOnly={pendingOnly} onDecided={refresh} />}
+        </section>
+      </div>
+    </>
   )
 }
 
@@ -337,55 +393,68 @@ function BatchDetail({ detail, pendingOnly, onDecided }) {
   const pending = detail.items.filter(i => i.decision === 'Pending').length
 
   return (
-    <div>
-      <h3 className="text-sm font-semibold text-gray-700">{detail.fileName}</h3>
-      <p className="text-xs text-gray-500 mb-3 break-all">
-        checksum {detail.checksum} · oleh {detail.createdBy} · {new Date(detail.createdAt).toLocaleString('id-ID')}
-        {!detail.isLatest && <span className="text-amber-700"> · upload lama (sudah digantikan upload terbaru)</span>}
-      </p>
-      <dl className="grid grid-cols-2 md:grid-cols-5 gap-2 text-sm mb-4">
+    <div className="detail-card">
+      <div className="detail-header">
+        <div>
+          <h2>{detail.fileName}</h2>
+          <p className="break-all">
+            checksum {detail.checksum} · oleh {detail.createdBy} · {new Date(detail.createdAt).toLocaleString('id-ID')}
+            {!detail.isLatest && <span className="text-warning"> · upload lama (sudah digantikan upload terbaru)</span>}
+          </p>
+        </div>
+      </div>
+
+      <div className="metric-grid">
         {[['Node', detail.totalNodes], ['Baris dibaca', r.totalRows], ['Dilewati', r.skippedRows],
           ['Error', detail.errorCount], ['Warning', detail.warningCount]].map(([k, v]) => (
-          <div key={k} className={`rounded p-2 ${k === 'Error' && v ? 'bg-red-50' : 'bg-gray-50'}`}>
-            <dt className="text-xs text-gray-500">{k}</dt><dd className="font-mono">{v ?? '—'}</dd>
+          <div key={k} className={cx('metric', k === 'Error' && v && 'danger')}>
+            <span>{k}</span><strong>{v ?? '—'}</strong>
           </div>
         ))}
-      </dl>
+      </div>
 
-      <h4 className="text-xs font-semibold text-gray-700 uppercase tracking-wide mb-1">
-        Antrian ambiguitas ({pending} pending dari {detail.items.length})
-      </h4>
-      {items.length === 0 ? (
-        <p className="text-sm text-gray-500 mb-4">Tidak ada item.</p>
-      ) : (
-        <table className="w-full text-xs mb-4">
-          <thead><tr className="text-left text-gray-500">
-            <th scope="col" className="py-1">Kode</th><th scope="col">Baris</th><th scope="col">Parent usulan</th>
-            <th scope="col">Alasan</th><th scope="col">Keputusan</th>
-          </tr></thead>
-          <tbody>
-            {items.map(i => (
-              <tr key={i.id} className="border-t border-gray-100 align-top">
-                <td className="py-2 font-mono">{i.code}</td>
-                <td>{i.rowNumber}</td>
-                <td className="font-mono">{i.proposedParent || '—'}</td>
-                <td className="pr-2">{i.reason}</td>
-                <td className="min-w-64">
-                  {i.decision === 'Pending' && detail.isLatest
-                    ? <DecideItem item={i} onDecided={onDecided} />
-                    : (
-                      <span>
-                        <span className={`px-2 py-0.5 rounded-full ${DECISION_STYLE[i.decision]}`}>{i.decision}</span>
-                        {i.correctedParent && <span className="font-mono"> → {i.correctedParent}</span>}
-                        {i.note && <span className="block text-gray-500 mt-1">{i.note} · {i.decidedBy}</span>}
-                      </span>
-                    )}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      )}
+      <div className="result-section">
+        <div className="subheading">
+          <div>Antrian ambiguitas <span className="hint">{pending} pending dari {detail.items.length}</span></div>
+        </div>
+        {items.length === 0 ? (
+          <p className="hint">Tidak ada item.</p>
+        ) : (
+          <div className="table-scroll">
+            <table className="data-table">
+              <thead>
+                <tr>
+                  <th scope="col">Kode</th><th scope="col">Baris</th><th scope="col">Parent usulan</th>
+                  <th scope="col">Alasan</th><th scope="col">Keputusan</th>
+                </tr>
+              </thead>
+              <tbody>
+                {items.map(i => (
+                  <tr key={i.id}>
+                    <td className="mono">{i.code}</td>
+                    <td>{i.rowNumber}</td>
+                    <td className="mono">{i.proposedParent || '—'}</td>
+                    <td>{i.reason}</td>
+                    <td>
+                      {i.decision === 'Pending' && detail.isLatest
+                        ? <DecideItem item={i} onDecided={onDecided} />
+                        : (
+                          <span>
+                            <span className={`badge ${DECISION_TONE[i.decision] || 'neutral'}`}>
+                              <span className="dot" aria-hidden="true" />{i.decision}
+                            </span>
+                            {i.correctedParent && <span className="mono"> → {i.correctedParent}</span>}
+                            {i.note && <span className="hint">{i.note} · {i.decidedBy}</span>}
+                          </span>
+                        )}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </div>
 
       {!pendingOnly && <IssuesTable issues={(r.issues || []).slice(0, 50)} />}
     </div>
@@ -404,53 +473,62 @@ function DecideItem({ item, onDecided }) {
   const ok = note.trim().length >= 5
 
   return (
-    <div className="flex flex-col gap-1">
+    <div className="decision-cell">
       <label htmlFor={`amb-p-${item.id}`} className="sr-only">Parent koreksi untuk {item.code}</label>
       <input id={`amb-p-${item.id}`} value={parent} onChange={e => setParent(e.target.value)}
-        placeholder="Parent koreksi (opsional)" className="border border-gray-300 rounded p-1 font-mono" />
+        placeholder="Parent koreksi (opsional)" className="cell-input mono" />
       <label htmlFor={`amb-n-${item.id}`} className="sr-only">Catatan keputusan untuk {item.code}</label>
       <input id={`amb-n-${item.id}`} value={note} onChange={e => setNote(e.target.value)}
-        placeholder="Catatan (wajib)" className="border border-gray-300 rounded p-1" />
-      <div className="flex gap-1">
+        placeholder="Catatan (wajib)" className="cell-input" />
+      <div className="row-actions">
         <button disabled={busy || !ok} onClick={() => decide('Approved')}
-          className="px-2 py-1 rounded bg-green-600 text-white disabled:opacity-50">Approve</button>
+          className="primary-button">Approve</button>
         <button disabled={busy || !ok || parent.trim() !== ''} onClick={() => decide('Rejected')}
           title="Node yang di-reject tidak ikut di-commit"
-          className="px-2 py-1 rounded bg-red-600 text-white disabled:opacity-50">Reject</button>
+          className="danger-button">Reject</button>
       </div>
-      {error && <p role="alert" className="text-red-600">{error}</p>}
+      {error && <p role="alert" className="notice danger"><span>{error}</span></p>}
     </div>
   )
 }
 
 function VersionSelect({ versions, value, onChange, id }) {
   return (
-    <select id={id} value={value} onChange={e => onChange(e.target.value)}
-      className="text-sm border border-gray-300 rounded p-2 bg-white">
-      <option value="">Pilih versi target...</option>
-      {versions.map(v => <option key={v.id} value={v.id}>{v.name} ({v.state})</option>)}
-    </select>
+    <div className="select-wrap">
+      <select id={id} value={value} onChange={e => onChange(e.target.value)}>
+        <option value="">Pilih versi target...</option>
+        {versions.map(v => <option key={v.id} value={v.id}>{v.name} ({v.state})</option>)}
+      </select>
+      <ChevronDown size={15} aria-hidden="true" />
+    </div>
   )
 }
 
 function IssuesTable({ issues }) {
   if (!issues?.length) return null
   return (
-    <table className="w-full text-xs mt-3">
-      <caption className="text-left font-semibold text-gray-700 mb-1">Isu validasi (maks. 50)</caption>
-      <thead><tr className="text-left text-gray-500">
-        <th scope="col">Severity</th><th scope="col">Tipe</th><th scope="col">Kode</th><th scope="col">Baris</th><th scope="col">Pesan</th>
-      </tr></thead>
-      <tbody>
-        {issues.map((i, n) => (
-          <tr key={n} className="border-t border-gray-50">
-            <td className={i.severity === 'ERROR' ? 'text-red-600 font-semibold' : 'text-amber-600'}>{i.severity}</td>
-            <td className="font-mono">{i.type}</td><td className="font-mono">{i.code}</td>
-            <td>{i.rowNumber}</td><td>{i.message}</td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
+    <div className="result-section">
+      <div className="subheading"><div>Isu validasi (maks. 50)</div></div>
+      <div className="table-scroll">
+        <table className="data-table">
+          <thead>
+            <tr>
+              <th scope="col">Severity</th><th scope="col">Tipe</th><th scope="col">Kode</th>
+              <th scope="col">Baris</th><th scope="col">Pesan</th>
+            </tr>
+          </thead>
+          <tbody>
+            {issues.map((i, n) => (
+              <tr key={n}>
+                <td className={i.severity === 'ERROR' ? 'text-danger' : 'text-warning'}>{i.severity}</td>
+                <td className="mono">{i.type}</td><td className="mono">{i.code}</td>
+                <td>{i.rowNumber}</td><td>{i.message}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
   )
 }
 
@@ -486,101 +564,111 @@ function DocxPanel({ versions, reload, openBatch }) {
   const canCommit = isBtki && version?.state === 'ReadyToCommit'
 
   return (
-    <section className={card}>
-      <div className="flex flex-wrap items-end gap-3">
+    <>
+      <div className="content-heading">
         <div>
-          <label htmlFor="docx-kind" className="block text-xs text-gray-600 mb-1">Jenis dokumen</label>
-          <select id="docx-kind" value={kind} onChange={e => { setKind(e.target.value); setFiles([]); reset() }}
-            className="text-sm border border-gray-300 rounded p-2 bg-white">
-            {Object.entries(DOCX_KINDS).map(([k, l]) => <option key={k} value={k}>{l}</option>)}
-          </select>
+          <h2>Upload Dokumen</h2>
+          <p>Parse &amp; dry run dokumen BTKI, Explanatory Notes, atau Catatan Bagian/Bab.</p>
         </div>
+      </div>
+
+      <div className="form-grid">
+        <label className="field">
+          <span>Jenis dokumen</span>
+          <div className="select-wrap">
+            <select id="docx-kind" value={kind} onChange={e => { setKind(e.target.value); setFiles([]); reset() }}>
+              {Object.entries(DOCX_KINDS).map(([k, l]) => <option key={k} value={k}>{l}</option>)}
+            </select>
+            <ChevronDown size={15} aria-hidden="true" />
+          </div>
+        </label>
         {isBtki && (
-          <div>
-            <label htmlFor="docx-version" className="block text-xs text-gray-600 mb-1">Versi target</label>
+          <label className="field">
+            <span>Versi target</span>
             <VersionSelect id="docx-version" versions={report ? versions : uploadable} value={versionId}
               onChange={v => { setVersionId(v); reset() }} />
-          </div>
-        )}
-        <div>
-          <label htmlFor="docx-file" className="block text-xs text-gray-600 mb-1">
-            {isBtki ? 'File .docx, atau satu/banyak .pdf resmi' : 'File .docx'}
           </label>
+        )}
+        <label className="field">
+          <span>{isBtki ? 'File .docx, atau satu/banyak .pdf resmi' : 'File .docx'}</span>
           <input id="docx-file" key={kind} type="file" accept={isBtki ? '.docx,.pdf' : '.docx'} multiple={isBtki}
-            onChange={e => { setFiles([...e.target.files]); reset() }} className="text-sm" />
-          {files.length > 1 && <p className="text-xs text-gray-500 mt-1">{files.length} file dipilih</p>}
-        </div>
-        <button className={primary} disabled={files.length === 0 || busy || (isBtki && !versionId)} onClick={analyse}>
-          {busy && !report ? 'Mem-parsing...' : 'Parse & Dry Run'}
-        </button>
+            onChange={e => { setFiles([...e.target.files]); reset() }} className="file-input" />
+          {files.length > 1 && <p className="hint">{files.length} file dipilih</p>}
+        </label>
       </div>
+
+      <button className="primary-button" disabled={files.length === 0 || busy || (isBtki && !versionId)} onClick={analyse}>
+        {busy && !report ? 'Mem-parsing...' : 'Parse & Dry Run'}
+      </button>
+
       {isBtki && uploadable.length === 0 && !report && (
-        <p className="text-xs text-amber-700 mt-2">Belum ada versi yang siap di-upload. Buat dulu lewat "Tambah Versi" di tab Versi.</p>
+        <p className="notice"><AlertTriangle size={16} aria-hidden="true" /><span>Belum ada versi yang siap di-upload. Buat dulu lewat "Tambah Versi" di tab Versi.</span></p>
       )}
 
       {report && (
-        <div className="mt-5">
-          <h3 className="text-sm font-semibold text-gray-700 mb-2">Laporan validasi</h3>
-          <dl className="grid grid-cols-2 md:grid-cols-4 gap-3 text-sm">
+        <div className="result-section">
+          <div className="subheading"><div>Laporan validasi</div></div>
+          <div className="metric-grid">
             {Object.entries(report)
               .filter(([, v]) => typeof v === 'number' || typeof v === 'string')
               .map(([k, v]) => (
-                <div key={k} className="bg-gray-50 rounded p-2">
-                  <dt className="text-xs text-gray-500">{k}</dt>
-                  <dd className="font-mono text-xs break-all">{String(v)}</dd>
+                <div className="metric" key={k}>
+                  <span>{k}</span><strong className="mono">{String(v)}</strong>
                 </div>
               ))}
             {dry && Object.entries(dry).map(([k, v]) => (
-              <div key={k} className={`rounded p-2 ${k === 'canCommit' ? (v ? 'bg-green-50' : 'bg-red-50') : 'bg-gray-50'}`}>
-                <dt className="text-xs text-gray-500">dryRun.{k}</dt>
-                <dd className="font-mono text-xs">{String(v)}</dd>
+              <div key={k} className={cx('metric', k === 'canCommit' && (v ? 'success' : 'danger'))}>
+                <span>dryRun.{k}</span><strong className="mono">{String(v)}</strong>
               </div>
             ))}
-          </dl>
+          </div>
 
           {report.nodesByLevel && (
-            <p className="text-xs text-gray-600 mt-2">
+            <p className="hint">
               Isi: {Object.entries(report.nodesByLevel).map(([k, v]) => `${k} ${v}`).join(' · ')} · {report.chapters} Bab
             </p>
           )}
           <IssuesTable issues={report.issues} />
 
           {report.sample?.length > 0 && (
-            <details className="mt-3">
-              <summary className="text-xs font-semibold text-gray-700 cursor-pointer">Contoh hasil parsing vs sumber (10 baris pertama)</summary>
-              <pre className="text-[11px] bg-gray-50 rounded p-2 mt-2 overflow-auto max-h-64">{JSON.stringify(report.sample, null, 2)}</pre>
+            <details className="diff-block">
+              <summary>Contoh hasil parsing vs sumber (10 baris pertama)</summary>
+              <pre className="code-block">{JSON.stringify(report.sample, null, 2)}</pre>
             </details>
           )}
 
           {isBtki ? (
-            <div className="mt-4 border-t border-gray-100 pt-4 flex flex-col gap-3">
-              <p className="text-sm text-gray-700">
-                Status versi: <span className="font-mono">{version?.state}</span>
+            <div className="result-section">
+              <p className="hint">
+                Status versi: <span className="mono">{version?.state}</span>
                 {dry?.ambiguousNodes > 0 && <> · {dry.ambiguousNodes} node STRUCTURE_AMBIGUITY menunggu keputusan</>}
               </p>
               {report.batchId && (
-                <button className={secondary + ' self-start'} onClick={() => openBatch(report.batchId)}>
+                <button className="outline-button self-start" onClick={() => openBatch(report.batchId)}>
                   Buka laporan validasi &amp; antrian ambiguitas →
                 </button>
               )}
-              <div className="flex items-center gap-3">
-                <button className={primary} disabled={!canCommit || busy} onClick={commit}>Commit ke Database</button>
-                <span className="text-xs text-gray-500">Gunakan file yang sama dengan yang divalidasi.</span>
+              <div className="row-actions">
+                <button className="primary-button" disabled={!canCommit || busy} onClick={commit}>Commit ke Database</button>
+                <span className="hint">Gunakan file yang sama dengan yang divalidasi.</span>
               </div>
               {!canCommit && (
-                <p className="text-xs text-red-600">
-                  {dry?.errorCount > 0 ? 'Commit diblokir: masih ada error struktur. Perbaiki file lalu upload ulang.'
-                    : 'Commit diblokir sampai semua ambiguitas diputuskan di laporan validasi.'}
+                <p className="notice danger">
+                  <AlertTriangle size={16} aria-hidden="true" />
+                  <span>
+                    {dry?.errorCount > 0 ? 'Commit diblokir: masih ada error struktur. Perbaiki file lalu upload ulang.'
+                      : 'Commit diblokir sampai semua ambiguitas diputuskan di laporan validasi.'}
+                  </span>
                 </p>
               )}
             </div>
           ) : (
-            <p className="text-xs text-gray-500 mt-4">Commit untuk {DOCX_KINDS[kind]} belum tersedia di API backend.</p>
+            <p className="hint">Commit untuk {DOCX_KINDS[kind]} belum tersedia di API backend.</p>
           )}
         </div>
       )}
       <Feedback error={error} notice={notice} />
-    </section>
+    </>
   )
 }
 
@@ -609,86 +697,105 @@ function TemplatePanel({ versions, reload }) {
     reset(); await reload()
   })
 
+  const problems = validation
+    ? [...validation.errors.map(e => ({ ...e, sev: 'ERROR' })), ...validation.warnings.map(w => ({ ...w, sev: 'WARNING' }))]
+    : []
+
   return (
-    <section className={card}>
-      <div className="flex gap-2 mb-4">
-        <button className={secondary} disabled={busy} onClick={() => download('csv')}>⬇ Template CSV</button>
-        <button className={secondary} disabled={busy} onClick={() => download('xlsx')}>⬇ Template Excel</button>
+    <>
+      <div className="content-heading">
+        <div>
+          <h2>Template CSV/Excel</h2>
+          <p>Unduh template, validasi, preview diff, lalu commit ke versi target.</p>
+        </div>
       </div>
 
-      <div className="flex flex-wrap items-end gap-3">
-        <div>
-          <label htmlFor="tpl-file" className="block text-xs text-gray-600 mb-1">File .csv / .xlsx</label>
-          <input id="tpl-file" type="file" accept=".csv,.xlsx"
-            onChange={e => { setFile(e.target.files[0] || null); reset() }} className="text-sm" />
-        </div>
-        <button className={primary} disabled={!file || busy} onClick={validate}>1. Validasi</button>
+      <div className="row-actions">
+        <button className="outline-button" disabled={busy} onClick={() => download('csv')}><Download size={15} aria-hidden="true" /> Template CSV</button>
+        <button className="outline-button" disabled={busy} onClick={() => download('xlsx')}><Download size={15} aria-hidden="true" /> Template Excel</button>
       </div>
+
+      <div className="form-grid">
+        <label className="field">
+          <span>File .csv / .xlsx</span>
+          <input id="tpl-file" type="file" accept=".csv,.xlsx" className="file-input"
+            onChange={e => { setFile(e.target.files[0] || null); reset() }} />
+        </label>
+      </div>
+      <button className="primary-button" disabled={!file || busy} onClick={validate}>1. Validasi</button>
 
       {validation && (
-        <div className="mt-4">
-          <p className={`text-sm font-medium ${validation.isValid ? 'text-green-700' : 'text-red-600'}`}>
+        <div className="result-section">
+          <p className={validation.isValid ? 'hint text-success' : 'hint text-danger'}>
             {validation.validRows}/{validation.totalRows} baris valid · {validation.errorCount} error · {validation.warningCount} warning
           </p>
-          {[...validation.errors.map(e => ({ ...e, sev: 'ERROR' })), ...validation.warnings.map(w => ({ ...w, sev: 'WARNING' }))].length > 0 && (
-            <table className="w-full text-xs mt-2">
-              <caption className="text-left font-semibold text-gray-700 mb-1">Kesalahan per baris</caption>
-              <thead><tr className="text-left text-gray-500">
-                <th scope="col">Baris</th><th scope="col">Kolom</th><th scope="col">Jenis</th><th scope="col">Nilai</th><th scope="col">Saran perbaikan</th>
-              </tr></thead>
-              <tbody>
-                {[...validation.errors.map(e => ({ ...e, sev: 'ERROR' })), ...validation.warnings.map(w => ({ ...w, sev: 'WARNING' }))].map((e, i) => (
-                  <tr key={i} className="border-t border-gray-50">
-                    <td>{e.rowNumber}</td><td className="font-mono">{e.columnName}</td>
-                    <td className={e.sev === 'ERROR' ? 'text-red-600' : 'text-amber-600'}>{e.errorType}</td>
-                    <td className="font-mono">{e.actualValue}</td><td>{e.suggestedFix}</td>
+          {problems.length > 0 && (
+            <div className="table-scroll">
+              <table className="data-table">
+                <caption>Kesalahan per baris</caption>
+                <thead>
+                  <tr>
+                    <th scope="col">Baris</th><th scope="col">Kolom</th><th scope="col">Jenis</th>
+                    <th scope="col">Nilai</th><th scope="col">Saran perbaikan</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {problems.map((e, i) => (
+                    <tr key={i}>
+                      <td>{e.rowNumber}</td><td className="mono">{e.columnName}</td>
+                      <td className={e.sev === 'ERROR' ? 'text-danger' : 'text-warning'}>{e.errorType}</td>
+                      <td className="mono">{e.actualValue}</td><td>{e.suggestedFix}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           )}
           {validation.isValid && (
-            <div className="flex items-center gap-3 mt-4">
-              <VersionSelect id="tpl-version" versions={versions} value={versionId} onChange={v => { setVersionId(v); setPreview(null); setConfirmed(false) }} />
-              <button className={primary} disabled={!versionId || busy} onClick={doPreview}>2. Preview Diff</button>
+            <div className="row-actions">
+              <VersionSelect id="tpl-version" versions={versions} value={versionId}
+                onChange={v => { setVersionId(v); setPreview(null); setConfirmed(false) }} />
+              <button className="primary-button" disabled={!versionId || busy} onClick={doPreview}>2. Preview Diff</button>
             </div>
           )}
         </div>
       )}
 
       {preview && (
-        <div className="mt-4">
-          <div className="flex gap-3 text-sm">
-            <span className="px-2 py-1 rounded bg-green-50 text-green-700">INSERT {preview.insertCount}</span>
-            <span className="px-2 py-1 rounded bg-blue-50 text-blue-700">UPDATE {preview.updateCount}</span>
-            <span className="px-2 py-1 rounded bg-gray-100 text-gray-600">SKIP (unchanged) {preview.unchangedCount}</span>
+        <div className="result-section">
+          <div className="row-actions">
+            <span className="badge success"><span className="dot" aria-hidden="true" />INSERT {preview.insertCount}</span>
+            <span className="badge info"><span className="dot" aria-hidden="true" />UPDATE {preview.updateCount}</span>
+            <span className="badge neutral"><span className="dot" aria-hidden="true" />SKIP (unchanged) {preview.unchangedCount}</span>
           </div>
           {preview.toUpdate?.length > 0 && (
-            <table className="w-full text-xs mt-3">
-              <caption className="text-left font-semibold text-gray-700 mb-1">Perubahan (maks. 20)</caption>
-              <thead><tr className="text-left text-gray-500"><th scope="col">Kode</th><th scope="col">Lama</th><th scope="col">Baru</th></tr></thead>
-              <tbody>
-                {preview.toUpdate.map(u => (
-                  <tr key={u.code} className="border-t border-gray-50 align-top">
-                    <td className="font-mono">{u.code}</td>
-                    <td className="text-red-600 line-through">{JSON.stringify(u.oldValue)}</td>
-                    <td className="text-green-700">{JSON.stringify(u.newValue)}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+            <div className="table-scroll">
+              <table className="data-table">
+                <caption>Perubahan (maks. 20)</caption>
+                <thead><tr><th scope="col">Kode</th><th scope="col">Lama</th><th scope="col">Baru</th></tr></thead>
+                <tbody>
+                  {preview.toUpdate.map(u => (
+                    <tr key={u.code}>
+                      <td className="mono">{u.code}</td>
+                      <td className="val-old">{JSON.stringify(u.oldValue)}</td>
+                      <td className="val-new">{JSON.stringify(u.newValue)}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           )}
           {preview.toInsert?.length > 0 && (
-            <p className="text-xs text-gray-600 mt-2">Kode baru: <span className="font-mono">{preview.toInsert.map(r => r.code).join(', ')}</span></p>
+            <p className="hint">Kode baru: <span className="mono">{preview.toInsert.map(r => r.code).join(', ')}</span></p>
           )}
-          <label className="flex items-start gap-2 text-sm text-gray-700 mt-4">
-            <input type="checkbox" checked={confirmed} onChange={e => setConfirmed(e.target.checked)} className="mt-1" />
+          <label className="check-row">
+            <input type="checkbox" checked={confirmed} onChange={e => setConfirmed(e.target.checked)} />
             Saya sudah meninjau preview dan menyetujui perubahan ini.
           </label>
-          <button className={`${primary} mt-3`} disabled={!confirmed || busy} onClick={commit}>3. Commit</button>
+          <button className="primary-button" disabled={!confirmed || busy} onClick={commit}>3. Commit</button>
         </div>
       )}
       <Feedback error={error} notice={notice} />
-    </section>
+    </>
   )
 }

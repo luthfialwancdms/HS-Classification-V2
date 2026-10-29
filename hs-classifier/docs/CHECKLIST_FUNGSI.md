@@ -171,20 +171,21 @@ Catatan P4 (perilaku lama, bukan regresi): notice "Case disetujui." praktis tida
 
 ### A — Admin Data Center (`AdminDashboard`)
 
-| ID | Perilaku | Status |
+| ID | Perilaku | Status P5 |
 |---|---|---|
-| A1 | 5 tab (`role="tab"` + `aria-selected`): Versi Nomenklatur, Upload Dokumen, Laporan Validasi, Antrian Ambiguitas, Template CSV/Excel | ⬜ |
-| A2 | Daftar versi dimuat saat mount; error load tampil `role="alert"` | ⬜ |
-| A3 | Versi: tabel nama/edisi/berlaku/status import/aksi; badge status ACTIVE/INDEXED/COMMITTED/DRYRUNFAILED; `Aktifkan` hanya untuk state `Indexed` (dengan tooltip alasan); versi aktif punya `Nonaktifkan / Rollback` | ⬜ |
-| A4 | `Bandingkan` (Indexed/Committed) → diff: 6 angka ringkasan, catatan beda-OCR, filter per bab, 4 grup diff (added/removed/changed/ocrOnly) dengan tabel dan penanda truncated | ⬜ |
-| A5 | Tambah Versi: 5 field, `Nama` + `Berlaku mulai` required, `effectiveTo` kosong dikirim `null`, sukses menampilkan notice & reload | ⬜ |
-| A6 | Laporan Validasi & Antrian Ambiguitas: filter versi, daftar batch berisi error/pending, teks empty berbeda per tab, detail berisi checksum/createdBy/penanda upload lama | ⬜ |
-| A7 | Tile statistik batch: Node, Baris dibaca, Dilewati, Error, Warning (Error diwarnai bila > 0), tabel isu maks. 50 baris | ⬜ |
-| A8 | Keputusan ambiguitas: input parent opsional, catatan ≥ 5 karakter, `Approve` aktif saat catatan valid, `Reject` nonaktif selama parent terisi, hasil tampil sebagai badge + parent koreksi + catatan | ⬜ |
-| A9 | Upload dokumen: pilih jenis (BTKI / Explanatory Notes / Catatan Bagian-Bab), versi target hanya `Uploaded`/`DryRunFailed` (kecuali sudah ada laporan), file BTKI `accept .docx,.pdf` multiple, lainnya `.docx` tunggal | ⬜ |
-| A10 | Parse & Dry Run → laporan (angka/string), tile `dryRun.*` dengan `canCommit` hijau/merah, ringkasan `nodesByLevel` + jumlah Bab, tabel isu, contoh 10 baris (JSON) | ⬜ |
-| A11 | `Commit ke Database` hanya aktif saat versi `ReadyToCommit`; pesan blokir berbeda untuk error struktur vs ambiguitas pending; tombol "Buka laporan validasi" memindah ke tab Laporan dengan batch terpilih | ⬜ |
-| A12 | Template: unduh CSV/XLSX (blob), validasi file → ringkasan valid/error/warning + tabel per baris, pilih versi → preview diff (INSERT/UPDATE/SKIP, tabel perubahan, daftar kode baru), `Commit` hanya aktif setelah checkbox konfirmasi | ⬜ |
+| A1 | 5 tab (`role="tab"` + `aria-selected`): Versi Nomenklatur, Upload Dokumen, Laporan Validasi, Antrian Ambiguitas, Template CSV/Excel | ✅ 5 tab, `role=tablist`, `aria-orientation="vertical"`, `aria-selected`, roving `tabIndex` (0/-1), tiap tab `aria-label`; panah ↓/↑/←/→ + Home/End memindah fokus & mengaktifkan tab; `admin-content` = `role=tabpanel` + `aria-labelledby` |
+| A2 | Daftar versi dimuat saat mount; error load tampil `role="alert"` | ✅ (stub) GET `/api/admin/versions` saat mount; jalur error memakai `.notice.danger` + `role=alert` |
+| A3 | Versi: tabel nama/edisi/berlaku/status import/aksi; badge status; `Aktifkan` hanya untuk state `Indexed` (dengan tooltip alasan); versi aktif punya `Nonaktifkan / Rollback` | ✅ (stub) 5 baris; state badge `aktif/info/info/danger`; `Aktifkan` disabled untuk ReadyToCommit/Committed/DryRunFailed, aktif untuk Indexed; versi aktif → Nonaktifkan |
+| A4 | `Bandingkan` (Indexed/Committed) → diff: 6 angka ringkasan, catatan beda-OCR, filter per bab, 4 grup diff dengan tabel dan penanda truncated | ✅ (stub) 6 metric, select bab, 4 `<details>` + 4 tabel, "Uraian berubah: 3 (menampilkan 0)", tombol Tutup |
+| A5 | Tambah Versi: 5 field, `Nama` + `Berlaku mulai` required, `effectiveTo` kosong dikirim `null`, sukses menampilkan notice & reload | ✅ (stub) 5 field (2 required); payload `{…, "effectiveTo":null}` |
+| A6 | Laporan Validasi & Antrian Ambiguitas: filter versi, daftar batch berisi error/pending, teks empty berbeda per tab, detail berisi checksum/createdBy/penanda upload lama | ✅ (stub) filter + 2 kartu (badge "2 pending"); tab ambiguitas hanya menampilkan batch dengan pending > 0 |
+| A7 | Tile statistik batch: Node, Baris dibaca, Dilewati, Error, Warning (Error diwarnai bila > 0), tabel isu maks. 50 baris | ✅ (stub) 5 metric, tile Error merah, tabel isu 1 baris (`.slice(0,50)` tidak berubah) |
+| A8 | Keputusan ambiguitas: parent opsional, catatan ≥ 5 karakter, `Approve` aktif saat catatan valid, `Reject` nonaktif selama parent terisi, hasil tampil sebagai badge + parent koreksi + catatan | ✅ (stub) awal dua-duanya disabled → catatan ≥5 aktif keduanya → parent terisi me-nonaktifkan Reject → catatan <5 disabled lagi; baris Approved tampil badge + parent + catatan |
+| A9 | Upload dokumen: pilih jenis (BTKI / EN / Catatan), versi target hanya `Uploaded`/`DryRunFailed` (kecuali sudah ada laporan), file BTKI `accept .docx,.pdf` multiple, lainnya `.docx` tunggal | ✅ (stub) 3 jenis; opsi versi awal hanya "Draft gagal (DryRunFailed)"; accept & multiple sesuai; tombol Parse disabled sampai file dipilih |
+| A10 | Parse & Dry Run → laporan (angka/string), tile `dryRun.*` dengan `canCommit` hijau/merah, ringkasan `nodesByLevel` + jumlah Bab, tabel isu, contoh 10 baris (JSON) | ✅ (stub) tile `status/totalNodes/chapters/batchId` + `dryRun.canCommit` (kelas `danger`), "Isi: chapter 97 · heading 1200 · 97 Bab", code block, isu 1 baris |
+| A11 | `Commit ke Database` hanya aktif saat versi `ReadyToCommit`; pesan blokir berbeda untuk error struktur vs ambiguitas pending; tombol "Buka laporan validasi" memindah ke tab Laporan dengan batch terpilih | ✅ (stub) saat DryRunFailed: commit disabled + "Commit diblokir: masih ada error struktur…"; setelah versi jadi ReadyToCommit: commit aktif, peringatan blokir hilang, klik → `POST /api/admin/btki/commit/{versionId}` + reload; "Buka laporan…" → tab `reports` + detail termuat |
+| A12 | Template: unduh CSV/XLSX (blob), validasi file → ringkasan valid/error/warning + tabel per baris, pilih versi → preview diff (INSERT/UPDATE/SKIP, tabel perubahan, daftar kode baru), `Commit` hanya aktif setelah checkbox konfirmasi | ✅ (stub) 2 tombol unduh; validasi → "9/10 baris valid · 1 error · 1 warning" + 2 baris masalah; preview → badge INSERT 2 / UPDATE 1 / SKIP 7, baris lama dicoret & baru hijau; commit disabled → aktif setelah checkbox → `POST /api/admin/template/commit/{versionId}` + notice |
+
 
 ---
 
