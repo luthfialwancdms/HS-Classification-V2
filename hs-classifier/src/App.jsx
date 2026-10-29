@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { AlertTriangle, ClipboardCheck, History, LayoutDashboard, LogOut, Menu, Sparkles } from 'lucide-react'
 import ClassificationForm from './components/ClassificationForm'
 import ResultPanel from './components/ResultPanel'
@@ -28,6 +28,8 @@ export default function App() {
 
   const [authed, setAuthed] = useState(() => !!getToken())
   const [menuOpen, setMenuOpen] = useState(false) // tampilan saja: drawer navigasi di mobile
+  const burgerRef = useRef(null)
+  const resultRef = useRef(null)
   const role = authed ? getRole() : null
   const allowed = (v) => !VIEWS[v][2] || VIEWS[v][2].includes(role)
   const isAdmin = role === 'Admin'
@@ -39,6 +41,16 @@ export default function App() {
     addEventListener(AUTH_EVENT, onAuth)
     return () => { removeEventListener('popstate', onPop); removeEventListener(AUTH_EVENT, onAuth) }
   }, [])
+
+  // Tampilan saja: tutup drawer mobile lalu kembalikan fokus ke tombol pembukanya.
+  const closeMenu = () => { setMenuOpen(false); burgerRef.current?.focus() }
+
+  // Di bawah 1050px hasil menumpuk di bawah form → geser tampilan ke hasil setelah analisis selesai.
+  useEffect(() => {
+    if (isLoading || !result) return
+    if (!matchMedia('(max-width: 1050px)').matches) return
+    resultRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  }, [isLoading, result])
 
   const logout = () => { clearToken(); setAuthed(false); setResult(null); setClarifyState(null) }
 
@@ -71,7 +83,7 @@ export default function App() {
     <div className="app-shell">
       <header className="topbar">
         <div className="brand">
-          <button type="button" className="mobile-menu" aria-label="Buka menu navigasi"
+          <button ref={burgerRef} type="button" className="mobile-menu" aria-label="Buka menu navigasi"
             aria-expanded={menuOpen} aria-controls="app-nav"
             onClick={() => setMenuOpen(open => !open)}>
             <Menu size={20} aria-hidden="true" />
@@ -92,8 +104,11 @@ export default function App() {
       </header>
 
       <div className="body-shell">
+        {menuOpen && (
+          <button type="button" className="sidebar-overlay" aria-hidden="true" tabIndex={-1} onClick={closeMenu} />
+        )}
         <aside id="app-nav" className={cx('sidebar', menuOpen && 'sidebar-open')}
-          onKeyDown={e => { if (e.key === 'Escape') setMenuOpen(false) }}>
+          onKeyDown={e => { if (e.key === 'Escape') closeMenu() }}>
           <div className="nav-label">MENU</div>
           <nav aria-label="Navigasi utama">
             {Object.keys(VIEWS).filter(allowed).map(v => {
@@ -141,19 +156,9 @@ export default function App() {
                 </div>
               )}
 
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
-                <div>
-                  <div className="mb-4">
-                    <h2 className="text-lg font-semibold text-gray-900">Data Barang</h2>
-                    <p className="text-sm text-gray-500">Isi informasi barang selengkap mungkin untuk hasil yang akurat</p>
-                  </div>
-                  <ClassificationForm onSubmit={handleSubmit} isLoading={isLoading} />
-                </div>
-                <div className="lg:sticky lg:top-24">
-                  <div className="mb-4">
-                    <h2 className="text-lg font-semibold text-gray-900">Hasil Analisis</h2>
-                    <p className="text-sm text-gray-500">Rekomendasi kode HS + reasoning KUM HS</p>
-                  </div>
+              <div className="classify-grid">
+                <ClassificationForm onSubmit={handleSubmit} isLoading={isLoading} />
+                <div className="result-column" ref={resultRef}>
                   <ResultPanel result={result} isLoading={isLoading} />
                 </div>
               </div>

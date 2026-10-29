@@ -385,3 +385,53 @@ button { cursor: pointer; }
 .choice:has(input:checked) { border-color: #96c8bf; background: var(--blue-bg); }
 .choice input { margin: 3px 0 0; accent-color: var(--primary); }
 
+/* ── Tambahan P2 (INTERPRETASI — tidak ada di acuan v0) ────────────────────── */
+/* Layout klasifikasi: 2 kolom + hasil sticky di desktop (keputusan pengguna),
+   menumpuk < 1050px. Acuan v0 menumpuk di semua lebar. */
+.form-panel .section-label { text-transform: uppercase; }
+.form-grid .field { margin-bottom: 0; }
+.span-2 { grid-column: 1 / -1; }
+.form-panel .primary-button.analyze { margin-top: 18px; }
+.result-column { scroll-margin-top: 80px; }
+
+@media (min-width: 1051px) {
+  .classify-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 18px; align-items: start; }
+  .classify-grid .result-column { position: sticky; top: 92px; max-height: calc(100vh - 116px); overflow-y: auto; scroll-margin-top: 92px; }
+}
+
+/* Overlay drawer mobile (permintaan pengguna): klik menutup + fokus balik ke burger. */
+.sidebar-overlay { position: fixed; inset: 0; z-index: 8; border: 0; padding: 0; background: rgba(15, 28, 45, .42); backdrop-filter: blur(2px); }
+@media (min-width: 721px) { .sidebar-overlay { display: none; } }
+
+/* Panel hasil */
+.result-panel .panel-heading { margin-bottom: 16px; }
+.result-panel .empty-state { min-height: 420px; }
+.result-panel .subheading { margin-top: 2px; }
+.result-section { display: flex; flex-direction: column; gap: 10px; border-top: 1px solid var(--line); padding-top: 15px; }
+.result-unresolved { font-size: 16px; font-weight: 700; color: var(--navy); margin: 6px 0; }
+.result-hero .badge { align-self: flex-start; }
+.tariff-card strong { font-variant-numeric: tabular-nums; }
+.data-table caption { color: var(--muted); font-size: 9px; font-weight: 800; letter-spacing: .6px; text-transform: uppercase; }
+.badge.info { color: var(--primary); background: var(--blue-bg); }
+.notice.success { background: var(--green-bg); color: var(--green); border-color: #bfe6d4; }
+.chips { list-style: none; padding: 0; margin: 0; }
+.flag-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 4px; }
+.spinner { width: 34px; height: 34px; border: 4px solid var(--blue-bg); border-top-color: var(--primary); border-radius: 50%; animation: spin .8s linear infinite; margin-bottom: 14px; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Reasoning (acuan: selalu terbuka; di sini tiap langkah tetap <details>) */
+.reason-list { list-style: none; padding: 0; margin: 8px 0 0; }
+.reason-details { border-bottom: 1px solid #f0f2f5; }
+.reason-details > summary { list-style: none; cursor: pointer; }
+.reason-details > summary::-webkit-details-marker { display: none; }
+.reason-step { align-items: center; }
+.reason-step > div { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; flex: 1; }
+.rule-chip { font-family: monospace; font-size: 9px; font-weight: 800; color: var(--primary); background: var(--blue-bg); padding: 4px 6px; border-radius: 4px; }
+.reason-body { padding: 0 0 13px 34px; }
+.reason-body p { margin: 0 0 6px; color: var(--muted); font-size: 10px; line-height: 1.5; }
+
+/* Minta expert review di dalam panel hasil */
+.review-request { display: flex; flex-direction: column; gap: 10px; border-top: 1px solid var(--line); padding-top: 15px; }
+.review-request .result-actions { padding-top: 0; }
+
+

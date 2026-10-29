@@ -97,44 +97,50 @@ Catatan P1 — perubahan yang **bukan** tampilan:
 
 ### K — Layar Klasifikasi, form
 
-| ID | Perilaku | Status |
+| ID | Perilaku | Status P2 |
 |---|---|---|
-| K1 | 5 seksi berurutan: Identitas Barang, Fisik & Material, Fungsi & Cara Kerja, Konteks Penggunaan, Karakteristik Tambahan — urutan dan pengelompokan field tidak berubah | ⬜ |
-| K2 | 14 field dengan `name`/key persis: `nama_dagang`, `nama_generik`, `spesifikasi`, `keterangan_tambahan`, `material_utama`, `kondisi_impor`, `fungsi_utama`, `cara_kerja`, `mobilitas`, `area_operasi`, `sektor`, `apakah_part`, `apakah_set`, `ada_komponen_tambahan` | ⬜ |
-| K3 | Label, placeholder, daftar opsi, dan tanda `*` (required) berasal dari `dropdown_master.json` — tidak di-hardcode | ⬜ |
-| K4 | `material_utama` & `cara_kerja` = multi-select chip (toggle, tampil "Dipilih: ...") | ⬜ |
-| K5 | Submit tanpa `nama_generik` → `alert('Nama generik barang wajib diisi.')`, tidak ada request | ⬜ |
-| K6 | Submit valid → `classifyWithBackend(form)`; tombol submit jadi `Menganalisis...` dan submit+reset `disabled` | ⬜ |
-| K7 | `Reset` mengembalikan seluruh form ke nilai awal, tanpa request | ⬜ |
+| K1 | 5 seksi berurutan: Identitas Barang, Fisik & Material, Fungsi & Cara Kerja, Konteks Penggunaan, Karakteristik Tambahan — urutan dan pengelompokan field tidak berubah | ✅ terbaca urut 1–5 di DOM |
+| K2 | 14 field dengan `name`/key persis: `nama_dagang`, `nama_generik`, `spesifikasi`, `keterangan_tambahan`, `material_utama`, `kondisi_impor`, `fungsi_utama`, `cara_kerja`, `mobilitas`, `area_operasi`, `sektor`, `apakah_part`, `apakah_set`, `ada_komponen_tambahan` | ✅ 4 text + 8 select + 2 chip group = 14 |
+| K3 | Label, placeholder, daftar opsi, dan tanda `*` (required) berasal dari `dropdown_master.json` — tidak di-hardcode | ✅ label + placeholder + `*` dari JSON |
+| K4 | `material_utama` & `cara_kerja` = multi-select chip (toggle, tampil "Dipilih: ...") | ✅ 2 chip terpilih → "Dipilih: Baja/Besi, Tembaga" |
+| K5 | Submit tanpa `nama_generik` → `alert('Nama generik barang wajib diisi.')`, tidak ada request | ✅ alert terkirim, tidak ada hasil |
+| K6 | Submit valid → `classifyWithBackend(form)`; tombol submit jadi `Menganalisis...` dan submit+reset `disabled` | ✅ label `Menganalisis...`, tombol disabled, spinner tampil |
+| K7 | `Reset` mengembalikan seluruh form ke nilai awal, tanpa request | ✅ input/select kosong, chip terpilih 0 |
+
 
 ### C — Banner klarifikasi (`NEED_CLARIFICATION`)
 
-| ID | Perilaku | Status |
+| ID | Perilaku | Status P2 |
 |---|---|---|
-| C1 | Banner muncul di atas layar klasifikasi; judul + pesan `message` + daftar `candidateCodes` (monospace) | ⬜ |
-| C2 | Tiap pertanyaan: `choices` → daftar radio (label panjang, legend sr-only, hint "Pilihan diambil dari uraian resmi BTKI"); `options` → select dengan placeholder disabled; selain itu → input teks | ⬜ |
-| C3 | Baris dampak: `Mempengaruhi N kandidat`, `tetap: ...`, `tereliminasi: ...` hanya jika `candidatesAffected > 0` | ⬜ |
-| C4 | Tombol `Kirim Jawaban` disabled sampai **semua** pertanyaan terjawab; label `Memproses...` saat loading | ⬜ |
-| C5 | Kirim → `submitAnswers(caseId, answers)`; jawaban tidak boleh diubah/dinormalisasi sebelum dikirim | ⬜ |
-| C6 | Banner di-*remount* saat daftar teks pertanyaan berubah (perilaku `key`) | ⬜ |
+| C1 | Banner muncul di atas layar klasifikasi; judul + pesan `message` + daftar `candidateCodes` (monospace) | ✅ banner tampil; judul & pesan & kandidat terlihat |
+| C2 | Tiap pertanyaan: `choices` → daftar radio (label panjang, legend sr-only, hint "Pilihan diambil dari uraian resmi BTKI"); `options` → select dengan placeholder disabled; selain itu → input teks | ✅ 2 radio + 1 select + 1 input teks |
+| C3 | Baris dampak: `Mempengaruhi N kandidat`, `tetap: ...`, `tereliminasi: ...` hanya jika `candidatesAffected > 0` | ✅ "Mempengaruhi 2 kandidat · tetap: 8429.52 · tereliminasi: 8429.59" |
+| C4 | Tombol `Kirim Jawaban` disabled sampai **semua** pertanyaan terjawab; label `Memproses...` saat loading | ✅ disabled → aktif setelah semua dijawab |
+| C5 | Kirim → `submitAnswers(caseId, answers)`; jawaban tidak boleh diubah/dinormalisasi sebelum dikirim | ✅ kode handler tidak berubah (diff: hanya className) |
+| C6 | Banner di-*remount* saat daftar teks pertanyaan berubah (perilaku `key`) | ✅ `key` tetap (diff tidak menyentuh) |
 
 ### R — State hasil (`ResultPanel`)
 
-| ID | Perilaku | Status |
+| ID | Perilaku | Status P2 |
 |---|---|---|
-| R1 | Loading: spinner + "Menjalankan KUM HS 1–6 terhadap database BTKI..." + subteks pipeline, `role="status"` `aria-live="polite"` | ⬜ |
-| R2 | Kosong: ikon + ajakan isi form | ⬜ |
-| R3 | Error: kartu `role="alert"`, judul "Terjadi Kesalahan", pesan = `err.message` dari API apa adanya | ⬜ |
-| R4 | Tanpa kode final: teks berbeda untuk `REJECTED` ("Ditolak oleh ahli kepabeanan" + alasan koreksi terakhir) vs "Belum dapat ditentukan otomatis" + daftar kandidat | ⬜ |
-| R5 | Kode final: kode HS, uraian resmi BTKI, badge confidence TINGGI/SEDANG/RENDAH (+ `score/100` bila ada) | ⬜ |
-| R6 | Badge koreksi ahli: `EXPERT_APPROVED` = "Disetujui ahli", `EXPERT_OVERRIDE` = "Dikoreksi ahli (override)" | ⬜ |
-| R7 | Ringkasan "N langkah reasoning · X kandidat dieliminasi" hanya bila ada reasoning | ⬜ |
-| R8 | Flag `perlu_expert_review` → kartu merah `role="alert"` + alasan | ⬜ |
-| R9 | Rincian confidence: tabel komponen (nama, points/weight), daftar caps, chip risk flag dengan label Indonesia + `title` kode asli | ⬜ |
-| R10 | Tarif: baris MFN / PPN / PPh 22 dengan teks "tidak tersedia" per baris, `taxDisclaimer`, tabel FTA (skema, negara, tarif), disclaimer FTA **selalu** tampil; format `PERCENT` = `x%`, lainnya `x (UNIT)` | ⬜ |
-| R11 | Reasoning chain: `<details>` per langkah, nomor `eventOrder`, chip `ruleApplied`, warna `decision` (RETAINED/ELIMINATED/UNRESOLVED), teks reasoning, chip `sourceIds` | ⬜ |
-| R12 | Kotak "Minta Expert Review": hanya role `Admin`/`Classifier`, hanya status `DETERMINED`; tombol kirim disabled sampai alasan ≥ 5 karakter; `Batal` menutup; sukses/error tampil inline | ⬜ |
-| R13 | Kolom hasil sticky di desktop (`lg`) | ⬜ |
+| R1 | Loading: spinner + "Menjalankan KUM HS 1–6 terhadap database BTKI..." + subteks pipeline, `role="status"` `aria-live="polite"` | ✅ spinner + aria-live=polite + teks pipeline |
+| R2 | Kosong: ikon + ajakan isi form | ✅ `.empty-state` + ikon + teks (copy disesuaikan untuk mobile: "Isi form lalu klik Analisis HS Code") |
+| R3 | Error: kartu `role="alert"`, judul "Terjadi Kesalahan", pesan = `err.message` dari API apa adanya | ✅ role=alert + pesan API apa adanya |
+| R4 | Tanpa kode final: teks berbeda untuk `REJECTED` ("Ditolak oleh ahli kepabeanan" + alasan koreksi terakhir) vs "Belum dapat ditentukan otomatis" + daftar kandidat | ✅ teks + alasan + badge status tampil |
+| R5 | Kode final: kode HS, uraian resmi BTKI, badge confidence TINGGI/SEDANG/RENDAH (+ `score/100` bila ada) | ✅ "8429.52.00" + badge "Confidence: TINGGI · 78/100" |
+| R6 | Badge koreksi ahli: `EXPERT_APPROVED` = "Disetujui ahli", `EXPERT_OVERRIDE` = "Dikoreksi ahli (override)" | ✅ markup badge (data stub tidak memuat koreksi; kondisi kode tidak berubah) |
+| R7 | Ringkasan "N langkah reasoning · X kandidat dieliminasi" hanya bila ada reasoning | ✅ "3 langkah reasoning · 4 kandidat dieliminasi" |
+| R8 | Flag `perlu_expert_review` → kartu merah `role="alert"` + alasan | ✅ notice bahaya + alasan |
+| R9 | Rincian confidence: tabel komponen (nama, points/weight), daftar caps, chip risk flag dengan label Indonesia + `title` kode asli | ✅ tabel + caps + 2 badge flag berlabel Indonesia |
+| R10 | Tarif: baris MFN / PPN / PPh 22 dengan teks "tidak tersedia" per baris, `taxDisclaimer`, tabel FTA (skema, negara, tarif), disclaimer FTA **selalu** tampil; format `PERCENT` = `x%`, lainnya `x (UNIT)` | ✅ 4 kartu tarif + tabel FTA + notice disclaimer selalu tampil |
+| R11 | Reasoning chain: `<details>` per langkah, nomor `eventOrder`, chip `ruleApplied`, warna `decision` (RETAINED/ELIMINATED/UNRESOLVED), teks reasoning, chip `sourceIds` | ✅ 3 `<details>`, tertutup default, 3 rule chip, badge sesuai decision |
+| R12 | Kotak "Minta Expert Review": hanya role `Admin`/`Classifier`, hanya status `DETERMINED`; tombol kirim disabled sampai alasan ≥ 5 karakter; `Batal` menutup; sukses/error tampil inline | ✅ Admin & Classifier tampil, ExpertReviewer tidak; muncul hanya saat DETERMINED |
+| R13 | Kolom hasil sticky di desktop (`lg`) | ✅ sticky di ≥1051px (keputusan pengguna), `static` di 390px dengan auto-scroll ke hasil |
+
+Catatan P2 — perubahan perilaku di luar tampilan (semua atas instruksi Anda):
+- `useRef` + satu `useEffect` baru: auto-scroll ke panel hasil hanya di ≤1050px setelah analisis selesai.
+- `menuOpen` dapat ditutup lewat overlay + fokus kembali ke tombol burger (perbaikan P1).
+
 
 ### H — Riwayat (`HistoryPage`)
 

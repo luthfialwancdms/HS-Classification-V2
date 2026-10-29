@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { RefreshCw, ShieldCheck, Zap } from 'lucide-react'
 import dropdownMaster from '../data/dropdown_master.json'
 import SelectField from './SelectField'
 import MultiSelectField from './MultiSelectField'
@@ -24,30 +25,28 @@ const INITIAL_STATE = {
 const SECTIONS = [
   {
     title: '1. Identitas Barang',
-    icon: '📦',
     fields: ['nama_dagang', 'nama_generik'],
   },
   {
     title: '2. Fisik & Material',
-    icon: '🔩',
     fields: ['material_utama', 'kondisi_impor'],
   },
   {
     title: '3. Fungsi & Cara Kerja',
-    icon: '⚙️',
     fields: ['fungsi_utama', 'cara_kerja', 'mobilitas'],
   },
   {
     title: '4. Konteks Penggunaan',
-    icon: '🏭',
     fields: ['area_operasi', 'sektor'],
   },
   {
     title: '5. Karakteristik Tambahan',
-    icon: '📋',
     fields: ['apakah_part', 'apakah_set', 'ada_komponen_tambahan', 'spesifikasi', 'keterangan_tambahan'],
   },
 ]
+
+// Field yang butuh lebar penuh di grid 2 kolom (chip & textarea panjang).
+const WIDE = new Set(['material_utama', 'cara_kerja', 'spesifikasi', 'keterangan_tambahan'])
 
 export default function ClassificationForm({ onSubmit, isLoading }) {
   const [form, setForm] = useState(INITIAL_STATE)
@@ -115,35 +114,38 @@ export default function ClassificationForm({ onSubmit, isLoading }) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-6">
+    <form onSubmit={handleSubmit} className="panel form-panel">
+      <div className="panel-heading">
+        <div>
+          <div className="eyebrow">INPUT DATA</div>
+          <h2>Data Barang</h2>
+          <p>Lengkapi karakteristik barang untuk analisis akurat.</p>
+        </div>
+        <button type="button" onClick={handleReset} disabled={isLoading} className="ghost-button">
+          <RefreshCw size={15} aria-hidden="true" /> Reset
+        </button>
+      </div>
+
       {SECTIONS.map((section) => (
-        <div key={section.title} className="bg-white rounded-2xl border border-gray-200 shadow-sm p-5">
-          <h2 className="text-sm font-semibold text-gray-800 mb-4 flex items-center gap-2">
-            <span>{section.icon}</span> {section.title}
-          </h2>
-          <div className="flex flex-col gap-4">
-            {section.fields.map(renderField)}
+        <div key={section.title}>
+          <div className="section-label">{section.title}</div>
+          <div className="form-grid">
+            {section.fields.map((key) => (
+              <div key={key} className={WIDE.has(key) ? 'span-2' : undefined}>
+                {renderField(key)}
+              </div>
+            ))}
           </div>
         </div>
       ))}
 
-      <div className="flex gap-3">
-        <button
-          type="submit"
-          disabled={isLoading}
-          className="flex-1 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-300 text-white font-semibold py-3 px-6 rounded-xl transition-colors text-sm cursor-pointer"
-        >
-          {isLoading ? 'Menganalisis...' : '🔍 Analisis HS Code'}
-        </button>
-        <button
-          type="button"
-          onClick={handleReset}
-          disabled={isLoading}
-          className="bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium py-3 px-4 rounded-xl transition-colors text-sm cursor-pointer"
-        >
-          Reset
-        </button>
-      </div>
+      <button type="submit" disabled={isLoading} className="primary-button analyze">
+        <Zap size={17} aria-hidden="true" /> {isLoading ? 'Menganalisis...' : 'Analisis HS Code'}
+        <span className="button-arrow" aria-hidden="true">→</span>
+      </button>
+      <p className="form-footnote">
+        <ShieldCheck size={13} aria-hidden="true" /> Analisis dijalankan di server internal · hasil dapat memakai saran istilah AI.
+      </p>
     </form>
   )
 }
