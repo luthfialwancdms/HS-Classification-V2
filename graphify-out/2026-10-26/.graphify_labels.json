@@ -1,0 +1,22 @@
+{
+  "0": "API Controllers and Auth",
+  "1": "Project Namespace Structure",
+  "2": "React App Shell and Views",
+  "3": "Design Doc Concepts",
+  "4": "BTKI Data Seeding",
+  "5": "Data Assets and MVP Risks",
+  "6": "Frontend Toolchain",
+  "7": "Auth and DI Wiring",
+  "8": "Solution and NuGet References",
+  "9": "API Launch Config",
+  "10": "KUM HS Rules Engine",
+  "11": "Classification Result DTOs",
+  "12": "Question Generation",
+  "13": "KUM HS6 Determination",
+  "14": "BTKI Tariff Line Model",
+  "15": "Fact Extraction and Candidates",
+  "16": "EF Core Migrations",
+  "17": "Classification Domain Models",
+  "18": "EF DbContext and DbSets",
+  "19": "BTKI Parsing Model"
+}

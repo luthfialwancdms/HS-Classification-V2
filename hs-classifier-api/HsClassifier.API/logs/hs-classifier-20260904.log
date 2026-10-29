@@ -1,0 +1,6 @@
+2026-09-04 08:54:07.385 +07:00 [INF] Database already seeded — skipping.
+2026-09-04 08:55:23.124 +07:00 [INF] Database already seeded — skipping.
+2026-09-04 08:56:20.557 +07:00 [INF] HTTP GET /swagger/health responded 404 in 2.3639 ms
+2026-09-04 08:57:10.292 +07:00 [INF] Database already seeded — skipping.
+2026-09-04 08:57:42.260 +07:00 [INF] HTTP GET /api/btki/stats responded 200 in 535.1725 ms
+2026-09-04 09:00:00.006 +07:00 [INF] HTTP GET /api/admin/versions responded 200 in 76.3836 ms

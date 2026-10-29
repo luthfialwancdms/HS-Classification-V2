@@ -1,0 +1,1352 @@
+{
+  ".kiro/specs/hs-classification-v2/tasks.meta.json": {
+    "mtime": 1791425343.0776489,
+    "seen": 1792654230.7350225,
+    "ast_hash": "62cc5e3f653abccb5763e8214c40679f",
+    "semantic_hash": "62cc5e3f653abccb5763e8214c40679f"
+  },
+  ".vscode/settings.json": {
+    "mtime": 1788406773.4293292,
+    "seen": 1792654230.7350278,
+    "ast_hash": "73792b9af3fc811b105441cc773526b1",
+    "semantic_hash": "73792b9af3fc811b105441cc773526b1"
+  },
+  "data/check_missing.py": {
+    "mtime": 1786450670.2165408,
+    "seen": 1792654230.73503,
+    "ast_hash": "abc3718fd634477a4a7f80ee78371fc2",
+    "semantic_hash": "abc3718fd634477a4a7f80ee78371fc2"
+  },
+  "data/check_quality.py": {
+    "mtime": 1786450510.2261076,
+    "seen": 1792654230.7350311,
+    "ast_hash": "78a8c326de6152319872e4380431a540",
+    "semantic_hash": "78a8c326de6152319872e4380431a540"
+  },
+  "data/check_token_size.py": {
+    "mtime": 1786451057.2987156,
+    "seen": 1792654230.735032,
+    "ast_hash": "f6439c7aaa188fc5d545cc543a265a40",
+    "semantic_hash": "f6439c7aaa188fc5d545cc543a265a40"
+  },
+  "data/check_vague.py": {
+    "mtime": 1786451352.295175,
+    "seen": 1792654230.7350328,
+    "ast_hash": "0ad3054ae2115de5123f916505ceebf8",
+    "semantic_hash": "0ad3054ae2115de5123f916505ceebf8"
+  },
+  "data/convert_hscode_csv.py": {
+    "mtime": 1786519044.0430806,
+    "seen": 1792654230.7350338,
+    "ast_hash": "b6e3c59dc8a7ab062727c89c86550557",
+    "semantic_hash": "b6e3c59dc8a7ab062727c89c86550557"
+  },
+  "data/debug_parser.py": {
+    "mtime": 1786450552.3070753,
+    "seen": 1792654230.7350347,
+    "ast_hash": "025c320f1cb30de77a76e98e5a5d3c5e",
+    "semantic_hash": "025c320f1cb30de77a76e98e5a5d3c5e"
+  },
+  "data/enrich_btki.py": {
+    "mtime": 1786451326.669928,
+    "seen": 1792654230.7350354,
+    "ast_hash": "531275d57bc0f527742bb8fbb4273290",
+    "semantic_hash": "531275d57bc0f527742bb8fbb4273290"
+  },
+  "data/enrich_hs_headings_seed.py": {
+    "mtime": 1786522268.95551,
+    "seen": 1792654230.7350361,
+    "ast_hash": "105c5e46746d8bf6e2f696da26fce236",
+    "semantic_hash": "105c5e46746d8bf6e2f696da26fce236"
+  },
+  "data/fix_last_21.py": {
+    "mtime": 1786452767.5072877,
+    "seen": 1792654230.7350368,
+    "ast_hash": "10c0bb565742ca05d5c4be29bba8a168",
+    "semantic_hash": "10c0bb565742ca05d5c4be29bba8a168"
+  },
+  "data/fix_vague_51.py": {
+    "mtime": 1786452686.1017814,
+    "seen": 1792654230.735038,
+    "ast_hash": "0dc27296b204e427180f9f69d1e9b404",
+    "semantic_hash": "0dc27296b204e427180f9f69d1e9b404"
+  },
+  "data/parse_btki.py": {
+    "mtime": 1786450364.2164097,
+    "seen": 1792654230.7350388,
+    "ast_hash": "33e8a2ef91ec58dcc885c929acbe0395",
+    "semantic_hash": "33e8a2ef91ec58dcc885c929acbe0395"
+  },
+  "data/parse_btki_v2.py": {
+    "mtime": 1786450619.0140078,
+    "seen": 1792654230.7350395,
+    "ast_hash": "03a83461a420de51bdc4703acdfe1faf",
+    "semantic_hash": "03a83461a420de51bdc4703acdfe1faf"
+  },
+  "docs/hs_v2_architecture.json": {
+    "mtime": 1788406172.558178,
+    "seen": 1792654230.7350404,
+    "ast_hash": "1c9df962e1fc6b8500f625bd7551dfae",
+    "semantic_hash": "1c9df962e1fc6b8500f625bd7551dfae"
+  },
+  "hs-classifier-api/HsClassifier.API/Controllers/AdminImportController.cs": {
+    "mtime": 1793109317.2021344,
+    "seen": 1793110072.989901,
+    "ast_hash": "8eec67aed27148dbab3ba7b1da417831",
+    "semantic_hash": ""
+  },
+  "hs-classifier-api/HsClassifier.API/Controllers/AdminTemplateController.cs": {
+    "mtime": 1791427577.850421,
+    "seen": 1792654230.7350419,
+    "ast_hash": "1fedc13f6151f8ae775b9d70b351c568",
+    "semantic_hash": "1fedc13f6151f8ae775b9d70b351c568"
+  },
+  "hs-classifier-api/HsClassifier.API/Controllers/AuthController.cs": {
+    "mtime": 1791427446.1259053,
+    "seen": 1792654230.7350428,
+    "ast_hash": "028db3cb14339c2efce07162ca7b2205",
+    "semantic_hash": "028db3cb14339c2efce07162ca7b2205"
+  },
+  "hs-classifier-api/HsClassifier.API/Controllers/BtkiController.cs": {
+    "mtime": 1788486989.2235992,
+    "seen": 1792654230.7350435,
+    "ast_hash": "48334e5d0ef9a610e38b9ff1c51f2a9d",
+    "semantic_hash": "48334e5d0ef9a610e38b9ff1c51f2a9d"
+  },
+  "hs-classifier-api/HsClassifier.API/Controllers/ClassificationController.cs": {
+    "mtime": 1793024970.8882017,
+    "seen": 1793028981.4137542,
+    "ast_hash": "e249c7d51149494a3fb0e821b8b3c319",
+    "semantic_hash": ""
+  },
+  "hs-classifier-api/HsClassifier.API/Controllers/ReviewController.cs": {
+    "mtime": 1791469377.1281047,
+    "seen": 1792654230.7350452,
+    "ast_hash": "019e1c1e4031ec36c3626fe9a741ad0d",
+    "semantic_hash": "019e1c1e4031ec36c3626fe9a741ad0d"
+  },
+  "hs-classifier-api/HsClassifier.API/Controllers/VersionsController.cs": {
+    "mtime": 1793109621.2177293,
+    "seen": 1793110072.9899223,
+    "ast_hash": "a84ebeee5f9690c12e4b606f220b9be0",
+    "semantic_hash": ""
+  },
+  "hs-classifier-api/HsClassifier.API/HsClassifier.API.csproj": {
+    "mtime": 1791445100.7351491,
+    "seen": 1792654230.735047,
+    "ast_hash": "0e4cd96a8eb8e70853f2775ecc84dee0",
+    "semantic_hash": "0e4cd96a8eb8e70853f2775ecc84dee0"
+  },
+  "hs-classifier-api/HsClassifier.API/Program.cs": {
+    "mtime": 1793024684.086604,
+    "seen": 1793028981.4137614,
+    "ast_hash": "3ab2c4d8c5e6de0b06ba91d74a3cd26b",
+    "semantic_hash": ""
+  },
+  "hs-classifier-api/HsClassifier.API/Properties/launchSettings.json": {
+    "mtime": 1788486838.6817229,
+    "seen": 1792654230.735049,
+    "ast_hash": "6435ab49e8d767d265f632f001ec5fea",
+    "semantic_hash": "6435ab49e8d767d265f632f001ec5fea"
+  },
+  "hs-classifier-api/HsClassifier.API/appsettings.Development.json": {
+    "mtime": 1791448127.0867598,
+    "seen": 1792654230.7350497,
+    "ast_hash": "b31c00668743547b469996bbbe0ad9a9",
+    "semantic_hash": "b31c00668743547b469996bbbe0ad9a9"
+  },
+  "hs-classifier-api/HsClassifier.API/appsettings.json": {
+    "mtime": 1791448117.756641,
+    "seen": 1792654230.7350504,
+    "ast_hash": "15fc0f1279e9791586422b4de61f1568",
+    "semantic_hash": "15fc0f1279e9791586422b4de61f1568"
+  },
+  "hs-classifier-api/HsClassifier.Application/Classification/FactExtractionService.cs": {
+    "mtime": 1793058905.2198343,
+    "seen": 1793059972.1370273,
+    "ast_hash": "fec6b68ffdd16583100b9d81520d2c55",
+    "semantic_hash": ""
+  },
+  "hs-classifier-api/HsClassifier.Application/Classification/QuestionGeneratorService.cs": {
+    "mtime": 1791427125.578892,
+    "seen": 1792654230.7350523,
+    "ast_hash": "e0e199767f5cc734854b96bf0e6a8050",
+    "semantic_hash": "e0e199767f5cc734854b96bf0e6a8050"
+  },
+  "hs-classifier-api/HsClassifier.Application/Classification/Rules/RulesEngine.cs": {
+    "mtime": 1793027122.5242279,
+    "seen": 1793028981.413776,
+    "ast_hash": "458c45523945d467a5a61bc8c87da1ea",
+    "semantic_hash": ""
+  },
+  "hs-classifier-api/HsClassifier.Application/HsClassifier.Application.csproj": {
+    "mtime": 1788413223.656765,
+    "seen": 1792654230.7350535,
+    "ast_hash": "baa18f23475b7327d5ff46bf48de1109",
+    "semantic_hash": "baa18f23475b7327d5ff46bf48de1109"
+  },
+  "hs-classifier-api/HsClassifier.Application/Interfaces/IDocxParser.cs": {
+    "mtime": 1793107269.493019,
+    "seen": 1793110072.9899693,
+    "ast_hash": "d826d72aa5c4384cab88e20cc0ddf0a6",
+    "semantic_hash": ""
+  },
+  "hs-classifier-api/HsClassifier.Application/Interfaces/IJwtService.cs": {
+    "mtime": 1788855126.5591774,
+    "seen": 1792654230.7350554,
+    "ast_hash": "f20c9c0b256426585aca397a85322e97",
+    "semantic_hash": "f20c9c0b256426585aca397a85322e97"
+  },
+  "hs-classifier-api/HsClassifier.Application/Interfaces/IVersionManager.cs": {
+    "mtime": 1788415524.5439513,
+    "seen": 1792654230.735056,
+    "ast_hash": "82951e71b5818a23dd0225839e7a70c5",
+    "semantic_hash": "82951e71b5818a23dd0225839e7a70c5"
+  },
+  "hs-classifier-api/HsClassifier.Application/Services/BtkiStructureService.cs": {
+    "mtime": 1793107296.2219198,
+    "seen": 1793110072.9899812,
+    "ast_hash": "6a3f3e3a102dc72d3cc30eb3e5915d33",
+    "semantic_hash": ""
+  },
+  "hs-classifier-api/HsClassifier.Domain/Classification/ClassificationModels.cs": {
+    "mtime": 1793024894.8791556,
+    "seen": 1793028981.413787,
+    "ast_hash": "71fdb500af5d01f56f098145a7c4f5f7",
+    "semantic_hash": ""
+  },
+  "hs-classifier-api/HsClassifier.Domain/Entities/BtkiTariffLine.cs": {
+    "mtime": 1788413720.5786507,
+    "seen": 1792654230.7350585,
+    "ast_hash": "c6a86afa26080fe2ee02a730da2733cc",
+    "semantic_hash": "c6a86afa26080fe2ee02a730da2733cc"
+  },
+  "hs-classifier-api/HsClassifier.Domain/Entities/ClassificationAudit.cs": {
+    "mtime": 1793024909.3068402,
+    "seen": 1793028981.4137897,
+    "ast_hash": "fe8f219daea7e7f0c6b0235323864d07",
+    "semantic_hash": ""
+  },
+  "hs-classifier-api/HsClassifier.Domain/Entities/NomenclatureVersion.cs": {
+    "mtime": 1788413720.5021374,
+    "seen": 1792654230.73506,
+    "ast_hash": "26f6c8752ac5d71c31dd5561e2e63137",
+    "semantic_hash": "26f6c8752ac5d71c31dd5561e2e63137"
+  },
+  "hs-classifier-api/HsClassifier.Domain/Entities/Notes.cs": {
+    "mtime": 1788413755.274557,
+    "seen": 1792654230.7350607,
+    "ast_hash": "7a320944d8912a45156a8381a839f626",
+    "semantic_hash": "7a320944d8912a45156a8381a839f626"
+  },
+  "hs-classifier-api/HsClassifier.Domain/Entities/Rates.cs": {
+    "mtime": 1788413735.848337,
+    "seen": 1792654230.7350614,
+    "ast_hash": "5e50e69b7ceb8fe04ca9132ff3dbf117",
+    "semantic_hash": "5e50e69b7ceb8fe04ca9132ff3dbf117"
+  },
+  "hs-classifier-api/HsClassifier.Domain/Enums/Enums.cs": {
+    "mtime": 1793107270.3616817,
+    "seen": 1793110072.990009,
+    "ast_hash": "cc088d4b3d84436c3731a2f53b211345",
+    "semantic_hash": ""
+  },
+  "hs-classifier-api/HsClassifier.Domain/HsClassifier.Domain.csproj": {
+    "mtime": 1788413213.7607243,
+    "seen": 1792654230.735063,
+    "ast_hash": "a09b26111c660da58a84b7d66e16c694",
+    "semantic_hash": "a09b26111c660da58a84b7d66e16c694"
+  },
+  "hs-classifier-api/HsClassifier.Domain/Logic/VersionStateMachine.cs": {
+    "mtime": 1788415557.611391,
+    "seen": 1792654230.7350643,
+    "ast_hash": "63b9ef214b0e5adb1f08a4cf5f5aeef3",
+    "semantic_hash": "63b9ef214b0e5adb1f08a4cf5f5aeef3"
+  },
+  "hs-classifier-api/HsClassifier.Infrastructure/DependencyInjection.cs": {
+    "mtime": 1793107315.4792626,
+    "seen": 1793110072.9900184,
+    "ast_hash": "0d55edab2b3131158c91c508e7417378",
+    "semantic_hash": ""
+  },
+  "hs-classifier-api/HsClassifier.Infrastructure/HsClassifier.Infrastructure.csproj": {
+    "mtime": 1793107316.3014157,
+    "seen": 1793110072.9900212,
+    "ast_hash": "88ffc687c7c24243ed8fcfdc48e37110",
+    "semantic_hash": ""
+  },
+  "hs-classifier-api/HsClassifier.Infrastructure/Migrations/20260903055415_InitialCreate.Designer.cs": {
+    "mtime": 1788414855.9819381,
+    "seen": 1792654230.7350667,
+    "ast_hash": "c09f7a6456f6b1a1cc8696d19399cf7f",
+    "semantic_hash": "c09f7a6456f6b1a1cc8696d19399cf7f"
+  },
+  "hs-classifier-api/HsClassifier.Infrastructure/Migrations/20260903055415_InitialCreate.cs": {
+    "mtime": 1788414855.9819381,
+    "seen": 1792654230.7350674,
+    "ast_hash": "8cb46b06612f330a0726664e67bf74bf",
+    "semantic_hash": "8cb46b06612f330a0726664e67bf74bf"
+  },
+  "hs-classifier-api/HsClassifier.Infrastructure/Migrations/20261008140846_ExpertReviewAndImportBatches.Designer.cs": {
+    "mtime": 1791468526.9017763,
+    "seen": 1792654230.735068,
+    "ast_hash": "cc6e0ad3a5dc66632aea468b9beee58e",
+    "semantic_hash": "cc6e0ad3a5dc66632aea468b9beee58e"
+  },
+  "hs-classifier-api/HsClassifier.Infrastructure/Migrations/20261008140846_ExpertReviewAndImportBatches.cs": {
+    "mtime": 1791468526.9017763,
+    "seen": 1792654230.735069,
+    "ast_hash": "95b1f3c5c3dff6e13c50e2384f06e1da",
+    "semantic_hash": "95b1f3c5c3dff6e13c50e2384f06e1da"
+  },
+  "hs-classifier-api/HsClassifier.Infrastructure/Migrations/HsClassifierDbContextModelSnapshot.cs": {
+    "mtime": 1793024995.6092358,
+    "seen": 1793028981.4138138,
+    "ast_hash": "7e43c375d4435798c224d5fa41756b91",
+    "semantic_hash": ""
+  },
+  "hs-classifier-api/HsClassifier.Infrastructure/Parsing/DocxParser.cs": {
+    "mtime": 1788853298.735494,
+    "seen": 1792654230.7350705,
+    "ast_hash": "7ae8d1f46dca7aeaf4b372c8ac8fdf04",
+    "semantic_hash": "7ae8d1f46dca7aeaf4b372c8ac8fdf04"
+  },
+  "hs-classifier-api/HsClassifier.Infrastructure/Persistence/HsClassifierDbContext.cs": {
+    "mtime": 1793024911.17823,
+    "seen": 1793028981.413817,
+    "ast_hash": "624a8c29d549e60047b05674494e1405",
+    "semantic_hash": ""
+  },
+  "hs-classifier-api/HsClassifier.Infrastructure/Seeding/BtkiCsvSeeder.cs": {
+    "mtime": 1793024683.976943,
+    "seen": 1793028981.4138184,
+    "ast_hash": "2954436c70a2b64d44995c572f46a437",
+    "semantic_hash": ""
+  },
+  "hs-classifier-api/HsClassifier.Infrastructure/Services/BtkiImportService.cs": {
+    "mtime": 1793109939.956293,
+    "seen": 1793110072.9900613,
+    "ast_hash": "23dd1cd951559389ba3359d512fd7d65",
+    "semantic_hash": ""
+  },
+  "hs-classifier-api/HsClassifier.Infrastructure/Services/CandidateGeneratorService.cs": {
+    "mtime": 1793057494.618219,
+    "seen": 1793059972.1370568,
+    "ast_hash": "43ce137ffa90fe012d6f454a15007b66",
+    "semantic_hash": ""
+  },
+  "hs-classifier-api/HsClassifier.Infrastructure/Services/CaseQueries.cs": {
+    "mtime": 1791468582.6657054,
+    "seen": 1792654230.7350743,
+    "ast_hash": "c720555a9061aac768fc4fe8654792f6",
+    "semantic_hash": "c720555a9061aac768fc4fe8654792f6"
+  },
+  "hs-classifier-api/HsClassifier.Infrastructure/Services/ClassificationOrchestrator.cs": {
+    "mtime": 1793058941.933661,
+    "seen": 1793059972.1370585,
+    "ast_hash": "64695ac1c7a86cff6d9b8c740b15efa0",
+    "semantic_hash": ""
+  },
+  "hs-classifier-api/HsClassifier.Infrastructure/Services/ClassificationValidator.cs": {
+    "mtime": 1788854376.638199,
+    "seen": 1792654230.7350762,
+    "ast_hash": "d06e55600f4bbb2f8d6286db5f2bf131",
+    "semantic_hash": "d06e55600f4bbb2f8d6286db5f2bf131"
+  },
+  "hs-classifier-api/HsClassifier.Infrastructure/Services/ExpertReviewService.cs": {
+    "mtime": 1793024972.9710517,
+    "seen": 1793028981.4138272,
+    "ast_hash": "da50792ac9826b0dea70cd0b784829a9",
+    "semantic_hash": ""
+  },
+  "hs-classifier-api/HsClassifier.Infrastructure/Services/GeminiTermSuggester.cs": {
+    "mtime": 1791447093.4762642,
+    "seen": 1792654230.7350776,
+    "ast_hash": "9b9197d8ec14f4f14d08916f9499d854",
+    "semantic_hash": "9b9197d8ec14f4f14d08916f9499d854"
+  },
+  "hs-classifier-api/HsClassifier.Infrastructure/Services/GroqTermSuggester.cs": {
+    "mtime": 1791448475.58887,
+    "seen": 1792654230.7350783,
+    "ast_hash": "97256d251d62376da3d25ced3f8cdbd9",
+    "semantic_hash": "97256d251d62376da3d25ced3f8cdbd9"
+  },
+  "hs-classifier-api/HsClassifier.Infrastructure/Services/JwtService.cs": {
+    "mtime": 1788855126.7446158,
+    "seen": 1792654230.735079,
+    "ast_hash": "a455c219d83b0bc592137dd990af1412",
+    "semantic_hash": "a455c219d83b0bc592137dd990af1412"
+  },
+  "hs-classifier-api/HsClassifier.Infrastructure/Services/PasswordHashing.cs": {
+    "mtime": 1791427435.3197513,
+    "seen": 1792654230.73508,
+    "ast_hash": "b45a6986b76d61afbdaab5961185e958",
+    "semantic_hash": "b45a6986b76d61afbdaab5961185e958"
+  },
+  "hs-classifier-api/HsClassifier.Infrastructure/Services/TariffLookupService.cs": {
+    "mtime": 1788854376.801191,
+    "seen": 1792654230.7350807,
+    "ast_hash": "10da94ff639e4af5807199a9c1be8d03",
+    "semantic_hash": "10da94ff639e4af5807199a9c1be8d03"
+  },
+  "hs-classifier-api/HsClassifier.Infrastructure/Services/VersionManager.cs": {
+    "mtime": 1793109758.6177204,
+    "seen": 1793110072.990098,
+    "ast_hash": "6fdcb376810b7c040b61f3702562b9a6",
+    "semantic_hash": ""
+  },
+  "hs-classifier-api/HsClassifier.Infrastructure/Template/TemplateIngestionService.cs": {
+    "mtime": 1788855567.042318,
+    "seen": 1792654230.7350821,
+    "ast_hash": "1361bab6b0d096cc2573969450638672",
+    "semantic_hash": "1361bab6b0d096cc2573969450638672"
+  },
+  "hs-classifier-api/HsClassifier.Tests/AmbiguityQueueTests.cs": {
+    "mtime": 1791471052.5120094,
+    "seen": 1792654230.735083,
+    "ast_hash": "d76b632f95ac4380cece95340bbfbcef",
+    "semantic_hash": "d76b632f95ac4380cece95340bbfbcef"
+  },
+  "hs-classifier-api/HsClassifier.Tests/CaseHistoryTests.cs": {
+    "mtime": 1791468671.3532834,
+    "seen": 1792654230.7350838,
+    "ast_hash": "0dffe24859792f96345343db7f979306",
+    "semantic_hash": "0dffe24859792f96345343db7f979306"
+  },
+  "hs-classifier-api/HsClassifier.Tests/ExpertReviewTests.cs": {
+    "mtime": 1791469441.3832548,
+    "seen": 1792654230.7350845,
+    "ast_hash": "befb181a6579dc04a7c29a0175818aac",
+    "semantic_hash": "befb181a6579dc04a7c29a0175818aac"
+  },
+  "hs-classifier-api/HsClassifier.Tests/GroqParseTests.cs": {
+    "mtime": 1791445079.6724548,
+    "seen": 1792654230.7350852,
+    "ast_hash": "cd39b866c483125cedbb8e46f2c2834c",
+    "semantic_hash": "cd39b866c483125cedbb8e46f2c2834c"
+  },
+  "hs-classifier-api/HsClassifier.Tests/HsClassifier.Tests.csproj": {
+    "mtime": 1791466202.149549,
+    "seen": 1792654230.735086,
+    "ast_hash": "d4f3205e55f86478d735e954f9379761",
+    "semantic_hash": "d4f3205e55f86478d735e954f9379761"
+  },
+  "hs-classifier-api/HsClassifier.Tests/KumHs6Tests.cs": {
+    "mtime": 1791447501.269888,
+    "seen": 1792654230.7350872,
+    "ast_hash": "5777ec50f028c88614b74d2863c7b6fe",
+    "semantic_hash": "5777ec50f028c88614b74d2863c7b6fe"
+  },
+  "hs-classifier-api/HsClassifier.Tests/VersionLifecycleTests.cs": {
+    "mtime": 1793109760.4023767,
+    "seen": 1793110072.9901493,
+    "ast_hash": "105722157361e675ef25672449df1bc1",
+    "semantic_hash": ""
+  },
+  "hs-classifier-api/HsClassifier.slnx": {
+    "mtime": 1791427670.4607122,
+    "seen": 1792654230.7350883,
+    "ast_hash": "465e3203e7e3ca448fade245cb41f74b",
+    "semantic_hash": "465e3203e7e3ca448fade245cb41f74b"
+  },
+  "hs-classifier/eslint.config.js": {
+    "mtime": 1785383189.4483206,
+    "seen": 1792654230.7350893,
+    "ast_hash": "3aa4b57d7f08181d86bde52a4dcb7f22",
+    "semantic_hash": "3aa4b57d7f08181d86bde52a4dcb7f22"
+  },
+  "hs-classifier/package.json": {
+    "mtime": 1785383415.577799,
+    "seen": 1792654230.7350903,
+    "ast_hash": "654513c84c73cd785eb99a2f4e3402cc",
+    "semantic_hash": "654513c84c73cd785eb99a2f4e3402cc"
+  },
+  "hs-classifier/src/App.jsx": {
+    "mtime": 1791470485.4232378,
+    "seen": 1792654230.7350907,
+    "ast_hash": "bba57e40cf976fc5ab79142645f6c864",
+    "semantic_hash": "bba57e40cf976fc5ab79142645f6c864"
+  },
+  "hs-classifier/src/components/AdminDashboard.jsx": {
+    "mtime": 1793109667.5102365,
+    "seen": 1793110072.9901657,
+    "ast_hash": "76ec92f8289b61c0280861a493f23273",
+    "semantic_hash": ""
+  },
+  "hs-classifier/src/components/ClassificationForm.jsx": {
+    "mtime": 1785383526.568563,
+    "seen": 1792654230.7350926,
+    "ast_hash": "2ffea72f01223c80c986aa556ace023b",
+    "semantic_hash": "2ffea72f01223c80c986aa556ace023b"
+  },
+  "hs-classifier/src/components/HistoryPage.jsx": {
+    "mtime": 1793057025.1226828,
+    "seen": 1793059972.1370842,
+    "ast_hash": "20c8ecbed03a5b979359cd85d2ae715b",
+    "semantic_hash": ""
+  },
+  "hs-classifier/src/components/MultiSelectField.jsx": {
+    "mtime": 1785383468.959814,
+    "seen": 1792654230.7350943,
+    "ast_hash": "460ec8839be0430586297665241feeda",
+    "semantic_hash": "460ec8839be0430586297665241feeda"
+  },
+  "hs-classifier/src/components/ResultPanel.jsx": {
+    "mtime": 1793025036.0196245,
+    "seen": 1793028981.4138696,
+    "ast_hash": "363c4ce2ae428c43a52e090f83a7f6d0",
+    "semantic_hash": ""
+  },
+  "hs-classifier/src/components/ReviewPage.jsx": {
+    "mtime": 1791470504.9391665,
+    "seen": 1792654230.7350957,
+    "ast_hash": "d6f4f690cf6cc34849b38f17451cd1d4",
+    "semantic_hash": "d6f4f690cf6cc34849b38f17451cd1d4"
+  },
+  "hs-classifier/src/components/SelectField.jsx": {
+    "mtime": 1785383459.7467034,
+    "seen": 1792654230.7350967,
+    "ast_hash": "d054c79ee5258cce033eb0da439fd421",
+    "semantic_hash": "d054c79ee5258cce033eb0da439fd421"
+  },
+  "hs-classifier/src/components/TextField.jsx": {
+    "mtime": 1785383478.1235776,
+    "seen": 1792654230.7350974,
+    "ast_hash": "805b6ecc0f046aa2c546a7b2351648bb",
+    "semantic_hash": "805b6ecc0f046aa2c546a7b2351648bb"
+  },
+  "hs-classifier/src/main.jsx": {
+    "mtime": 1785383600.3217597,
+    "seen": 1792654230.7350988,
+    "ast_hash": "e13723e2574429d9a6d849727e3ff695",
+    "semantic_hash": "e13723e2574429d9a6d849727e3ff695"
+  },
+  "hs-classifier/src/services/apiClient.js": {
+    "mtime": 1793057024.9085443,
+    "seen": 1793059972.1370904,
+    "ast_hash": "56bc170e9b609715e9b21feda2510373",
+    "semantic_hash": ""
+  },
+  "hs-classifier/vercel.json": {
+    "mtime": 1791468862.8599186,
+    "seen": 1792654230.7351005,
+    "ast_hash": "a12e210719f722ae12273bd078484ad2",
+    "semantic_hash": "a12e210719f722ae12273bd078484ad2"
+  },
+  "hs-classifier/vite.config.js": {
+    "mtime": 1785383429.34822,
+    "seen": 1792654230.7351012,
+    "ast_hash": "5b641ab5f85eff4b0b9acec3417ca9b5",
+    "semantic_hash": "5b641ab5f85eff4b0b9acec3417ca9b5"
+  },
+  "parse_btki.py": {
+    "mtime": 1786450288.1661909,
+    "seen": 1792654230.735102,
+    "ast_hash": "8f626e4980013c04aee6999ada11e779",
+    "semantic_hash": "8f626e4980013c04aee6999ada11e779"
+  },
+  ".kiro/specs/hs-classification-v2/design.md": {
+    "mtime": 1788408050.1906028,
+    "seen": 1792654230.7351027,
+    "ast_hash": "3a310c3ebbcf65a58b26811559304e9c",
+    "semantic_hash": "3a310c3ebbcf65a58b26811559304e9c"
+  },
+  ".kiro/specs/hs-classification-v2/requirements.md": {
+    "mtime": 1788408021.7956846,
+    "seen": 1792654230.7351036,
+    "ast_hash": "2b0fb09374d8b86ca3fc8a298dc618a0",
+    "semantic_hash": "2b0fb09374d8b86ca3fc8a298dc618a0"
+  },
+  ".kiro/specs/hs-classification-v2/tasks.md": {
+    "mtime": 1793110063.6764116,
+    "seen": 1793110072.990213,
+    "ast_hash": "4a0cf669b2210b7bac6da7dd3aed69da",
+    "semantic_hash": ""
+  },
+  "data/README.md": {
+    "mtime": 1785382464.4141366,
+    "seen": 1792654230.7351053,
+    "ast_hash": "b3dd759dd3dc4cf3d21c639b49604c53",
+    "semantic_hash": "b3dd759dd3dc4cf3d21c639b49604c53"
+  },
+  "data/btki_parse_report.md": {
+    "mtime": 1786450648.0659904,
+    "seen": 1792654230.735106,
+    "ast_hash": "c5107a7a4c0b1c1445ca59e167abd677",
+    "semantic_hash": "c5107a7a4c0b1c1445ca59e167abd677"
+  },
+  "docs/AI_HS_Classification_Intelligence_V2_Product_Logic_UI_and_Coding_Prompt.md": {
+    "mtime": 1786332227.4112597,
+    "seen": 1792654230.7351067,
+    "ast_hash": "a69bab2f26dba9bf7d614d4fb3da56e3",
+    "semantic_hash": "a69bab2f26dba9bf7d614d4fb3da56e3"
+  },
+  "docs/DATABASE_SCHEMA.md": {
+    "mtime": 1786066898.3757048,
+    "seen": 1792654230.7351077,
+    "ast_hash": "14e4455f61780d13ad872ef3aa3574b3",
+    "semantic_hash": "14e4455f61780d13ad872ef3aa3574b3"
+  },
+  "docs/PRESENTATION.md": {
+    "mtime": 1786067321.2280512,
+    "seen": 1792654230.7351084,
+    "ast_hash": "84e82fd695ff07771b7cf1031e99ec02",
+    "semantic_hash": "84e82fd695ff07771b7cf1031e99ec02"
+  },
+  "docs/PROJECT_SUMMARY.md": {
+    "mtime": 1787065392.5312936,
+    "seen": 1792654230.7351093,
+    "ast_hash": "0936c4ce76d428b7cb576230e53de0bf",
+    "semantic_hash": "0936c4ce76d428b7cb576230e53de0bf"
+  },
+  "docs/TASK_LIST.md": {
+    "mtime": 1788408099.5130632,
+    "seen": 1792654230.73511,
+    "ast_hash": "60a58b118515174d0635b536d84cc311",
+    "semantic_hash": "60a58b118515174d0635b536d84cc311"
+  },
+  "docs/TECHNICAL.md": {
+    "mtime": 1785480143.1594098,
+    "seen": 1792654230.735111,
+    "ast_hash": "0e98b43d6b917976c74df48df0ce704e",
+    "semantic_hash": "0e98b43d6b917976c74df48df0ce704e"
+  },
+  "docs/USER_GUIDE.md": {
+    "mtime": 1785470573.302089,
+    "seen": 1792654230.7351117,
+    "ast_hash": "cd5a21d0405968ae26d65b6975183c52",
+    "semantic_hash": "cd5a21d0405968ae26d65b6975183c52"
+  },
+  "docs/WORKFLOW_END_TO_END.md": {
+    "mtime": 1787068048.6689649,
+    "seen": 1792654230.7351124,
+    "ast_hash": "faaf07014b621cd4d1676e9cfa54bab7",
+    "semantic_hash": "faaf07014b621cd4d1676e9cfa54bab7"
+  },
+  "docs/ui_wireframe.html": {
+    "mtime": 1788406773.3983176,
+    "seen": 1792654230.7351131,
+    "ast_hash": "baa53aa0d86d4ceeedd882664571541a",
+    "semantic_hash": "baa53aa0d86d4ceeedd882664571541a"
+  },
+  "hs-classifier/README.md": {
+    "mtime": 1785383189.449322,
+    "seen": 1792654230.735114,
+    "ast_hash": "a28dc4cb878325f3e9e5649f3e1469ac",
+    "semantic_hash": "a28dc4cb878325f3e9e5649f3e1469ac"
+  },
+  "hs-classifier/index.html": {
+    "mtime": 1785383189.4423203,
+    "seen": 1792654230.7351148,
+    "ast_hash": "52624ccdd19783c8fa0b112c8bd85a07",
+    "semantic_hash": "52624ccdd19783c8fa0b112c8bd85a07"
+  },
+  "AGENTS.md": {
+    "mtime": 1792654045.2445004,
+    "seen": 1792654269.6689084,
+    "ast_hash": "1a5bda3c093819167f2366a0d38c0a55",
+    "semantic_hash": ""
+  },
+  "hs-classifier-api/HsClassifier.Application/Classification/ConditionGate.cs": {
+    "mtime": 1793057502.6249912,
+    "seen": 1793059972.137024,
+    "ast_hash": "9c1411fb3e0f062a8c557ac3264d5b8b",
+    "semantic_hash": ""
+  },
+  "hs-classifier-api/HsClassifier.Application/Classification/ConfidenceCalculator.cs": {
+    "mtime": 1793024806.6107478,
+    "seen": 1793028981.4137707,
+    "ast_hash": "7b940ab14be8f28b1f352f3acd69b749",
+    "semantic_hash": ""
+  },
+  "hs-classifier-api/HsClassifier.Application/Classification/Thresholds.cs": {
+    "mtime": 1793056841.5085459,
+    "seen": 1793059972.1370301,
+    "ast_hash": "a7c03d99fb1ad0172328ad3290087a42",
+    "semantic_hash": ""
+  },
+  "hs-classifier-api/HsClassifier.Infrastructure/Migrations/20261026142955_ConfidenceScore.Designer.cs": {
+    "mtime": 1793024995.6077225,
+    "seen": 1793028981.4138105,
+    "ast_hash": "4fc39ddab642daed52c148046bd2b016",
+    "semantic_hash": ""
+  },
+  "hs-classifier-api/HsClassifier.Infrastructure/Migrations/20261026142955_ConfidenceScore.cs": {
+    "mtime": 1793024995.6067092,
+    "seen": 1793028981.4138122,
+    "ast_hash": "d598d33eaebc45e0a90a40094d43f160",
+    "semantic_hash": ""
+  },
+  "hs-classifier-api/HsClassifier.Tests/ConditionGateTests.cs": {
+    "mtime": 1793056837.264048,
+    "seen": 1793059972.1370695,
+    "ast_hash": "9a1451195d04fbfb123eac57a6ef84b0",
+    "semantic_hash": ""
+  },
+  "hs-classifier-api/HsClassifier.Tests/ConfidenceTests.cs": {
+    "mtime": 1793024794.7167175,
+    "seen": 1793028981.413844,
+    "ast_hash": "f1e5f6e261aa9ecda939fc06bff06e15",
+    "semantic_hash": ""
+  },
+  "hs-classifier-api/HsClassifier.Tests/MfnParseTests.cs": {
+    "mtime": 1793024669.1166544,
+    "seen": 1793028981.4138525,
+    "ast_hash": "a537af6975fd49a7cd7282f1af9f498b",
+    "semantic_hash": ""
+  },
+  "hs-classifier-api/HsClassifier.Tests/ThresholdTests.cs": {
+    "mtime": 1793027790.424261,
+    "seen": 1793028981.413854,
+    "ast_hash": "3031fb60058c200cdc7544ef03984b71",
+    "semantic_hash": ""
+  },
+  "docs/FLOW_BISNIS_V2.md": {
+    "mtime": 1792989209.4479318,
+    "seen": 1793028981.4138956,
+    "ast_hash": "5b44c5225cc7126a8ead0ab31ff4ee85",
+    "semantic_hash": ""
+  },
+  "docs/btki/download.ps1": {
+    "mtime": 1793062708.2386458,
+    "seen": 1793110072.989891,
+    "ast_hash": "bda182704f40fdf8ed6a48b1d31caf7d",
+    "semantic_hash": ""
+  },
+  "hs-classifier-api/HsClassifier.Application/Interfaces/IBtkiPdfParser.cs": {
+    "mtime": 1793109266.7041397,
+    "seen": 1793110072.989966,
+    "ast_hash": "b953fcc775bc1c9a50edf90702f62266",
+    "semantic_hash": ""
+  },
+  "hs-classifier-api/HsClassifier.Application/Services/BtkiHierarchyBuilder.cs": {
+    "mtime": 1793109939.1441648,
+    "seen": 1793110072.9899783,
+    "ast_hash": "2cefbd6a84f4b0447a240c3ebefb0c70",
+    "semantic_hash": ""
+  },
+  "hs-classifier-api/HsClassifier.Application/Services/BtkiTableAssembler.cs": {
+    "mtime": 1793108949.3535583,
+    "seen": 1793110072.989984,
+    "ast_hash": "ccbe7109bdb2cb6f2c3cba87f7e2a1a4",
+    "semantic_hash": ""
+  },
+  "hs-classifier-api/HsClassifier.Application/Services/VersionDiff.cs": {
+    "mtime": 1793109577.6373963,
+    "seen": 1793110072.9899867,
+    "ast_hash": "8c8e3d6ad9eae25c1c4c87c4c6e197da",
+    "semantic_hash": ""
+  },
+  "hs-classifier-api/HsClassifier.Infrastructure/Parsing/BtkiPdfParser.cs": {
+    "mtime": 1793109269.8962352,
+    "seen": 1793110072.9900477,
+    "ast_hash": "a84983c04c0e03607f7c72e7113f3355",
+    "semantic_hash": ""
+  },
+  "hs-classifier-api/HsClassifier.Tests/BtkiPdfFileTests.cs": {
+    "mtime": 1793109082.8312526,
+    "seen": 1793110072.9901066,
+    "ast_hash": "f8f24a772b85fafda23009301e780d80",
+    "semantic_hash": ""
+  },
+  "hs-classifier-api/HsClassifier.Tests/BtkiPdfTableTests.cs": {
+    "mtime": 1793109944.69775,
+    "seen": 1793110072.99011,
+    "ast_hash": "fc0678d264998e0185a786da7997be47",
+    "semantic_hash": ""
+  },
+  "hs-classifier-api/HsClassifier.Tests/PdfImportCarryTests.cs": {
+    "mtime": 1793109943.1394546,
+    "seen": 1793110072.9901404,
+    "ast_hash": "9e4ce231eae91163c4e282e4042b2118",
+    "semantic_hash": ""
+  },
+  "hs-classifier-api/HsClassifier.Tests/VersionDiffTests.cs": {
+    "mtime": 1793109586.4409976,
+    "seen": 1793110072.9901462,
+    "ast_hash": "60746bb553ba4e7c7143feb3e53ea5fc",
+    "semantic_hash": ""
+  },
+  "docs/btki/BTKI_2022_lengkap.pdf": {
+    "mtime": 1793062876.456474,
+    "seen": 1793110072.9902818,
+    "ast_hash": "9c2c630e17aaf10273a18a0ac0880222",
+    "semantic_hash": ""
+  },
+  "docs/btki/chapter-01.pdf": {
+    "mtime": 1793062724.2107792,
+    "seen": 1793110072.9902842,
+    "ast_hash": "c027b4bc4f71268430b20a0c7ed0d5d6",
+    "semantic_hash": ""
+  },
+  "docs/btki/chapter-02.pdf": {
+    "mtime": 1793062726.181582,
+    "seen": 1793110072.990287,
+    "ast_hash": "215de2fa8bc6d8483805567c81401905",
+    "semantic_hash": ""
+  },
+  "docs/btki/chapter-03.pdf": {
+    "mtime": 1793062728.9983826,
+    "seen": 1793110072.9902894,
+    "ast_hash": "f588101aff3f43f8f10f8d65d5ff4d80",
+    "semantic_hash": ""
+  },
+  "docs/btki/chapter-04.pdf": {
+    "mtime": 1793062730.3371785,
+    "seen": 1793110072.990292,
+    "ast_hash": "b337a7cf84c1215be7e0d6ea6b0f8375",
+    "semantic_hash": ""
+  },
+  "docs/btki/chapter-05.pdf": {
+    "mtime": 1793062730.8161201,
+    "seen": 1793110072.9902942,
+    "ast_hash": "43323ea6628b7b9c857602010037206d",
+    "semantic_hash": ""
+  },
+  "docs/btki/chapter-06.pdf": {
+    "mtime": 1793062731.644268,
+    "seen": 1793110072.9902966,
+    "ast_hash": "e885a245a3f2c6c225bb177574aeb716",
+    "semantic_hash": ""
+  },
+  "docs/btki/chapter-07.pdf": {
+    "mtime": 1793062732.3789911,
+    "seen": 1793110072.9902992,
+    "ast_hash": "714b9b08205dc7999a120fe5144363b4",
+    "semantic_hash": ""
+  },
+  "docs/btki/chapter-08.pdf": {
+    "mtime": 1793062733.1421847,
+    "seen": 1793110072.9903014,
+    "ast_hash": "7bd8099a8de51ad5ecf9f79fe4a4d6ca",
+    "semantic_hash": ""
+  },
+  "docs/btki/chapter-09.pdf": {
+    "mtime": 1793062733.9135773,
+    "seen": 1793110072.9903038,
+    "ast_hash": "8db376c781f2ea75ef558693cad1d144",
+    "semantic_hash": ""
+  },
+  "docs/btki/chapter-10.pdf": {
+    "mtime": 1793062734.6470113,
+    "seen": 1793110072.9903061,
+    "ast_hash": "f107ba728260425b7e4058d8b1c0cd5a",
+    "semantic_hash": ""
+  },
+  "docs/btki/chapter-11.pdf": {
+    "mtime": 1793062735.6789334,
+    "seen": 1793110072.990308,
+    "ast_hash": "3a29257e1721b155b9966f025e757f6f",
+    "semantic_hash": ""
+  },
+  "docs/btki/chapter-12.pdf": {
+    "mtime": 1793062737.6776795,
+    "seen": 1793110072.9903104,
+    "ast_hash": "d949f92eaecd0cc1d26c97d88b4235af",
+    "semantic_hash": ""
+  },
+  "docs/btki/chapter-13.pdf": {
+    "mtime": 1793062738.2452197,
+    "seen": 1793110072.9903128,
+    "ast_hash": "388964f4fcaf7fb1dc66106d69870ac7",
+    "semantic_hash": ""
+  },
+  "docs/btki/chapter-14.pdf": {
+    "mtime": 1793062738.7022698,
+    "seen": 1793110072.9903152,
+    "ast_hash": "723ea64e7c4b35e45eb12f9f6122d314",
+    "semantic_hash": ""
+  },
+  "docs/btki/chapter-15.pdf": {
+    "mtime": 1793062739.5774095,
+    "seen": 1793110072.9903176,
+    "ast_hash": "bbe9ad762ebe425f9652da38dd3c4118",
+    "semantic_hash": ""
+  },
+  "docs/btki/chapter-16.pdf": {
+    "mtime": 1793062739.9060218,
+    "seen": 1793110072.9903202,
+    "ast_hash": "9cad189ed05c7b2a0213cb09120ae4e3",
+    "semantic_hash": ""
+  },
+  "docs/btki/chapter-17.pdf": {
+    "mtime": 1793062740.2576227,
+    "seen": 1793110072.9903224,
+    "ast_hash": "c1193a4693db761c83d8bf087df2bc7b",
+    "semantic_hash": ""
+  },
+  "docs/btki/chapter-18.pdf": {
+    "mtime": 1793062740.6576836,
+    "seen": 1793110072.9903364,
+    "ast_hash": "2ce9e9ad5b19c87ed4bab102525d3565",
+    "semantic_hash": ""
+  },
+  "docs/btki/chapter-19.pdf": {
+    "mtime": 1793062741.077199,
+    "seen": 1793110072.990339,
+    "ast_hash": "30c3e292af32541b725643ab7e45c2a0",
+    "semantic_hash": ""
+  },
+  "docs/btki/chapter-20.pdf": {
+    "mtime": 1793062741.5935593,
+    "seen": 1793110072.9903417,
+    "ast_hash": "fcc838c22240310150a5ff87cb5da74a",
+    "semantic_hash": ""
+  },
+  "docs/btki/chapter-21.pdf": {
+    "mtime": 1793062741.9435005,
+    "seen": 1793110072.9903443,
+    "ast_hash": "9a01a05282a103775f3a76530483093d",
+    "semantic_hash": ""
+  },
+  "docs/btki/chapter-22.pdf": {
+    "mtime": 1793062742.3612952,
+    "seen": 1793110072.9903464,
+    "ast_hash": "5be6890f4a733142cba317836eac2f43",
+    "semantic_hash": ""
+  },
+  "docs/btki/chapter-23.pdf": {
+    "mtime": 1793062742.7511153,
+    "seen": 1793110072.990349,
+    "ast_hash": "216bbd4da25aeb875fc8770910cdb555",
+    "semantic_hash": ""
+  },
+  "docs/btki/chapter-24.pdf": {
+    "mtime": 1793062743.0604513,
+    "seen": 1793110072.9903514,
+    "ast_hash": "c1ccb021b38b861d71bf9a8e31529f03",
+    "semantic_hash": ""
+  },
+  "docs/btki/chapter-25.pdf": {
+    "mtime": 1793062743.478434,
+    "seen": 1793110072.9903538,
+    "ast_hash": "e6227cdf989b11c2495d528c0e58e7c8",
+    "semantic_hash": ""
+  },
+  "docs/btki/chapter-26.pdf": {
+    "mtime": 1793062743.808704,
+    "seen": 1793110072.9903562,
+    "ast_hash": "a086a85ac0dc193d052220f0f92cded6",
+    "semantic_hash": ""
+  },
+  "docs/btki/chapter-27.pdf": {
+    "mtime": 1793062744.1431136,
+    "seen": 1793110072.9903586,
+    "ast_hash": "b332b446fe0b55f6138e3a5523db0915",
+    "semantic_hash": ""
+  },
+  "docs/btki/chapter-28.pdf": {
+    "mtime": 1793062744.5760982,
+    "seen": 1793110072.9903607,
+    "ast_hash": "b470815b84d39c9e52579ebc09e92707",
+    "semantic_hash": ""
+  },
+  "docs/btki/chapter-29.pdf": {
+    "mtime": 1793062746.6947937,
+    "seen": 1793110072.9903634,
+    "ast_hash": "84a57054dd931ffe6dd6f42fb1fb0a01",
+    "semantic_hash": ""
+  },
+  "docs/btki/chapter-30.pdf": {
+    "mtime": 1793062747.010304,
+    "seen": 1793110072.9903657,
+    "ast_hash": "fc9d12777d3724848f2c540c80b83665",
+    "semantic_hash": ""
+  },
+  "docs/btki/chapter-31.pdf": {
+    "mtime": 1793062747.3399804,
+    "seen": 1793110072.9903684,
+    "ast_hash": "c3376b731b914207a28315993025848e",
+    "semantic_hash": ""
+  },
+  "docs/btki/chapter-32.pdf": {
+    "mtime": 1793062747.7231455,
+    "seen": 1793110072.990371,
+    "ast_hash": "d428e8dbf095299ff7383d8a2a0e8617",
+    "semantic_hash": ""
+  },
+  "docs/btki/chapter-33.pdf": {
+    "mtime": 1793062748.073041,
+    "seen": 1793110072.9903734,
+    "ast_hash": "a0e42e23e13434853fe3579f808c7a6a",
+    "semantic_hash": ""
+  },
+  "docs/btki/chapter-34.pdf": {
+    "mtime": 1793062748.4395652,
+    "seen": 1793110072.9903758,
+    "ast_hash": "a7b63ccdcc6cf8f68edb54a2eac4d2dd",
+    "semantic_hash": ""
+  },
+  "docs/btki/chapter-35.pdf": {
+    "mtime": 1793062749.0730178,
+    "seen": 1793110072.9903777,
+    "ast_hash": "b3cb3aac12ed603d8bdadd315169b313",
+    "semantic_hash": ""
+  },
+  "docs/btki/chapter-36.pdf": {
+    "mtime": 1793062749.8824213,
+    "seen": 1793110072.99038,
+    "ast_hash": "dcc79130fe5a213b3407182f56358516",
+    "semantic_hash": ""
+  },
+  "docs/btki/chapter-37.pdf": {
+    "mtime": 1793062750.5469148,
+    "seen": 1793110072.9903822,
+    "ast_hash": "2a6c358e4b51697acb06570e95a93a61",
+    "semantic_hash": ""
+  },
+  "docs/btki/chapter-38.pdf": {
+    "mtime": 1793062751.15881,
+    "seen": 1793110072.9903843,
+    "ast_hash": "6dd379cd5e91b07e0bfd00978f9f24e1",
+    "semantic_hash": ""
+  },
+  "docs/btki/chapter-39.pdf": {
+    "mtime": 1793062751.7593472,
+    "seen": 1793110072.9903872,
+    "ast_hash": "b9e1a942b96d4dffdf10a42729162e8d",
+    "semantic_hash": ""
+  },
+  "docs/btki/chapter-40.pdf": {
+    "mtime": 1793062752.175585,
+    "seen": 1793110072.9903896,
+    "ast_hash": "cde367e6c506a54ee84683c5ba43e158",
+    "semantic_hash": ""
+  },
+  "docs/btki/chapter-41.pdf": {
+    "mtime": 1793062752.603409,
+    "seen": 1793110072.990392,
+    "ast_hash": "21ac72a02abfc7a3638a60ed18e8fc0c",
+    "semantic_hash": ""
+  },
+  "docs/btki/chapter-42.pdf": {
+    "mtime": 1793062753.6604865,
+    "seen": 1793110072.9903946,
+    "ast_hash": "fa6873f3b778ca65a00630ec5d8bf060",
+    "semantic_hash": ""
+  },
+  "docs/btki/chapter-43.pdf": {
+    "mtime": 1793062754.1221945,
+    "seen": 1793110072.9904046,
+    "ast_hash": "c786d79a3de2f307199bb523b294b67c",
+    "semantic_hash": ""
+  },
+  "docs/btki/chapter-44.pdf": {
+    "mtime": 1793062754.6031263,
+    "seen": 1793110072.9904075,
+    "ast_hash": "b180dad28827323e0df7694e68a8fda0",
+    "semantic_hash": ""
+  },
+  "docs/btki/chapter-45.pdf": {
+    "mtime": 1793062755.0593748,
+    "seen": 1793110072.99041,
+    "ast_hash": "d697e277cc8745146b6d52feaa041fa6",
+    "semantic_hash": ""
+  },
+  "docs/btki/chapter-46.pdf": {
+    "mtime": 1793062755.559821,
+    "seen": 1793110072.9904122,
+    "ast_hash": "6f4c49ef9084de6d00539ec9750ba0d9",
+    "semantic_hash": ""
+  },
+  "docs/btki/chapter-47.pdf": {
+    "mtime": 1793062757.8222027,
+    "seen": 1793110072.9904144,
+    "ast_hash": "919632005b0650b42b27e4da34c1997a",
+    "semantic_hash": ""
+  },
+  "docs/btki/chapter-48.pdf": {
+    "mtime": 1793062758.7759166,
+    "seen": 1793110072.9904165,
+    "ast_hash": "d32fe053c4295ab7f3a01108854ae7ae",
+    "semantic_hash": ""
+  },
+  "docs/btki/chapter-49.pdf": {
+    "mtime": 1793062759.5409048,
+    "seen": 1793110072.9904191,
+    "ast_hash": "e27aee3eb8e02593314df7429cc50520",
+    "semantic_hash": ""
+  },
+  "docs/btki/chapter-50.pdf": {
+    "mtime": 1793062760.6774204,
+    "seen": 1793110072.9904215,
+    "ast_hash": "2939bb14b36e5e526d448587fbc5f139",
+    "semantic_hash": ""
+  },
+  "docs/btki/chapter-51.pdf": {
+    "mtime": 1793062761.204686,
+    "seen": 1793110072.9904234,
+    "ast_hash": "f3faa3397256a71838809dc57aa56405",
+    "semantic_hash": ""
+  },
+  "docs/btki/chapter-52.pdf": {
+    "mtime": 1793062761.6403537,
+    "seen": 1793110072.990426,
+    "ast_hash": "b7a7ab2d97cf4424b28d411fe0b61c51",
+    "semantic_hash": ""
+  },
+  "docs/btki/chapter-53.pdf": {
+    "mtime": 1793062762.158947,
+    "seen": 1793110072.9904282,
+    "ast_hash": "0d857bbdb9ec242aec1eb9ebabb4db21",
+    "semantic_hash": ""
+  },
+  "docs/btki/chapter-54.pdf": {
+    "mtime": 1793062762.6253214,
+    "seen": 1793110072.99043,
+    "ast_hash": "7df1e31c86c5281d9afa59c3d6af5514",
+    "semantic_hash": ""
+  },
+  "docs/btki/chapter-55.pdf": {
+    "mtime": 1793062762.9906633,
+    "seen": 1793110072.9904325,
+    "ast_hash": "9dc148399b41240ff490793ceeca46d0",
+    "semantic_hash": ""
+  },
+  "docs/btki/chapter-56.pdf": {
+    "mtime": 1793062763.4133558,
+    "seen": 1793110072.990435,
+    "ast_hash": "9f8c1ed5066e0fcc41f3f145ff5e8b0f",
+    "semantic_hash": ""
+  },
+  "docs/btki/chapter-57.pdf": {
+    "mtime": 1793062763.785457,
+    "seen": 1793110072.9904373,
+    "ast_hash": "cb39915911264dc0cab6fc805f872150",
+    "semantic_hash": ""
+  },
+  "docs/btki/chapter-58.pdf": {
+    "mtime": 1793062764.2210493,
+    "seen": 1793110072.9904397,
+    "ast_hash": "065a2a875a8d326d1e4a457bedb426c8",
+    "semantic_hash": ""
+  },
+  "docs/btki/chapter-59.pdf": {
+    "mtime": 1793062764.6250327,
+    "seen": 1793110072.9904418,
+    "ast_hash": "c34076e0c411fefa670f4348c893a8bb",
+    "semantic_hash": ""
+  },
+  "docs/btki/chapter-60.pdf": {
+    "mtime": 1793062765.6596272,
+    "seen": 1793110072.9904447,
+    "ast_hash": "e76c648587b3e23fe1489eb5b64a571d",
+    "semantic_hash": ""
+  },
+  "docs/btki/chapter-61.pdf": {
+    "mtime": 1793062766.1068754,
+    "seen": 1793110072.9904468,
+    "ast_hash": "3a9826f04af615948d74c00b8589481f",
+    "semantic_hash": ""
+  },
+  "docs/btki/chapter-62.pdf": {
+    "mtime": 1793062767.0039814,
+    "seen": 1793110072.990449,
+    "ast_hash": "dc4fcd8771cfa432d00562d1ea3e778a",
+    "semantic_hash": ""
+  },
+  "docs/btki/chapter-63.pdf": {
+    "mtime": 1793062767.4585378,
+    "seen": 1793110072.990451,
+    "ast_hash": "d92fb5c1e0957cee525725b23d64c070",
+    "semantic_hash": ""
+  },
+  "docs/btki/chapter-64.pdf": {
+    "mtime": 1793062769.6588566,
+    "seen": 1793110072.9904535,
+    "ast_hash": "e4d173ad9493a05c9613f612dbd3901d",
+    "semantic_hash": ""
+  },
+  "docs/btki/chapter-65.pdf": {
+    "mtime": 1793062770.0058,
+    "seen": 1793110072.9904556,
+    "ast_hash": "eb81be7b78d3137f6cda55357378d605",
+    "semantic_hash": ""
+  },
+  "docs/btki/chapter-66.pdf": {
+    "mtime": 1793062770.4316216,
+    "seen": 1793110072.990458,
+    "ast_hash": "4f7393ce02d74f5e728a6b72cc4d1556",
+    "semantic_hash": ""
+  },
+  "docs/btki/chapter-67.pdf": {
+    "mtime": 1793062770.8397343,
+    "seen": 1793110072.9904604,
+    "ast_hash": "3107d1be76ecf5443868fdfc292dc23a",
+    "semantic_hash": ""
+  },
+  "docs/btki/chapter-68.pdf": {
+    "mtime": 1793062771.5964587,
+    "seen": 1793110072.9904628,
+    "ast_hash": "c810499df4ffb1a19a600cb452983e6a",
+    "semantic_hash": ""
+  },
+  "docs/btki/chapter-69.pdf": {
+    "mtime": 1793062772.2059932,
+    "seen": 1793110072.9904652,
+    "ast_hash": "612044429d1b1c5ec2915cc465ffabd8",
+    "semantic_hash": ""
+  },
+  "docs/btki/chapter-70.pdf": {
+    "mtime": 1793062772.7907474,
+    "seen": 1793110072.9904675,
+    "ast_hash": "44bec3fa8b6fd444757fb6d64eb78d14",
+    "semantic_hash": ""
+  },
+  "docs/btki/chapter-71.pdf": {
+    "mtime": 1793062773.3682103,
+    "seen": 1793110072.9904697,
+    "ast_hash": "d8e46ce01c09617379e355e4728f9b67",
+    "semantic_hash": ""
+  },
+  "docs/btki/chapter-72.pdf": {
+    "mtime": 1793062774.3719473,
+    "seen": 1793110072.9904716,
+    "ast_hash": "0ccf020c9f243f0c768544bcebd72d52",
+    "semantic_hash": ""
+  },
+  "docs/btki/chapter-73.pdf": {
+    "mtime": 1793062775.4224894,
+    "seen": 1793110072.9904737,
+    "ast_hash": "4034684ae3be45659d609080acb80d79",
+    "semantic_hash": ""
+  },
+  "docs/btki/chapter-74.pdf": {
+    "mtime": 1793062775.8395262,
+    "seen": 1793110072.9904766,
+    "ast_hash": "df8e0f3e61193f57526e4cdd84b1135b",
+    "semantic_hash": ""
+  },
+  "docs/btki/chapter-75.pdf": {
+    "mtime": 1793062776.2770967,
+    "seen": 1793110072.9904785,
+    "ast_hash": "f7cd66bda1e28fad4a908ea874fdef1d",
+    "semantic_hash": ""
+  },
+  "docs/btki/chapter-76.pdf": {
+    "mtime": 1793062776.791943,
+    "seen": 1793110072.9904811,
+    "ast_hash": "0d12d814758ef6d24ddd21611c58e2eb",
+    "semantic_hash": ""
+  },
+  "docs/btki/chapter-78.pdf": {
+    "mtime": 1793062777.2645042,
+    "seen": 1793110072.9904835,
+    "ast_hash": "1ffdf162b95aa244e3e95d6ae04facf7",
+    "semantic_hash": ""
+  },
+  "docs/btki/chapter-79.pdf": {
+    "mtime": 1793062777.638428,
+    "seen": 1793110072.990486,
+    "ast_hash": "b17708181d32aedbf356c83808589de2",
+    "semantic_hash": ""
+  },
+  "docs/btki/chapter-80.pdf": {
+    "mtime": 1793062778.0057442,
+    "seen": 1793110072.9904883,
+    "ast_hash": "cd70f23e1564c4a839ed219c893526bb",
+    "semantic_hash": ""
+  },
+  "docs/btki/chapter-81.pdf": {
+    "mtime": 1793062778.455272,
+    "seen": 1793110072.990491,
+    "ast_hash": "0ad04c8338f00e485e0157cde1e2cf97",
+    "semantic_hash": ""
+  },
+  "docs/btki/chapter-82.pdf": {
+    "mtime": 1793062778.9877832,
+    "seen": 1793110072.9904933,
+    "ast_hash": "c1ffd0457a80f399a27cb217da7a153f",
+    "semantic_hash": ""
+  },
+  "docs/btki/chapter-83.pdf": {
+    "mtime": 1793062779.4781532,
+    "seen": 1793110072.9904957,
+    "ast_hash": "a7b1749ef2886397055487ea539fb61c",
+    "semantic_hash": ""
+  },
+  "docs/btki/chapter-84.pdf": {
+    "mtime": 1793062780.2220001,
+    "seen": 1793110072.990498,
+    "ast_hash": "82030fd1021abe5b9fdd873e801c3744",
+    "semantic_hash": ""
+  },
+  "docs/btki/chapter-85.pdf": {
+    "mtime": 1793062780.8541155,
+    "seen": 1793110072.990501,
+    "ast_hash": "718b2e110ed929213cae37835d9515db",
+    "semantic_hash": ""
+  },
+  "docs/btki/chapter-86.pdf": {
+    "mtime": 1793062781.3585405,
+    "seen": 1793110072.9905033,
+    "ast_hash": "36b364ce02c3f6d23e14efa5bf8f971e",
+    "semantic_hash": ""
+  },
+  "docs/btki/chapter-87.pdf": {
+    "mtime": 1793062782.0044281,
+    "seen": 1793110072.9905055,
+    "ast_hash": "9620f98df8d31bfb5fda8e6d657b13f8",
+    "semantic_hash": ""
+  },
+  "docs/btki/chapter-88.pdf": {
+    "mtime": 1793062782.6708648,
+    "seen": 1793110072.990508,
+    "ast_hash": "a55f9d0193e1879bb20d635adbcaf2a6",
+    "semantic_hash": ""
+  },
+  "docs/btki/chapter-89.pdf": {
+    "mtime": 1793062783.1877024,
+    "seen": 1793110072.9905102,
+    "ast_hash": "596e4f3c8cc1a3b0394a39bdfa919ac5",
+    "semantic_hash": ""
+  },
+  "docs/btki/chapter-90.pdf": {
+    "mtime": 1793062783.8694224,
+    "seen": 1793110072.9905126,
+    "ast_hash": "331a1cc71b3d3e6bad56a36a39e36e82",
+    "semantic_hash": ""
+  },
+  "docs/btki/chapter-91.pdf": {
+    "mtime": 1793062784.3513544,
+    "seen": 1793110072.990515,
+    "ast_hash": "3d8eab8b0c85327fe661a58d45851df7",
+    "semantic_hash": ""
+  },
+  "docs/btki/chapter-92.pdf": {
+    "mtime": 1793062784.8713212,
+    "seen": 1793110072.9905176,
+    "ast_hash": "f656a8c36d95f79099ecfc6ff043385f",
+    "semantic_hash": ""
+  },
+  "docs/btki/chapter-93.pdf": {
+    "mtime": 1793062786.725939,
+    "seen": 1793110072.9905198,
+    "ast_hash": "3fd48b762b80b5a512372c954a85a427",
+    "semantic_hash": ""
+  },
+  "docs/btki/chapter-94.pdf": {
+    "mtime": 1793062787.22435,
+    "seen": 1793110072.990522,
+    "ast_hash": "09c43ac095d9c723a5be2cb13a8aca90",
+    "semantic_hash": ""
+  },
+  "docs/btki/chapter-95.pdf": {
+    "mtime": 1793062787.6709661,
+    "seen": 1793110072.990524,
+    "ast_hash": "8ebdb5af41bd56ece9413d39817b9bdf",
+    "semantic_hash": ""
+  },
+  "docs/btki/chapter-96.pdf": {
+    "mtime": 1793062788.7819202,
+    "seen": 1793110072.9905264,
+    "ast_hash": "32e9904e9e96bf945d2760e5b73c6ebc",
+    "semantic_hash": ""
+  },
+  "docs/btki/chapter-97.pdf": {
+    "mtime": 1793062789.382797,
+    "seen": 1793110072.9905286,
+    "ast_hash": "c5037e668e02c4b63c76c88c0ad6c6d9",
+    "semantic_hash": ""
+  }
+}

@@ -1,0 +1,358 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "HS Classification V2 — End-to-End Architecture",
+    "output": "hs_v2_architecture.html",
+    "quality_profile": "standard",
+    "views": [
+      {
+        "id": "admin-flow",
+        "label": "Admin: Import Data BTKI",
+        "focus": ["admin", "react_frontend", "api_backend", "docx_parser", "structure_validator", "version_manager", "mysql_db"],
+        "note": "Alur admin upload dan aktivasi data BTKI dari file Word ke database MySQL."
+      },
+      {
+        "id": "classification-flow",
+        "label": "User: Klasifikasi Barang",
+        "focus": ["user", "react_frontend", "api_backend", "fact_engine", "candidate_generator", "rules_engine", "validator", "tariff_lookup", "mysql_db"],
+        "note": "Alur klasifikasi: input user → ekstrak fakta → kandidat DB → KUM HS 1-6 → validasi → tarif."
+      },
+      {
+        "id": "ai-boundary",
+        "label": "Batas Peran AI vs Database",
+        "focus": ["fact_engine", "llm_api", "candidate_generator", "rules_engine", "validator", "mysql_db"],
+        "note": "LLM hanya ekstrak fakta. Semua kode HS wajib dari database MySQL."
+      }
+    ]
+  },
+  "components": [
+    {
+      "id": "user",
+      "type": "external",
+      "label": "User",
+      "sublabel": "Classifier",
+      "pos": [40, 180],
+      "size": [110, 56]
+    },
+    {
+      "id": "admin",
+      "type": "external",
+      "label": "Admin",
+      "sublabel": "Data Manager",
+      "pos": [40, 320],
+      "size": [110, 56]
+    },
+    {
+      "id": "react_frontend",
+      "type": "frontend",
+      "label": "React Frontend",
+      "sublabel": "Vite + TypeScript",
+      "pos": [230, 240],
+      "size": [150, 64],
+      "tag": "Form + Admin UI"
+    },
+    {
+      "id": "api_backend",
+      "type": "backend",
+      "label": "C# ASP.NET Core",
+      "sublabel": "REST API :5000",
+      "pos": [470, 240],
+      "size": [150, 64],
+      "tag": "JWT · RBAC · Audit"
+    },
+    {
+      "id": "docx_parser",
+      "type": "backend",
+      "label": "DOCX Parser",
+      "sublabel": "OpenXML SDK",
+      "pos": [470, 60],
+      "size": [150, 56],
+      "tag": "BTKI · EN · Notes"
+    },
+    {
+      "id": "structure_validator",
+      "type": "backend",
+      "label": "Struct Validator",
+      "sublabel": "Hierarki · Format",
+      "pos": [700, 60],
+      "size": [150, 56],
+      "tag": "ERROR / WARNING"
+    },
+    {
+      "id": "version_manager",
+      "type": "backend",
+      "label": "Version Manager",
+      "sublabel": "State Machine",
+      "pos": [930, 60],
+      "size": [150, 56],
+      "tag": "Dry Run → ACTIVE"
+    },
+    {
+      "id": "fact_engine",
+      "type": "backend",
+      "label": "Fact Engine",
+      "sublabel": "35 Fact Types",
+      "pos": [470, 390],
+      "size": [150, 64],
+      "tag": "UNKNOWN / VERIFIED"
+    },
+    {
+      "id": "llm_api",
+      "type": "cloud",
+      "label": "LLM API",
+      "sublabel": "Groq / OpenAI",
+      "pos": [230, 390],
+      "size": [150, 56],
+      "tag": "Fact extract only"
+    },
+    {
+      "id": "candidate_generator",
+      "type": "backend",
+      "label": "Candidate Generator",
+      "sublabel": "DB Multi-Search",
+      "pos": [700, 390],
+      "size": [160, 64],
+      "tag": "Lexical · EN · Notes"
+    },
+    {
+      "id": "rules_engine",
+      "type": "backend",
+      "label": "Rules Engine",
+      "sublabel": "KUM HS 1–6",
+      "pos": [930, 390],
+      "size": [150, 64],
+      "tag": "GRI 1→2→3→4→5→6"
+    },
+    {
+      "id": "validator",
+      "type": "security",
+      "label": "Validator",
+      "sublabel": "Kode · Parent · Uraian",
+      "pos": [930, 530],
+      "size": [150, 56],
+      "tag": "REJECT if not in DB"
+    },
+    {
+      "id": "tariff_lookup",
+      "type": "backend",
+      "label": "Tariff Lookup",
+      "sublabel": "MFN · FTA · PPN · PPh22",
+      "pos": [700, 530],
+      "size": [160, 56],
+      "tag": "FTA = referensi"
+    },
+    {
+      "id": "mysql_db",
+      "type": "database",
+      "label": "MySQL 8.0+",
+      "sublabel": "Single Source of Truth",
+      "pos": [1160, 300],
+      "size": [160, 64],
+      "tag": "14K kode · 65K EN"
+    }
+  ],
+  "boundaries": [
+    {
+      "kind": "region",
+      "label": "Admin Data Center",
+      "wraps": ["docx_parser", "structure_validator", "version_manager"]
+    },
+    {
+      "kind": "region",
+      "label": "Classification Engine",
+      "wraps": ["fact_engine", "candidate_generator", "rules_engine", "validator", "tariff_lookup"]
+    },
+    {
+      "kind": "security-group",
+      "label": "AI Boundary — Fact Extract Only",
+      "wraps": ["llm_api"]
+    }
+  ],
+  "connections": [
+    {
+      "id": "user-to-fe",
+      "from": "user",
+      "to": "react_frontend",
+      "label": "isi form"
+    },
+    {
+      "id": "admin-to-fe",
+      "from": "admin",
+      "to": "react_frontend",
+      "label": "upload DOCX"
+    },
+    {
+      "id": "fe-to-api",
+      "from": "react_frontend",
+      "to": "api_backend",
+      "label": "HTTPS REST",
+      "variant": "emphasis"
+    },
+    {
+      "id": "api-to-fe-result",
+      "from": "api_backend",
+      "to": "react_frontend",
+      "label": "hasil + tarif"
+    },
+    {
+      "id": "api-to-parser",
+      "from": "api_backend",
+      "to": "docx_parser",
+      "label": "stream DOCX"
+    },
+    {
+      "id": "parser-to-sv",
+      "from": "docx_parser",
+      "to": "structure_validator",
+      "label": "tariff nodes"
+    },
+    {
+      "id": "sv-to-vm",
+      "from": "structure_validator",
+      "to": "version_manager",
+      "label": "valid OK"
+    },
+    {
+      "id": "vm-to-db",
+      "from": "version_manager",
+      "to": "mysql_db",
+      "label": "commit ACTIVE"
+    },
+    {
+      "id": "api-to-fact",
+      "from": "api_backend",
+      "to": "fact_engine",
+      "label": "user input",
+      "labelAt": [545, 318]
+    },
+    {
+      "id": "fact-to-llm",
+      "from": "fact_engine",
+      "to": "llm_api",
+      "label": "teks input",
+      "variant": "dashed",
+      "labelAt": [446, 468]
+    },
+    {
+      "id": "llm-to-fact",
+      "from": "llm_api",
+      "to": "fact_engine",
+      "label": "35 fakta",
+      "variant": "dashed"
+    },
+    {
+      "id": "fact-to-cg",
+      "from": "fact_engine",
+      "to": "candidate_generator",
+      "label": "FactSet"
+    },
+    {
+      "id": "cg-to-db",
+      "from": "candidate_generator",
+      "to": "mysql_db",
+      "label": "query kandidat",
+      "variant": "dashed"
+    },
+    {
+      "id": "cg-to-re",
+      "from": "candidate_generator",
+      "to": "rules_engine",
+      "label": "kandidat",
+      "labelAt": [895, 468]
+    },
+    {
+      "id": "re-to-db",
+      "from": "rules_engine",
+      "to": "mysql_db",
+      "label": "Notes + EN",
+      "variant": "dashed"
+    },
+    {
+      "id": "re-to-val",
+      "from": "rules_engine",
+      "to": "validator",
+      "label": "kode kandidat",
+      "variant": "emphasis",
+      "labelAt": [1005, 468]
+    },
+    {
+      "id": "val-to-db",
+      "from": "validator",
+      "to": "mysql_db",
+      "label": "verifikasi kode",
+      "variant": "security"
+    },
+    {
+      "id": "val-to-tl",
+      "from": "validator",
+      "to": "tariff_lookup",
+      "label": "kode valid"
+    },
+    {
+      "id": "tl-to-db",
+      "from": "tariff_lookup",
+      "to": "mysql_db",
+      "label": "query tarif",
+      "variant": "dashed",
+      "labelAt": [884, 468]
+    },
+    {
+      "id": "tl-to-api",
+      "from": "tariff_lookup",
+      "to": "api_backend",
+      "label": "tarif + disclaimer",
+      "labelAt": [660, 468]
+    },
+    {
+      "id": "api-to-db-audit",
+      "from": "api_backend",
+      "to": "mysql_db",
+      "label": "audit trail",
+      "variant": "dashed"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "Admin Data Center",
+      "items": [
+        "Upload DOCX: BTKI 2022 (14.273 kode) + EN WCO (65.833 paragraf) + Legal Notes",
+        "Parser OpenXML: ekstrak kode, uraian ID/EN, tarif, source location",
+        "Validasi hierarki, format XXXX.XX.XX, duplikat, total count",
+        "State machine: UPLOADED → PARSING → VALIDATING → DRY_RUN → COMMITTED → ACTIVE"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "Classification Engine (KUM HS 1–6)",
+      "items": [
+        "Fact Engine: LLM ekstrak 35 fakta — status UNKNOWN / CONFLICTING / VERIFIED",
+        "Candidate Generator: cari heading dari DB via lexical, sinonim, fungsi, EN",
+        "Rules Engine: terapkan KUM HS 1→2→3→4→5→6 secara berurutan",
+        "Validator: REJECT kode jika tidak ada di DB atau parent/uraian tidak cocok",
+        "Tariff Lookup: MFN, FTA (referensi), PPN, PPh22 — disclaimer wajib"
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "Aturan Kritis: AI vs Database",
+      "items": [
+        "LLM hanya boleh: ekstrak fakta, normalisasi unit, buat pertanyaan klarifikasi",
+        "LLM DILARANG menghasilkan kode HS, uraian, atau angka tarif dari memorinya",
+        "Semua kode HS wajib dari tabel btki_tariff_lines di MySQL",
+        "Validator menolak hasil jika kode tidak ditemukan di database aktif"
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "MySQL — Single Source of Truth",
+      "items": [
+        "btki_tariff_lines: 14.273 kode HS aktif BTKI 2022 (bilingual ID + EN)",
+        "explanatory_notes: 65.833 paragraf EN WCO dengan tipe dan source_id",
+        "section / chapter / subheading notes + mfn / fta / tax rates",
+        "classification_cases + reasoning_events: audit trail lengkap per session"
+      ]
+    }
+  ]
+}

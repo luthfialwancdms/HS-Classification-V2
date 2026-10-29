@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HS Classification V2 — UI Wireframe</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f1f5f9; color: #1e293b; }
+
+  /* NAV */
+  .nav { background: #1e293b; color: white; display: flex; align-items: center; justify-content: space-between; padding: 0 24px; height: 52px; }
+  .nav-brand { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 15px; }
+  .nav-logo { width: 32px; height: 32px; background: #3b82f6; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 800; }
+  .nav-links { display: flex; gap: 4px; }
+  .nav-link { color: #94a3b8; padding: 6px 12px; border-radius: 6px; font-size: 13px; cursor: pointer; }
+  .nav-link.active { background: #3b82f6; color: white; }
+  .nav-right { display: flex; align-items: center; gap: 12px; }
+  .badge { background: #f59e0b; color: #1e293b; padding: 2px 8px; border-radius: 12px; font-size: 11px; font-weight: 700; }
+  .user-avatar { width: 30px; height: 30px; background: #475569; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; color: #e2e8f0; cursor: pointer; }
+
+  /* PAGE TABS */
+  .page-tabs { display: flex; gap: 0; background: white; border-bottom: 1px solid #e2e8f0; padding: 0 24px; }
+  .tab { padding: 12px 20px; font-size: 13px; color: #64748b; cursor: pointer; border-bottom: 2px solid transparent; }
+  .tab.active { color: #3b82f6; border-bottom-color: #3b82f6; font-weight: 600; }
+
+  /* LAYOUT */
+  .screen { display: none; }
+  .screen.active { display: block; }
+  .container { max-width: 1280px; margin: 0 auto; padding: 24px; }
+
+  /* ===== SCREEN 1: KLASIFIKASI USER ===== */
+  .classify-layout { display: grid; grid-template-columns: 440px 1fr; gap: 20px; align-items: start; }
+
+  .card { background: white; border-radius: 12px; border: 1px solid #e2e8f0; overflow: hidden; }
+  .card-header { padding: 16px 20px; border-bottom: 1px solid #f1f5f9; display: flex; align-items: center; justify-content: space-between; }
+  .card-title { font-weight: 600; font-size: 14px; color: #0f172a; }
+  .card-body { padding: 20px; }
+
+  .form-section { margin-bottom: 20px; }
+  .form-section-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #94a3b8; margin-bottom: 12px; }
+  .form-group { margin-bottom: 12px; }
+  .form-label { font-size: 12px; font-weight: 500; color: #475569; margin-bottom: 4px; display: block; }
+  .form-input { width: 100%; padding: 8px 12px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 13px; color: #0f172a; background: #f8fafc; }
+  .form-select { width: 100%; padding: 8px 12px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 13px; color: #0f172a; background: #f8fafc; appearance: none; }
+  .chip-group { display: flex; flex-wrap: wrap; gap: 6px; }
+  .chip { padding: 4px 10px; border-radius: 16px; font-size: 12px; border: 1px solid #e2e8f0; cursor: pointer; color: #475569; background: white; }
+  .chip.selected { background: #eff6ff; border-color: #bfdbfe; color: #2563eb; }
+
+  .btn-primary { width: 100%; padding: 11px; background: #2563eb; color: white; border: none; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; margin-top: 8px; }
+  .btn-secondary { padding: 8px 16px; background: white; color: #475569; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 13px; cursor: pointer; }
+
+  /* Result panel */
+  .result-empty { text-align: center; padding: 60px 20px; color: #94a3b8; }
+  .result-empty-icon { font-size: 40px; margin-bottom: 12px; }
+
+  .hs-result { padding: 20px; }
+  .hs-code-block { background: #f0f9ff; border: 1px solid #bae6fd; border-radius: 10px; padding: 16px 20px; margin-bottom: 16px; }
+  .hs-code { font-size: 32px; font-weight: 800; color: #0369a1; letter-spacing: 1px; }
+  .hs-uraian { font-size: 13px; color: #0c4a6e; margin-top: 4px; }
+  .confidence-badge { display: inline-flex; align-items: center; gap: 4px; padding: 3px 10px; border-radius: 12px; font-size: 11px; font-weight: 700; margin-top: 8px; }
+  .conf-tinggi { background: #dcfce7; color: #166534; }
+  .conf-sedang { background: #fef9c3; color: #854d0e; }
+  .conf-rendah { background: #fee2e2; color: #991b1b; }
+
+  .tarif-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 16px; }
+  .tarif-item { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 10px 12px; }
+  .tarif-label { font-size: 10px; font-weight: 600; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.05em; }
+  .tarif-value { font-size: 20px; font-weight: 700; color: #0f172a; margin-top: 2px; }
+  .tarif-note { font-size: 10px; color: #94a3b8; margin-top: 2px; }
+  .tarif-disclaimer { background: #fffbeb; border: 1px solid #fde68a; border-radius: 8px; padding: 10px 12px; font-size: 11px; color: #92400e; margin-bottom: 16px; }
+
+  .reasoning-block { margin-bottom: 16px; }
+  .reasoning-title { font-size: 12px; font-weight: 600; color: #475569; margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
+  .reasoning-step { border-left: 3px solid #e2e8f0; padding: 8px 12px; margin-bottom: 6px; font-size: 12px; color: #475569; }
+  .reasoning-step .rule { font-weight: 700; color: #2563eb; font-size: 11px; margin-bottom: 2px; }
+  .reasoning-step.active { border-left-color: #22c55e; }
+
+  .eliminated-list { margin-bottom: 12px; }
+  .eliminated-item { display: flex; gap: 8px; padding: 6px 8px; background: #fef2f2; border-radius: 6px; margin-bottom: 4px; font-size: 12px; }
+  .eliminated-code { font-weight: 700; color: #dc2626; min-width: 52px; }
+  .eliminated-reason { color: #7f1d1d; }
+
+  .clarification-box { background: #fffbeb; border: 1px solid #fcd34d; border-radius: 10px; padding: 16px; margin-top: 12px; }
+  .clarification-q { font-size: 13px; font-weight: 600; color: #78350f; margin-bottom: 10px; }
+  .clarification-options { display: flex; flex-direction: column; gap: 6px; }
+  .clarification-opt { padding: 8px 12px; background: white; border: 1px solid #fcd34d; border-radius: 6px; font-size: 12px; color: #78350f; cursor: pointer; }
+  .clarification-opt:hover { background: #fef9c3; }
+
+  /* ===== SCREEN 2: RIWAYAT ===== */
+  .history-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .history-table th { padding: 10px 14px; text-align: left; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: #94a3b8; border-bottom: 1px solid #e2e8f0; }
+  .history-table td { padding: 12px 14px; border-bottom: 1px solid #f1f5f9; color: #475569; }
+  .history-table tr:hover td { background: #f8fafc; }
+  .code-pill { background: #eff6ff; color: #2563eb; padding: 2px 8px; border-radius: 12px; font-weight: 700; font-size: 12px; font-family: monospace; }
+
+  /* ===== SCREEN 3: ADMIN DATA CENTER ===== */
+  .admin-layout { display: grid; grid-template-columns: 220px 1fr; gap: 20px; }
+  .admin-sidebar { }
+  .admin-menu { list-style: none; }
+  .admin-menu-item { padding: 9px 14px; border-radius: 8px; font-size: 13px; color: #475569; cursor: pointer; margin-bottom: 2px; display: flex; align-items: center; gap: 8px; }
+  .admin-menu-item.active { background: #eff6ff; color: #2563eb; font-weight: 600; }
+  .admin-menu-item:hover { background: #f8fafc; }
+  .menu-icon { font-size: 15px; }
+
+  .version-list { }
+  .version-item { background: white; border: 1px solid #e2e8f0; border-radius: 10px; padding: 16px 20px; margin-bottom: 10px; display: flex; align-items: center; gap: 16px; }
+  .version-info { flex: 1; }
+  .version-name { font-weight: 600; font-size: 14px; color: #0f172a; }
+  .version-meta { font-size: 12px; color: #94a3b8; margin-top: 2px; }
+  .status-badge { padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: 700; }
+  .status-active { background: #dcfce7; color: #166534; }
+  .status-committed { background: #dbeafe; color: #1d4ed8; }
+  .status-validating { background: #fef9c3; color: #854d0e; }
+  .status-uploaded { background: #f1f5f9; color: #475569; }
+  .version-actions { display: flex; gap: 8px; }
+  .btn-sm { padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer; border: 1px solid #e2e8f0; background: white; color: #475569; }
+  .btn-sm.primary { background: #2563eb; color: white; border-color: #2563eb; }
+  .btn-sm.danger { background: white; color: #dc2626; border-color: #fca5a5; }
+
+  .upload-zone { border: 2px dashed #bfdbfe; border-radius: 12px; padding: 40px; text-align: center; background: #f0f9ff; cursor: pointer; margin-bottom: 20px; }
+  .upload-icon { font-size: 36px; margin-bottom: 8px; }
+  .upload-text { font-size: 14px; font-weight: 600; color: #1d4ed8; }
+  .upload-sub { font-size: 12px; color: #64748b; margin-top: 4px; }
+
+  .validation-report { }
+  .val-summary { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 20px; }
+  .val-stat { background: white; border: 1px solid #e2e8f0; border-radius: 10px; padding: 16px; text-align: center; }
+  .val-stat-num { font-size: 28px; font-weight: 800; }
+  .val-stat-label { font-size: 11px; color: #94a3b8; margin-top: 2px; }
+  .val-error { color: #dc2626; }
+  .val-warning { color: #d97706; }
+  .val-ok { color: #16a34a; }
+
+  .issue-list { }
+  .issue-item { padding: 10px 14px; border-radius: 8px; margin-bottom: 6px; font-size: 12px; display: flex; gap: 10px; align-items: flex-start; }
+  .issue-error { background: #fef2f2; border: 1px solid #fecaca; }
+  .issue-warning { background: #fffbeb; border: 1px solid #fde68a; }
+  .issue-severity { font-weight: 700; font-size: 10px; padding: 2px 6px; border-radius: 4px; min-width: 56px; text-align: center; }
+  .sev-error { background: #fee2e2; color: #991b1b; }
+  .sev-warning { background: #fef3c7; color: #92400e; }
+  .issue-msg { color: #374151; flex: 1; }
+  .issue-code { font-family: monospace; color: #2563eb; font-size: 11px; }
+
+  /* state machine viz */
+  .state-flow { display: flex; align-items: center; gap: 0; padding: 16px 0; overflow-x: auto; }
+  .state-node { padding: 6px 12px; border-radius: 6px; font-size: 11px; font-weight: 600; white-space: nowrap; background: #f1f5f9; color: #475569; }
+  .state-node.done { background: #dcfce7; color: #166534; }
+  .state-node.current { background: #dbeafe; color: #1d4ed8; box-shadow: 0 0 0 2px #3b82f6; }
+  .state-node.pending { background: #f1f5f9; color: #cbd5e1; }
+  .state-arrow { color: #cbd5e1; margin: 0 4px; font-size: 14px; }
+
+  /* ambiguity queue */
+  .ambig-item { background: white; border: 1px solid #fde68a; border-radius: 10px; padding: 16px; margin-bottom: 10px; }
+  .ambig-header { display: flex; justify-content: space-between; align-items: start; margin-bottom: 10px; }
+  .ambig-code { font-family: monospace; font-weight: 700; font-size: 15px; color: #0f172a; }
+  .ambig-desc { font-size: 12px; color: #475569; margin-top: 2px; }
+  .ambig-issue { font-size: 12px; color: #92400e; background: #fffbeb; padding: 8px 10px; border-radius: 6px; margin-bottom: 10px; }
+  .ambig-actions { display: flex; gap: 8px; }
+  .btn-approve { background: #16a34a; color: white; border: none; padding: 7px 14px; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer; }
+  .btn-reject { background: white; color: #dc2626; border: 1px solid #fca5a5; padding: 7px 14px; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer; }
+  .btn-edit { background: white; color: #475569; border: 1px solid #e2e8f0; padding: 7px 14px; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer; }
+
+  /* stats bar */
+  .stats-bar { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
+  .stat-card { background: white; border: 1px solid #e2e8f0; border-radius: 10px; padding: 16px 20px; }
+  .stat-value { font-size: 26px; font-weight: 800; color: #0f172a; }
+  .stat-label { font-size: 12px; color: #94a3b8; margin-top: 2px; }
+  .stat-delta { font-size: 11px; color: #16a34a; margin-top: 4px; }
+
+  .section-label { font-size: 13px; font-weight: 700; color: #0f172a; margin-bottom: 12px; }
+
+  /* responsive tabs for screens */
+  .screen-switcher { display: flex; gap: 8px; padding: 16px 24px 0; background: white; border-bottom: 1px solid #e2e8f0; }
+  .screen-tab { padding: 8px 16px; font-size: 12px; font-weight: 600; cursor: pointer; border-radius: 8px 8px 0 0; color: #64748b; border: 1px solid transparent; border-bottom: none; }
+  .screen-tab.active { background: #f1f5f9; color: #2563eb; border-color: #e2e8f0; }
+
+  .note-box { background: #f0f9ff; border: 1px solid #bae6fd; border-radius: 8px; padding: 10px 14px; font-size: 11px; color: #0369a1; margin-bottom: 16px; }
+</style>
+</head>
+<body>
+
+<!-- TOP NAV -->
+<div class="nav">
+  <div class="nav-brand">
+    <div class="nav-logo">HS</div>
+    AI HS Classification Intelligence
+  </div>
+  <div class="nav-links">
+    <div class="nav-link active" onclick="showScreen('classify')">Klasifikasi</div>
+    <div class="nav-link" onclick="showScreen('history')">Riwayat</div>
+    <div class="nav-link" onclick="showScreen('admin')">Admin Data Center</div>
+  </div>
+  <div class="nav-right">
+    <span class="badge">V2 Beta</span>
+    <div class="user-avatar">RA</div>
+  </div>
+</div>
+
+<!-- ================================================ -->
+<!-- SCREEN 1: KLASIFIKASI USER                       -->
+<!-- ================================================ -->
+<div id="screen-classify" class="screen active">
+  <div class="container">
+    <div class="classify-layout">
+
+      <!-- LEFT: FORM -->
+      <div>
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">📦 Data Barang</span>
+            <button class="btn-secondary" style="font-size:12px; padding:4px 10px;">Reset</button>
+          </div>
+          <div class="card-body">
+
+            <div class="form-section">
+              <div class="form-section-title">Identitas Barang</div>
+              <div class="form-group">
+                <label class="form-label">Nama Dagang / Brand / Model</label>
+                <input class="form-input" placeholder="cth: MacBook Air M2, Komatsu PC200" value="Komatsu PC210LC-11">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Nama Generik Barang ★</label>
+                <input class="form-input" placeholder="cth: Laptop, Excavator, Crane" value="Excavator">
+              </div>
+            </div>
+
+            <div class="form-section">
+              <div class="form-section-title">Fisik & Material</div>
+              <div class="form-group">
+                <label class="form-label">Material Utama</label>
+                <div class="chip-group">
+                  <span class="chip selected">Baja/Besi</span>
+                  <span class="chip">Aluminium</span>
+                  <span class="chip">Plastik</span>
+                  <span class="chip">Karet</span>
+                  <span class="chip">Tembaga</span>
+                  <span class="chip">Kimia</span>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Kondisi Saat Impor</label>
+                <select class="form-select">
+                  <option>Lengkap dan jadi (siap pakai)</option>
+                  <option>Belum lengkap / belum selesai</option>
+                  <option>Terurai / CKD</option>
+                  <option>SKD</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-section">
+              <div class="form-section-title">Fungsi & Cara Kerja</div>
+              <div class="form-group">
+                <label class="form-label">Fungsi Utama Barang</label>
+                <select class="form-select">
+                  <option>Menggali / Earthmoving (excavator, bulldozer)</option>
+                  <option>Mengangkat / Lifting (crane, hoist)</option>
+                  <option>Mengangkut barang (transportasi darat)</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Cara Kerja / Prinsip Operasi</label>
+                <div class="chip-group">
+                  <span class="chip selected">Diesel / Motor bakar</span>
+                  <span class="chip selected">Hidrolik</span>
+                  <span class="chip">Elektrik</span>
+                  <span class="chip">Pneumatik</span>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Mobilitas</label>
+                <div class="chip-group">
+                  <span class="chip selected">Self-propelled (bergerak sendiri)</span>
+                  <span class="chip">Ditarik (towed)</span>
+                  <span class="chip">Statis</span>
+                  <span class="chip">Terapung</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-section">
+              <div class="form-section-title">Konteks & Spesifikasi</div>
+              <div class="form-group">
+                <label class="form-label">Area / Lingkungan Operasi</label>
+                <select class="form-select">
+                  <option>Off-highway / Perkebunan / Pertambangan</option>
+                  <option>On-road / Jalan raya</option>
+                  <option>Perairan / Laut</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Spesifikasi Teknis Utama</label>
+                <input class="form-input" placeholder="cth: GVW 4.5 ton, Output 550 kVA" value="Kapasitas bucket 1.2 m³, berat operasi 21 ton, diesel 6-silinder">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Keterangan Tambahan</label>
+                <input class="form-input" placeholder="Informasi lain yang relevan..." value="">
+              </div>
+            </div>
+
+            <button class="btn-primary" onclick="showResult()">🔍 Analisis HS Code</button>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT: RESULT -->
+      <div>
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">🔍 Hasil Analisis</span>
+            <button class="btn-secondary" style="font-size:12px; padding:4px 10px; display:none" id="btn-export">Export PDF</button>
+          </div>
+
+          <!-- EMPTY STATE -->
+          <div id="result-empty" class="result-empty">
+            <div class="result-empty-icon">🔎</div>
+            <div style="font-size:14px; font-weight:600; margin-bottom:6px;">Belum ada analisis</div>
+            <div style="font-size:12px;">Isi data barang di sebelah kiri,<br>lalu klik Analisis HS Code</div>
+          </div>
+
+          <!-- CLARIFICATION STATE (hidden by default) -->
+          <div id="result-clarify" style="padding:20px; display:none;">
+            <div class="note-box">Sistem menemukan beberapa kandidat yang perlu dikonfirmasi terlebih dahulu.</div>
+            <div style="font-size:12px; color:#64748b; margin-bottom:12px;">Kandidat sementara: <span style="font-family:monospace; color:#2563eb">84.29</span>, <span style="font-family:monospace; color:#2563eb">84.30</span></div>
+            <div class="clarification-box">
+              <div class="clarification-q">❓ Apakah excavator ini memiliki superstructure yang bisa berputar 360°?</div>
+              <div style="font-size:11px; color:#92400e; margin-bottom:8px;">Jawaban ini akan mengeliminasi 1 dari 2 kandidat heading.</div>
+              <div class="clarification-options">
+                <div class="clarification-opt" onclick="showResult()">✅ Ya, superstructure bisa berputar penuh 360°</div>
+                <div class="clarification-opt">❌ Tidak, hanya bisa berputar terbatas</div>
+                <div class="clarification-opt">❓ Tidak yakin / perlu cek spesifikasi</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- RESULT STATE (hidden by default) -->
+          <div id="result-done" style="display:none;">
+            <div class="hs-result">
+
+              <!-- HS CODE BLOCK -->
+              <div class="hs-code-block">
+                <div style="font-size:11px; font-weight:600; color:#0369a1; margin-bottom:4px;">KODE HS REKOMENDASI</div>
+                <div class="hs-code">8429.52.00</div>
+                <div class="hs-uraian">Mesin dengan superstructure berputar 360° — Shovel loader dan backhoe loader</div>
+                <div class="confidence-badge conf-tinggi">✓ TINGGI</div>
+              </div>
+
+              <!-- TARIF -->
+              <div style="font-size:12px; font-weight:600; color:#475569; margin-bottom:8px;">💰 Tarif & Pajak</div>
+              <div class="tarif-grid">
+                <div class="tarif-item">
+                  <div class="tarif-label">Bea Masuk MFN</div>
+                  <div class="tarif-value">0%</div>
+                </div>
+                <div class="tarif-item">
+                  <div class="tarif-label">FTA ASEAN</div>
+                  <div class="tarif-value" style="color:#2563eb">0%</div>
+                  <div class="tarif-note">referensi saja ⚠</div>
+                </div>
+                <div class="tarif-item">
+                  <div class="tarif-label">PPN Impor</div>
+                  <div class="tarif-value">11%</div>
+                  <div class="tarif-note">tarif standar</div>
+                </div>
+                <div class="tarif-item">
+                  <div class="tarif-label">PPh 22 Impor</div>
+                  <div class="tarif-value">7.5%</div>
+                  <div class="tarif-note">tarif standar</div>
+                </div>
+              </div>
+              <div class="tarif-disclaimer">⚠️ Tarif FTA tidak menjamin eligibilitas. Bergantung pada Rules of Origin, Certificate of Origin, dan persyaratan prosedural. PPN & PPh 22 adalah tarif standar BTKI — fasilitas khusus PMK tidak dicakup.</div>
+
+              <!-- REASONING -->
+              <div class="reasoning-block">
+                <div class="reasoning-title">⚖️ Reasoning KUM HS</div>
+                <div class="reasoning-step active">
+                  <div class="rule">KUM HS 1</div>
+                  Barang adalah mesin penggali self-propelled dengan superstructure berputar 360°. Pos 84.29 menggambarkan barang secara langsung. Section Note XVI tidak mengecualikan.
+                </div>
+                <div class="reasoning-step active">
+                  <div class="rule">KUM HS 6</div>
+                  Subpos 8429.52 dipilih karena superstructure berputar 360° (bukan 8429.51 front-end shovel). Kode nasional .00 karena tidak ada pembedaan CKD/non-CKD untuk subpos ini.
+                </div>
+              </div>
+
+              <!-- ELIMINATED -->
+              <div>
+                <div style="font-size:12px; font-weight:600; color:#475569; margin-bottom:8px;">❌ Kandidat Dieliminasi</div>
+                <div class="eliminated-list">
+                  <div class="eliminated-item">
+                    <div class="eliminated-code">84.30</div>
+                    <div class="eliminated-reason">Pos 84.30 untuk moving, grading, levelling tanpa drive mechanism untuk attachment. Excavator punya drive mechanism hidrolik sendiri.</div>
+                  </div>
+                  <div class="eliminated-item">
+                    <div class="eliminated-code">8429.59</div>
+                    <div class="eliminated-reason">Subpos residual — tidak digunakan karena 8429.52 lebih spesifik (KUM HS 3a).</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- ACTIONS -->
+              <div style="display:flex; gap:8px; margin-top:16px; padding-top:16px; border-top:1px solid #f1f5f9;">
+                <button class="btn-secondary" style="flex:1">Export PDF</button>
+                <button class="btn-secondary" style="flex:1">Lihat Audit Trail</button>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ================================================ -->
+<!-- SCREEN 2: RIWAYAT                               -->
+<!-- ================================================ -->
+<div id="screen-history" class="screen">
+  <div class="container">
+    <div class="stats-bar">
+      <div class="stat-card">
+        <div class="stat-value">247</div>
+        <div class="stat-label">Total Klasifikasi</div>
+        <div class="stat-delta">↑ 12 bulan ini</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" style="color:#16a34a">94%</div>
+        <div class="stat-label">Confidence TINGGI</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" style="color:#d97706">14</div>
+        <div class="stat-label">Perlu Expert Review</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" style="color:#2563eb">3</div>
+        <div class="stat-label">Versi BTKI Aktif</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">Riwayat Klasifikasi</span>
+        <div style="display:flex;gap:8px;">
+          <input class="form-input" style="width:220px;font-size:12px;padding:6px 10px;" placeholder="Cari nama barang atau kode HS...">
+          <button class="btn-secondary">Filter</button>
+          <button class="btn-secondary">Export Excel</button>
+        </div>
+      </div>
+      <div style="overflow-x:auto;">
+        <table class="history-table">
+          <thead>
+            <tr>
+              <th>Tanggal</th>
+              <th>Nama Barang</th>
+              <th>Kode HS</th>
+              <th>Uraian</th>
+              <th>Confidence</th>
+              <th>User</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>03 Sep 2026</td>
+              <td>Komatsu PC210LC-11 Excavator</td>
+              <td><span class="code-pill">8429.52.00</span></td>
+              <td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">Mesin dengan superstructure berputar 360°</td>
+              <td><span class="confidence-badge conf-tinggi" style="font-size:10px">TINGGI</span></td>
+              <td>Randi A.</td>
+              <td><button class="btn-sm">Detail</button></td>
+            </tr>
+            <tr>
+              <td>02 Sep 2026</td>
+              <td>MacBook Air M2</td>
+              <td><span class="code-pill">8471.30.20</span></td>
+              <td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">Laptop termasuk notebook, portabel</td>
+              <td><span class="confidence-badge conf-tinggi" style="font-size:10px">TINGGI</span></td>
+              <td>Sari M.</td>
+              <td><button class="btn-sm">Detail</button></td>
+            </tr>
+            <tr>
+              <td>01 Sep 2026</td>
+              <td>Crane Barge Majulah</td>
+              <td><span class="code-pill">8905.90.90</span></td>
+              <td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">Kapal dan struktur terapung lainnya</td>
+              <td><span class="confidence-badge conf-sedang" style="font-size:10px">SEDANG</span></td>
+              <td>Randi A.</td>
+              <td><button class="btn-sm">Detail</button></td>
+            </tr>
+            <tr>
+              <td>31 Ags 2026</td>
+              <td>Dumper WEA08 Off-Highway</td>
+              <td><span class="code-pill">8704.10.31</span></td>
+              <td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">Dumper off-highway, GVW ≤5 ton</td>
+              <td><span class="confidence-badge conf-tinggi" style="font-size:10px">TINGGI</span></td>
+              <td>Budi S.</td>
+              <td><button class="btn-sm">Detail</button></td>
+            </tr>
+            <tr>
+              <td>29 Ags 2026</td>
+              <td>Motor listrik 3-phase industri</td>
+              <td><span class="code-pill">8501.52.00</span></td>
+              <td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">Motor AC multi-phase, 750W–75kW</td>
+              <td><span class="confidence-badge conf-rendah" style="font-size:10px; padding:3px 8px;">RENDAH</span></td>
+              <td>Sari M.</td>
+              <td><button class="btn-sm primary">Expert Review</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ================================================ -->
+<!-- SCREEN 3: ADMIN DATA CENTER                     -->
+<!-- ================================================ -->
+<div id="screen-admin" class="screen">
+  <div class="container">
+    <div class="admin-layout">
+
+      <!-- SIDEBAR -->
+      <div>
+        <div class="card" style="padding:8px;">
+          <ul class="admin-menu">
+            <li class="admin-menu-item active" onclick="showAdminTab('versions')"><span class="menu-icon">📋</span> Versi Data BTKI</li>
+            <li class="admin-menu-item" onclick="showAdminTab('upload')"><span class="menu-icon">📤</span> Upload Data Baru</li>
+            <li class="admin-menu-item" onclick="showAdminTab('validation')"><span class="menu-icon">🔍</span> Laporan Validasi</li>
+            <li class="admin-menu-item" onclick="showAdminTab('ambiguity')"><span class="menu-icon">⚠️</span> Antrian Ambiguitas <span style="background:#ef4444;color:white;border-radius:10px;padding:1px 6px;font-size:10px;margin-left:auto;">7</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- MAIN AREA -->
+      <div>
+
+        <!-- TAB: VERSIONS -->
+        <div id="admin-versions">
+          <div class="section-label">Versi Data BTKI</div>
+
+          <div class="version-item">
+            <div style="width:8px;height:8px;border-radius:50%;background:#16a34a;flex-shrink:0;margin-top:4px;"></div>
+            <div class="version-info">
+              <div class="version-name">BTKI 2022 v1.0</div>
+              <div class="version-meta">Aktif sejak 1 Jan 2022 · 14.273 kode · 65.833 EN paragraf</div>
+              <div style="margin-top:8px;">
+                <div class="state-flow">
+                  <div class="state-node done">UPLOADED</div><div class="state-arrow">›</div>
+                  <div class="state-node done">PARSING</div><div class="state-arrow">›</div>
+                  <div class="state-node done">VALIDATING</div><div class="state-arrow">›</div>
+                  <div class="state-node done">DRY_RUN</div><div class="state-arrow">›</div>
+                  <div class="state-node done">COMMITTED</div><div class="state-arrow">›</div>
+                  <div class="state-node current">ACTIVE</div>
+                </div>
+              </div>
+            </div>
+            <span class="status-badge status-active">ACTIVE</span>
+            <div class="version-actions">
+              <button class="btn-sm">Lihat Detail</button>
+            </div>
+          </div>
+
+          <div class="version-item">
+            <div style="width:8px;height:8px;border-radius:50%;background:#f59e0b;flex-shrink:0;margin-top:4px;"></div>
+            <div class="version-info">
+              <div class="version-name">BTKI 2022 v1.1 (Revisi)</div>
+              <div class="version-meta">Upload 28 Ags 2026 · 14.291 kode · Validasi selesai — menunggu approve</div>
+              <div style="margin-top:8px;">
+                <div class="state-flow">
+                  <div class="state-node done">UPLOADED</div><div class="state-arrow">›</div>
+                  <div class="state-node done">PARSING</div><div class="state-arrow">›</div>
+                  <div class="state-node done">VALIDATING</div><div class="state-arrow">›</div>
+                  <div class="state-node current">DRY_RUN ✓</div><div class="state-arrow">›</div>
+                  <div class="state-node pending">COMMITTED</div><div class="state-arrow">›</div>
+                  <div class="state-node pending">ACTIVE</div>
+                </div>
+              </div>
+            </div>
+            <span class="status-badge status-validating">READY</span>
+            <div class="version-actions">
+              <button class="btn-sm primary">Aktivasi</button>
+              <button class="btn-sm">Lihat Detail</button>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- TAB: UPLOAD (hidden) -->
+        <div id="admin-upload" style="display:none;">
+          <div class="section-label">Upload Data Baru</div>
+          <div class="upload-zone">
+            <div class="upload-icon">📄</div>
+            <div class="upload-text">Klik atau drag file Word (.docx) ke sini</div>
+            <div class="upload-sub">BTKI, Explanatory Notes, atau Catatan Bab/Bagian</div>
+          </div>
+          <div class="card">
+            <div class="card-header"><span class="card-title">Pilih Tipe Dokumen</span></div>
+            <div class="card-body" style="display:flex;gap:10px;">
+              <div class="chip selected">BTKI (Tariff Lines)</div>
+              <div class="chip">Explanatory Notes (EN)</div>
+              <div class="chip">Catatan Bab/Bagian</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB: VALIDATION (hidden) -->
+        <div id="admin-validation" style="display:none;">
+          <div class="section-label">Laporan Validasi — BTKI 2022 v1.1</div>
+          <div class="val-summary">
+            <div class="val-stat">
+              <div class="val-stat-num val-ok">14.291</div>
+              <div class="val-stat-label">Total Kode Terparsing</div>
+            </div>
+            <div class="val-stat">
+              <div class="val-stat-num val-error">3</div>
+              <div class="val-stat-label">ERROR (wajib fix)</div>
+            </div>
+            <div class="val-stat">
+              <div class="val-stat-num val-warning">12</div>
+              <div class="val-stat-label">WARNING</div>
+            </div>
+            <div class="val-stat">
+              <div class="val-stat-num val-ok">7</div>
+              <div class="val-stat-label">Antrian Ambiguitas</div>
+            </div>
+          </div>
+          <div class="issue-list">
+            <div class="issue-item issue-error">
+              <span class="issue-severity sev-error">ERROR</span>
+              <div class="issue-msg">
+                <div>Kode <span class="issue-code">8471.30.20</span> memiliki parent <span class="issue-code">8471.30</span> yang tidak ditemukan di database</div>
+                <div style="color:#9ca3af;font-size:11px;margin-top:2px;">Halaman 847, Paragraf 1234 · Hierarki putus</div>
+              </div>
+            </div>
+            <div class="issue-item issue-warning">
+              <span class="issue-severity sev-warning">WARNING</span>
+              <div class="issue-msg">
+                <div>Uraian Bahasa Inggris kosong untuk kode <span class="issue-code">8704.10.31</span></div>
+                <div style="color:#9ca3af;font-size:11px;margin-top:2px;">Halaman 1203, Paragraf 4521 · Uraian Bahasa Indonesia tersedia</div>
+              </div>
+            </div>
+            <div class="issue-item issue-warning">
+              <span class="issue-severity sev-warning">WARNING</span>
+              <div class="issue-msg">
+                <div>Total kode (14.291) berbeda 18 dari expected (14.273) — perlu konfirmasi apakah ada penambahan kode baru</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB: AMBIGUITY QUEUE (hidden) -->
+        <div id="admin-ambiguity" style="display:none;">
+          <div class="section-label">Antrian Ambiguitas — 7 entri menunggu review</div>
+          <div class="note-box">Parser tidak dapat menentukan parent kode untuk entri berikut dari struktur dokumen Word. Mohon review dan tentukan parent yang benar sebelum commit.</div>
+
+          <div class="ambig-item">
+            <div class="ambig-header">
+              <div>
+                <div class="ambig-code">8471.30.20</div>
+                <div class="ambig-desc">Laptop termasuk notebook dan subnotebook, dengan CPU terintegrasi</div>
+              </div>
+              <span class="status-badge status-validating">Menunggu Review</span>
+            </div>
+            <div class="ambig-issue">⚠️ Masalah: Level indentasi di Word tidak konsisten di halaman 847. Parser menemukan 2 kemungkinan parent: <strong>8471.30</strong> atau <strong>8471</strong> langsung.</div>
+            <div style="display:flex;gap:12px;margin-bottom:10px;font-size:12px;color:#475569;">
+              <div>📄 <strong>Dokumen:</strong> BTKI_2022_Bab84.docx</div>
+              <div>📍 <strong>Halaman:</strong> 847 · Paragraf 1234</div>
+            </div>
+            <div class="ambig-actions">
+              <button class="btn-approve">✓ Parent: 8471.30</button>
+              <button class="btn-edit">✏ Edit Manual</button>
+              <button class="btn-reject">✗ Tandai Error</button>
+            </div>
+          </div>
+
+          <div class="ambig-item">
+            <div class="ambig-header">
+              <div>
+                <div class="ambig-code">2710.19.29</div>
+                <div class="ambig-desc">Minyak bumi lainnya, selain solar dan bensin</div>
+              </div>
+              <span class="status-badge status-validating">Menunggu Review</span>
+            </div>
+            <div class="ambig-issue">⚠️ Masalah: Tabel tarif di Word menggunakan merged cells yang menyebabkan ambiguitas posisi indent. Parent kandidat: <strong>2710.19</strong> atau <strong>2710.12</strong>.</div>
+            <div class="ambig-actions">
+              <button class="btn-approve">✓ Parent: 2710.19</button>
+              <button class="btn-edit">✏ Edit Manual</button>
+              <button class="btn-reject">✗ Tandai Error</button>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function showScreen(name) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('screen-' + name).classList.add('active');
+  document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+  const labels = { classify: 'Klasifikasi', history: 'Riwayat', admin: 'Admin Data Center' };
+  document.querySelectorAll('.nav-link').forEach(l => {
+    if (l.textContent.trim() === labels[name]) l.classList.add('active');
+  });
+}
+
+function showResult() {
+  document.getElementById('result-empty').style.display = 'none';
+  document.getElementById('result-clarify').style.display = 'none';
+  document.getElementById('result-done').style.display = 'block';
+  document.getElementById('btn-export').style.display = 'block';
+}
+
+function showAdminTab(tab) {
+  ['versions','upload','validation','ambiguity'].forEach(t => {
+    const el = document.getElementById('admin-' + t);
+    if (el) el.style.display = t === tab ? 'block' : 'none';
+  });
+  document.querySelectorAll('.admin-menu-item').forEach(item => item.classList.remove('active'));
+  event.currentTarget.classList.add('active');
+}
+
+// Show clarification first when Analisis is clicked
+document.querySelector('.btn-primary').onclick = function() {
+  document.getElementById('result-empty').style.display = 'none';
+  document.getElementById('result-clarify').style.display = 'block';
+  document.getElementById('result-done').style.display = 'none';
+}
+</script>
+
+</body>
+</html>

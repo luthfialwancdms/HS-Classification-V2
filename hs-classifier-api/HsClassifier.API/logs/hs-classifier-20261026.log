@@ -1,0 +1,251 @@
+2026-10-26 10:55:44.786 +07:00 [INF] Database already seeded — skipping.
+2026-10-26 10:56:05.607 +07:00 [INF] Hierarchy seeded: 1029 headings, 1321 one-dash groups, 1878 subheadings.
+2026-10-26 11:13:54.773 +07:00 [INF] HTTP OPTIONS /api/classification/start responded 204 in 20.1028 ms
+2026-10-26 11:13:58.922 +07:00 [INF] HTTP POST /api/classification/start responded 401 in 4113.2130 ms
+2026-10-26 11:17:01.030 +07:00 [INF] HTTP OPTIONS /api/auth/login responded 204 in 2.3051 ms
+2026-10-26 11:17:02.318 +07:00 [INF] HTTP POST /api/auth/login responded 200 in 1259.6846 ms
+2026-10-26 11:17:21.562 +07:00 [INF] HTTP OPTIONS /api/classification/start responded 204 in 0.3484 ms
+2026-10-26 11:17:25.153 +07:00 [WRN] The query uses a row limiting operator ('Skip'/'Take') without an 'OrderBy' operator. This may lead to unpredictable results. If the 'Distinct' operator is used after 'OrderBy', then make sure to use the 'OrderBy' operator after 'Distinct' as the ordering would otherwise get erased.
+2026-10-26 11:17:26.069 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 4501.1179 ms
+2026-10-26 11:17:56.087 +07:00 [INF] HTTP OPTIONS /api/classification/63/facts responded 204 in 0.4404 ms
+2026-10-26 11:17:59.058 +07:00 [INF] HTTP POST /api/classification/63/facts responded 200 in 2944.4785 ms
+2026-10-26 11:18:05.718 +07:00 [INF] HTTP OPTIONS /api/classification/63/facts responded 204 in 0.3493 ms
+2026-10-26 11:18:08.832 +07:00 [INF] HTTP POST /api/classification/63/facts responded 200 in 3108.5667 ms
+2026-10-26 11:18:08.839 +07:00 [INF] HTTP OPTIONS /api/classification/63/reasoning responded 204 in 0.2122 ms
+2026-10-26 11:18:08.995 +07:00 [INF] HTTP GET /api/classification/63/reasoning responded 200 in 150.6216 ms
+2026-10-26 14:29:30.238 +07:00 [INF] HTTP OPTIONS /api/classification/cases responded 204 in 2.3703 ms
+2026-10-26 14:29:30.238 +07:00 [INF] HTTP OPTIONS /api/classification/cases responded 204 in 2.3622 ms
+2026-10-26 14:29:30.793 +07:00 [INF] HTTP GET /api/classification/cases responded 200 in 537.2499 ms
+2026-10-26 14:29:30.835 +07:00 [INF] HTTP GET /api/classification/cases responded 200 in 39.4292 ms
+2026-10-26 14:29:33.925 +07:00 [INF] HTTP OPTIONS /api/classification/cases responded 204 in 0.1099 ms
+2026-10-26 14:29:33.925 +07:00 [INF] HTTP OPTIONS /api/classification/cases responded 204 in 0.1080 ms
+2026-10-26 14:29:33.999 +07:00 [INF] HTTP GET /api/classification/cases responded 200 in 71.1859 ms
+2026-10-26 14:29:34.048 +07:00 [INF] HTTP GET /api/classification/cases responded 200 in 46.7469 ms
+2026-10-26 14:29:36.034 +07:00 [INF] HTTP OPTIONS /api/admin/versions responded 204 in 0.1133 ms
+2026-10-26 14:29:36.036 +07:00 [INF] HTTP OPTIONS /api/admin/versions responded 204 in 0.1083 ms
+2026-10-26 14:29:36.111 +07:00 [INF] HTTP GET /api/admin/versions responded 200 in 65.1324 ms
+2026-10-26 14:29:36.135 +07:00 [INF] HTTP GET /api/admin/versions responded 200 in 22.7862 ms
+2026-10-26 14:29:40.905 +07:00 [INF] HTTP OPTIONS /api/admin/import-batches responded 204 in 0.2400 ms
+2026-10-26 14:29:40.905 +07:00 [INF] HTTP OPTIONS /api/admin/import-batches responded 204 in 0.3284 ms
+2026-10-26 14:29:40.994 +07:00 [INF] HTTP GET /api/admin/import-batches responded 200 in 79.0840 ms
+2026-10-26 14:29:41.019 +07:00 [INF] HTTP GET /api/admin/import-batches responded 200 in 23.2306 ms
+2026-10-26 14:29:43.622 +07:00 [INF] HTTP GET /api/admin/import-batches responded 200 in 43.6707 ms
+2026-10-26 14:29:43.659 +07:00 [INF] HTTP GET /api/admin/import-batches responded 200 in 34.8745 ms
+2026-10-26 14:33:13.231 +07:00 [INF] HTTP OPTIONS /api/classification/cases responded 204 in 0.2145 ms
+2026-10-26 14:33:13.238 +07:00 [INF] HTTP OPTIONS /api/classification/cases responded 204 in 0.2003 ms
+2026-10-26 14:33:13.330 +07:00 [INF] HTTP GET /api/classification/cases responded 200 in 91.4643 ms
+2026-10-26 14:33:13.365 +07:00 [INF] HTTP GET /api/classification/cases responded 200 in 33.4677 ms
+2026-10-26 14:33:14.577 +07:00 [INF] HTTP OPTIONS /api/classification/cases responded 204 in 0.2253 ms
+2026-10-26 14:33:14.578 +07:00 [INF] HTTP OPTIONS /api/classification/cases responded 204 in 0.0656 ms
+2026-10-26 14:33:14.644 +07:00 [INF] HTTP GET /api/classification/cases responded 200 in 63.8264 ms
+2026-10-26 14:33:14.673 +07:00 [INF] HTTP GET /api/classification/cases responded 200 in 26.9357 ms
+2026-10-26 14:33:15.870 +07:00 [INF] HTTP OPTIONS /api/admin/versions responded 204 in 0.1291 ms
+2026-10-26 14:33:15.870 +07:00 [INF] HTTP OPTIONS /api/admin/versions responded 204 in 0.0674 ms
+2026-10-26 14:33:15.902 +07:00 [INF] HTTP GET /api/admin/versions responded 200 in 23.6569 ms
+2026-10-26 14:33:15.926 +07:00 [INF] HTTP GET /api/admin/versions responded 200 in 22.2937 ms
+2026-10-26 14:33:17.749 +07:00 [INF] HTTP GET /api/classification/cases responded 200 in 44.6416 ms
+2026-10-26 14:33:17.777 +07:00 [INF] HTTP GET /api/classification/cases responded 200 in 25.6107 ms
+2026-10-26 14:33:23.780 +07:00 [INF] HTTP OPTIONS /api/admin/versions responded 204 in 0.0581 ms
+2026-10-26 14:33:23.780 +07:00 [INF] HTTP OPTIONS /api/admin/versions responded 204 in 0.0477 ms
+2026-10-26 14:33:23.815 +07:00 [INF] HTTP GET /api/admin/versions responded 200 in 32.2134 ms
+2026-10-26 14:33:23.836 +07:00 [INF] HTTP GET /api/admin/versions responded 200 in 19.5005 ms
+2026-10-26 14:33:35.521 +07:00 [INF] HTTP OPTIONS /api/admin/import-batches responded 204 in 0.0601 ms
+2026-10-26 14:33:35.521 +07:00 [INF] HTTP OPTIONS /api/admin/import-batches responded 204 in 0.0154 ms
+2026-10-26 14:33:35.571 +07:00 [INF] HTTP GET /api/admin/import-batches responded 200 in 45.8507 ms
+2026-10-26 14:33:35.601 +07:00 [INF] HTTP GET /api/admin/import-batches responded 200 in 27.0841 ms
+2026-10-26 14:33:36.448 +07:00 [INF] HTTP GET /api/admin/import-batches responded 200 in 24.7669 ms
+2026-10-26 14:33:36.467 +07:00 [INF] HTTP GET /api/admin/import-batches responded 200 in 16.8383 ms
+2026-10-26 14:34:13.705 +07:00 [INF] HTTP OPTIONS /api/admin/versions responded 204 in 0.0951 ms
+2026-10-26 14:34:13.706 +07:00 [INF] HTTP OPTIONS /api/admin/versions responded 204 in 0.0677 ms
+2026-10-26 14:34:13.754 +07:00 [INF] HTTP GET /api/admin/versions responded 200 in 45.0220 ms
+2026-10-26 14:34:13.779 +07:00 [INF] HTTP GET /api/admin/versions responded 200 in 23.1377 ms
+2026-10-26 21:25:39.793 +07:00 [INF] Database already seeded — skipping.
+2026-10-26 21:25:43.422 +07:00 [INF] Hierarchy seeded: 1029 headings, 1321 one-dash groups, 1878 subheadings.
+2026-10-26 21:25:46.171 +07:00 [INF] MFN seeded: 10807 rates; skipped 277 unparseable, 135 codes not in active version.
+2026-10-26 21:31:13.781 +07:00 [INF] Database already seeded — skipping.
+2026-10-26 21:31:17.259 +07:00 [INF] Hierarchy seeded: 1029 headings, 1321 one-dash groups, 1878 subheadings.
+2026-10-26 21:31:20.169 +07:00 [INF] MFN seeded: 10807 rates; skipped 277 unparseable, 135 codes not in active version.
+2026-10-26 21:32:36.258 +07:00 [INF] HTTP POST /api/auth/login responded 200 in 2647.2445 ms
+2026-10-26 21:32:38.216 +07:00 [WRN] The query uses a row limiting operator ('Skip'/'Take') without an 'OrderBy' operator. This may lead to unpredictable results. If the 'Distinct' operator is used after 'OrderBy', then make sure to use the 'OrderBy' operator after 'Distinct' as the ordering would otherwise get erased.
+2026-10-26 21:32:38.554 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 2277.3054 ms
+2026-10-26 21:32:38.633 +07:00 [INF] HTTP GET /api/classification/64 responded 200 in 47.8840 ms
+2026-10-26 21:33:18.488 +07:00 [INF] HTTP POST /api/auth/login responded 200 in 28.3003 ms
+2026-10-26 21:33:20.070 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 1579.6829 ms
+2026-10-26 21:41:15.744 +07:00 [INF] Database already seeded — skipping.
+2026-10-26 21:41:19.083 +07:00 [INF] Hierarchy seeded: 1029 headings, 1321 one-dash groups, 1878 subheadings.
+2026-10-26 21:41:22.088 +07:00 [INF] MFN seeded: 10807 rates; skipped 277 unparseable, 135 codes not in active version.
+2026-10-26 21:44:19.474 +07:00 [INF] HTTP POST /api/auth/login responded 200 in 152.4904 ms
+2026-10-26 21:44:19.695 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 102.0456 ms
+2026-10-26 21:44:21.212 +07:00 [WRN] The query uses a row limiting operator ('Skip'/'Take') without an 'OrderBy' operator. This may lead to unpredictable results. If the 'Distinct' operator is used after 'OrderBy', then make sure to use the 'OrderBy' operator after 'Distinct' as the ordering would otherwise get erased.
+2026-10-26 21:44:21.441 +07:00 [INF] HTTP POST /api/classification/66/facts responded 200 in 1730.8958 ms
+2026-10-26 21:44:22.752 +07:00 [INF] HTTP POST /api/classification/66/facts responded 200 in 1300.0369 ms
+2026-10-26 21:44:24.182 +07:00 [INF] HTTP POST /api/classification/66/facts responded 200 in 1425.0751 ms
+2026-10-26 21:44:24.207 +07:00 [INF] HTTP GET /api/classification/66/reasoning responded 200 in 19.6549 ms
+2026-10-26 21:44:24.254 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 4.5802 ms
+2026-10-26 21:44:25.015 +07:00 [INF] HTTP POST /api/classification/67/facts responded 200 in 757.9428 ms
+2026-10-26 21:44:25.770 +07:00 [INF] HTTP POST /api/classification/67/facts responded 200 in 744.6873 ms
+2026-10-26 21:44:26.534 +07:00 [INF] HTTP POST /api/classification/67/facts responded 200 in 757.6627 ms
+2026-10-26 21:44:26.540 +07:00 [INF] HTTP GET /api/classification/67/reasoning responded 200 in 3.2829 ms
+2026-10-26 21:44:26.572 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 3.5136 ms
+2026-10-26 21:44:26.595 +07:00 [INF] HTTP POST /api/classification/68/facts responded 200 in 17.0549 ms
+2026-10-26 21:44:26.603 +07:00 [INF] HTTP GET /api/classification/68/reasoning responded 200 in 3.0755 ms
+2026-10-26 21:44:26.649 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 4.9912 ms
+2026-10-26 21:44:28.903 +07:00 [INF] HTTP POST /api/classification/69/facts responded 200 in 2249.5780 ms
+2026-10-26 21:44:31.213 +07:00 [INF] HTTP POST /api/classification/69/facts responded 200 in 2302.7778 ms
+2026-10-26 21:44:31.222 +07:00 [INF] HTTP GET /api/classification/69/reasoning responded 200 in 6.8097 ms
+2026-10-26 21:45:10.561 +07:00 [INF] HTTP POST /api/auth/login responded 200 in 22.2024 ms
+2026-10-26 21:45:10.655 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 6.2251 ms
+2026-10-26 21:45:11.943 +07:00 [INF] HTTP POST /api/classification/70/facts responded 200 in 1275.7655 ms
+2026-10-26 21:45:13.194 +07:00 [INF] HTTP POST /api/classification/70/facts responded 200 in 1248.8362 ms
+2026-10-26 21:45:14.504 +07:00 [INF] HTTP POST /api/classification/70/facts responded 200 in 1306.5634 ms
+2026-10-26 21:45:14.519 +07:00 [INF] HTTP GET /api/classification/70/reasoning responded 200 in 11.4205 ms
+2026-10-26 21:45:14.547 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 10.5390 ms
+2026-10-26 21:45:15.416 +07:00 [INF] HTTP POST /api/classification/71/facts responded 200 in 862.6386 ms
+2026-10-26 21:45:16.285 +07:00 [INF] HTTP POST /api/classification/71/facts responded 200 in 865.9715 ms
+2026-10-26 21:45:17.163 +07:00 [INF] HTTP POST /api/classification/71/facts responded 200 in 874.6322 ms
+2026-10-26 21:45:17.173 +07:00 [INF] HTTP GET /api/classification/71/reasoning responded 200 in 8.2501 ms
+2026-10-26 21:45:17.203 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 11.5692 ms
+2026-10-26 21:45:17.224 +07:00 [INF] HTTP POST /api/classification/72/facts responded 200 in 17.7367 ms
+2026-10-26 21:45:17.234 +07:00 [INF] HTTP GET /api/classification/72/reasoning responded 200 in 7.8027 ms
+2026-10-26 21:45:17.267 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 11.5470 ms
+2026-10-26 21:45:19.542 +07:00 [INF] HTTP POST /api/classification/73/facts responded 200 in 2272.2661 ms
+2026-10-26 21:45:21.862 +07:00 [INF] HTTP POST /api/classification/73/facts responded 200 in 2316.9911 ms
+2026-10-26 21:45:21.870 +07:00 [INF] HTTP GET /api/classification/73/reasoning responded 200 in 5.5966 ms
+2026-10-26 21:49:30.238 +07:00 [INF] Database already seeded — skipping.
+2026-10-26 21:49:33.510 +07:00 [INF] Hierarchy seeded: 1029 headings, 1321 one-dash groups, 1878 subheadings.
+2026-10-26 21:49:36.513 +07:00 [INF] MFN seeded: 10807 rates; skipped 277 unparseable, 135 codes not in active version.
+2026-10-26 21:50:22.023 +07:00 [INF] HTTP POST /api/auth/login responded 200 in 151.2047 ms
+2026-10-26 21:50:22.211 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 103.2060 ms
+2026-10-26 21:50:23.632 +07:00 [WRN] The query uses a row limiting operator ('Skip'/'Take') without an 'OrderBy' operator. This may lead to unpredictable results. If the 'Distinct' operator is used after 'OrderBy', then make sure to use the 'OrderBy' operator after 'Distinct' as the ordering would otherwise get erased.
+2026-10-26 21:50:23.833 +07:00 [INF] HTTP POST /api/classification/74/facts responded 200 in 1619.0181 ms
+2026-10-26 21:50:25.112 +07:00 [INF] HTTP POST /api/classification/74/facts responded 200 in 1262.0134 ms
+2026-10-26 21:50:26.359 +07:00 [INF] HTTP POST /api/classification/74/facts responded 200 in 1243.8407 ms
+2026-10-26 21:50:26.394 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 5.5011 ms
+2026-10-26 21:50:27.444 +07:00 [INF] HTTP POST /api/classification/75/facts responded 200 in 1045.1570 ms
+2026-10-26 21:51:01.597 +07:00 [INF] HTTP POST /api/auth/login responded 200 in 29.0036 ms
+2026-10-26 21:51:01.683 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 11.4521 ms
+2026-10-26 21:51:02.958 +07:00 [INF] HTTP POST /api/classification/76/facts responded 200 in 1272.4986 ms
+2026-10-26 21:51:04.283 +07:00 [INF] HTTP POST /api/classification/76/facts responded 200 in 1321.5461 ms
+2026-10-26 21:51:05.522 +07:00 [INF] HTTP POST /api/classification/76/facts responded 200 in 1236.2904 ms
+2026-10-26 21:51:05.546 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 3.4197 ms
+2026-10-26 21:51:06.340 +07:00 [INF] HTTP POST /api/classification/77/facts responded 200 in 790.3268 ms
+2026-10-26 21:51:41.594 +07:00 [INF] Database already seeded — skipping.
+2026-10-26 21:51:45.740 +07:00 [INF] Hierarchy seeded: 1029 headings, 1321 one-dash groups, 1878 subheadings.
+2026-10-26 21:51:48.854 +07:00 [INF] MFN seeded: 10807 rates; skipped 277 unparseable, 135 codes not in active version.
+2026-10-26 21:52:14.430 +07:00 [INF] Database already seeded — skipping.
+2026-10-26 21:57:33.022 +07:00 [INF] Database already seeded — skipping.
+2026-10-26 21:57:36.165 +07:00 [INF] Hierarchy seeded: 1029 headings, 1321 one-dash groups, 1878 subheadings.
+2026-10-26 21:57:39.164 +07:00 [INF] MFN seeded: 10807 rates; skipped 277 unparseable, 135 codes not in active version.
+2026-10-26 21:57:39.474 +07:00 [INF] HTTP GET /health responded 200 in 16.0377 ms
+2026-10-26 21:58:12.498 +07:00 [INF] HTTP POST /api/auth/login responded 200 in 132.8678 ms
+2026-10-26 21:58:12.652 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 100.6453 ms
+2026-10-26 21:58:14.273 +07:00 [WRN] The query uses a row limiting operator ('Skip'/'Take') without an 'OrderBy' operator. This may lead to unpredictable results. If the 'Distinct' operator is used after 'OrderBy', then make sure to use the 'OrderBy' operator after 'Distinct' as the ordering would otherwise get erased.
+2026-10-26 21:58:14.504 +07:00 [INF] HTTP POST /api/classification/78/facts responded 200 in 1832.8626 ms
+2026-10-26 21:58:15.885 +07:00 [INF] HTTP POST /api/classification/78/facts responded 200 in 1305.9836 ms
+2026-10-26 21:58:15.934 +07:00 [INF] HTTP GET /api/classification/78/reasoning responded 200 in 17.1493 ms
+2026-10-26 22:06:15.234 +07:00 [INF] Database already seeded — skipping.
+2026-10-26 22:06:18.578 +07:00 [INF] Hierarchy seeded: 1029 headings, 1321 one-dash groups, 1878 subheadings.
+2026-10-26 22:06:21.585 +07:00 [INF] MFN seeded: 10807 rates; skipped 277 unparseable, 135 codes not in active version.
+2026-10-26 22:06:25.068 +07:00 [INF] HTTP GET /health responded 200 in 14.1319 ms
+2026-10-26 22:06:30.250 +07:00 [INF] HTTP POST /api/auth/login responded 200 in 138.3306 ms
+2026-10-26 22:06:31.481 +07:00 [WRN] The query uses a row limiting operator ('Skip'/'Take') without an 'OrderBy' operator. This may lead to unpredictable results. If the 'Distinct' operator is used after 'OrderBy', then make sure to use the 'OrderBy' operator after 'Distinct' as the ordering would otherwise get erased.
+2026-10-26 22:06:32.205 +07:00 [INF] OpenAI-compatible term suggestion: - / -
+2026-10-26 22:06:32.277 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 1918.2649 ms
+2026-10-26 22:06:32.322 +07:00 [INF] HTTP GET /api/classification/79/reasoning responded 200 in 38.6717 ms
+2026-10-26 22:06:34.732 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 2367.0792 ms
+2026-10-26 22:06:37.309 +07:00 [INF] HTTP POST /api/classification/80/facts responded 200 in 2567.3696 ms
+2026-10-26 22:06:37.317 +07:00 [INF] HTTP GET /api/classification/80/reasoning responded 200 in 4.7996 ms
+2026-10-26 22:06:38.345 +07:00 [INF] OpenAI-compatible term suggestion: - / -
+2026-10-26 22:06:38.355 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 994.1434 ms
+2026-10-26 22:06:38.362 +07:00 [INF] HTTP GET /api/classification/81/reasoning responded 200 in 3.3531 ms
+2026-10-26 22:06:39.989 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 1590.0613 ms
+2026-10-26 22:06:39.996 +07:00 [INF] HTTP GET /api/classification/82/reasoning responded 200 in 3.4641 ms
+2026-10-26 22:06:50.492 +07:00 [INF] HTTP GET /health responded 200 in 0.2636 ms
+2026-10-26 22:06:58.558 +07:00 [INF] HTTP POST /api/auth/login responded 200 in 23.6188 ms
+2026-10-26 22:06:59.583 +07:00 [INF] OpenAI-compatible term suggestion: - / -
+2026-10-26 22:06:59.588 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 971.9508 ms
+2026-10-26 22:06:59.594 +07:00 [INF] HTTP GET /api/classification/83/reasoning responded 200 in 2.8593 ms
+2026-10-26 22:07:01.862 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 2248.5438 ms
+2026-10-26 22:07:04.166 +07:00 [INF] HTTP POST /api/classification/84/facts responded 200 in 2301.9804 ms
+2026-10-26 22:07:04.173 +07:00 [INF] HTTP GET /api/classification/84/reasoning responded 200 in 3.2091 ms
+2026-10-26 22:07:05.163 +07:00 [INF] OpenAI-compatible term suggestion: - / -
+2026-10-26 22:07:05.171 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 983.8815 ms
+2026-10-26 22:07:05.176 +07:00 [INF] HTTP GET /api/classification/85/reasoning responded 200 in 2.6266 ms
+2026-10-26 22:07:06.651 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 1460.2093 ms
+2026-10-26 22:07:06.657 +07:00 [INF] HTTP GET /api/classification/86/reasoning responded 200 in 2.7996 ms
+2026-10-26 22:08:52.263 +07:00 [INF] HTTP POST /api/auth/login responded 200 in 31.6146 ms
+2026-10-26 22:08:54.219 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 1842.9094 ms
+2026-10-26 22:08:55.945 +07:00 [INF] HTTP POST /api/classification/87/facts responded 200 in 1720.0151 ms
+2026-10-26 22:08:55.955 +07:00 [INF] HTTP GET /api/classification/87/reasoning responded 200 in 6.9689 ms
+2026-10-26 22:08:58.447 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 2433.7672 ms
+2026-10-26 22:09:00.844 +07:00 [INF] HTTP POST /api/classification/88/facts responded 200 in 2394.6394 ms
+2026-10-26 22:09:03.306 +07:00 [INF] HTTP POST /api/classification/88/facts responded 200 in 2460.3247 ms
+2026-10-26 22:09:03.312 +07:00 [INF] HTTP GET /api/classification/88/reasoning responded 200 in 3.1463 ms
+2026-10-26 22:09:13.166 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 9825.2467 ms
+2026-10-26 22:09:23.143 +07:00 [INF] HTTP POST /api/classification/89/facts responded 200 in 9973.4934 ms
+2026-10-26 22:09:33.260 +07:00 [INF] HTTP POST /api/classification/89/facts responded 200 in 10114.3541 ms
+2026-10-26 22:09:43.054 +07:00 [INF] HTTP POST /api/classification/89/facts responded 200 in 9791.3799 ms
+2026-10-26 22:09:43.063 +07:00 [INF] HTTP GET /api/classification/89/reasoning responded 200 in 6.6262 ms
+2026-10-26 22:13:09.657 +07:00 [INF] Database already seeded — skipping.
+2026-10-26 22:13:12.897 +07:00 [INF] Hierarchy seeded: 1029 headings, 1321 one-dash groups, 1878 subheadings.
+2026-10-26 22:13:15.775 +07:00 [INF] MFN seeded: 10807 rates; skipped 277 unparseable, 135 codes not in active version.
+2026-10-26 22:13:26.033 +07:00 [INF] HTTP GET /health responded 200 in 12.8866 ms
+2026-10-26 22:13:34.201 +07:00 [INF] HTTP POST /api/auth/login responded 200 in 129.9934 ms
+2026-10-26 22:13:43.970 +07:00 [WRN] The query uses a row limiting operator ('Skip'/'Take') without an 'OrderBy' operator. This may lead to unpredictable results. If the 'Distinct' operator is used after 'OrderBy', then make sure to use the 'OrderBy' operator after 'Distinct' as the ordering would otherwise get erased.
+2026-10-26 22:13:44.169 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 9859.1562 ms
+2026-10-26 22:13:53.251 +07:00 [INF] HTTP POST /api/classification/90/facts responded 200 in 9061.5238 ms
+2026-10-26 22:13:57.081 +07:00 [INF] HTTP POST /api/auth/login responded 200 in 40.3523 ms
+2026-10-26 22:14:02.298 +07:00 [INF] HTTP POST /api/classification/90/facts responded 200 in 9041.3813 ms
+2026-10-26 22:14:02.961 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 630.9315 ms
+2026-10-26 22:14:03.629 +07:00 [INF] HTTP POST /api/classification/91/facts responded 200 in 664.2857 ms
+2026-10-26 22:14:06.238 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 9087.5915 ms
+2026-10-26 22:14:15.377 +07:00 [INF] HTTP POST /api/classification/92/facts responded 200 in 9119.1864 ms
+2026-10-26 22:14:24.577 +07:00 [INF] HTTP POST /api/classification/92/facts responded 200 in 9196.2717 ms
+2026-10-26 22:14:25.210 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 609.7146 ms
+2026-10-26 22:14:25.736 +07:00 [INF] HTTP POST /api/classification/93/facts responded 200 in 522.5127 ms
+2026-10-26 22:24:24.372 +07:00 [INF] Database already seeded — skipping.
+2026-10-26 22:24:27.577 +07:00 [INF] Hierarchy seeded: 1029 headings, 1321 one-dash groups, 1878 subheadings.
+2026-10-26 22:24:30.578 +07:00 [INF] MFN seeded: 10807 rates; skipped 277 unparseable, 135 codes not in active version.
+2026-10-26 22:24:31.016 +07:00 [INF] HTTP GET /health responded 200 in 13.3629 ms
+2026-10-26 22:25:03.495 +07:00 [INF] HTTP POST /api/auth/login responded 200 in 136.3033 ms
+2026-10-26 22:25:04.565 +07:00 [WRN] The query uses a row limiting operator ('Skip'/'Take') without an 'OrderBy' operator. This may lead to unpredictable results. If the 'Distinct' operator is used after 'OrderBy', then make sure to use the 'OrderBy' operator after 'Distinct' as the ordering would otherwise get erased.
+2026-10-26 22:25:04.771 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 1158.1774 ms
+2026-10-26 22:25:05.484 +07:00 [INF] HTTP POST /api/classification/94/facts responded 200 in 690.6586 ms
+2026-10-26 22:25:06.109 +07:00 [INF] HTTP POST /api/classification/94/facts responded 200 in 620.7042 ms
+2026-10-26 22:25:06.910 +07:00 [INF] HTTP POST /api/classification/94/facts responded 200 in 798.6266 ms
+2026-10-26 22:25:08.443 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 1512.3091 ms
+2026-10-26 22:25:17.608 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 9150.7985 ms
+2026-10-26 22:25:26.509 +07:00 [INF] HTTP POST /api/classification/96/facts responded 200 in 8898.0555 ms
+2026-10-26 22:25:35.898 +07:00 [INF] HTTP POST /api/classification/96/facts responded 200 in 9386.9487 ms
+2026-10-26 22:25:44.173 +07:00 [INF] HTTP GET /health responded 200 in 0.1894 ms
+2026-10-26 22:32:39.478 +07:00 [INF] Database already seeded — skipping.
+2026-10-26 22:32:42.996 +07:00 [INF] Hierarchy seeded: 1029 headings, 1321 one-dash groups, 1878 subheadings.
+2026-10-26 22:32:45.796 +07:00 [INF] MFN seeded: 10807 rates; skipped 277 unparseable, 135 codes not in active version.
+2026-10-26 22:33:26.199 +07:00 [INF] Database already seeded — skipping.
+2026-10-26 22:33:29.924 +07:00 [INF] Hierarchy seeded: 1029 headings, 1321 one-dash groups, 1878 subheadings.
+2026-10-26 22:33:32.489 +07:00 [INF] MFN seeded: 10807 rates; skipped 277 unparseable, 135 codes not in active version.
+2026-10-26 22:34:30.076 +07:00 [INF] HTTP POST /api/auth/login responded 200 in 162.2186 ms
+2026-10-26 22:34:30.299 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 216.2265 ms
+2026-10-26 22:34:30.456 +07:00 [INF] HTTP POST /api/classification/97/facts responded 200 in 129.1257 ms
+2026-10-26 22:34:30.953 +07:00 [WRN] The query uses a row limiting operator ('Skip'/'Take') without an 'OrderBy' operator. This may lead to unpredictable results. If the 'Distinct' operator is used after 'OrderBy', then make sure to use the 'OrderBy' operator after 'Distinct' as the ordering would otherwise get erased.
+2026-10-26 22:34:31.197 +07:00 [INF] HTTP POST /api/classification/97/facts responded 200 in 735.2123 ms
+2026-10-26 22:34:31.252 +07:00 [INF] HTTP GET /api/classification/97/reasoning responded 200 in 44.7220 ms
+2026-10-26 22:34:50.086 +07:00 [INF] HTTP POST /api/auth/login responded 200 in 28.2501 ms
+2026-10-26 22:34:50.109 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 19.8821 ms
+2026-10-26 22:34:50.150 +07:00 [INF] HTTP POST /api/classification/98/facts responded 200 in 34.4146 ms
+2026-10-26 22:34:50.527 +07:00 [INF] HTTP POST /api/classification/98/facts responded 200 in 372.2825 ms
+2026-10-26 22:34:50.538 +07:00 [INF] HTTP GET /api/classification/98/reasoning responded 200 in 8.0978 ms
+2026-10-26 22:35:07.680 +07:00 [INF] HTTP POST /api/auth/login responded 200 in 24.7857 ms
+2026-10-26 22:35:08.053 +07:00 [INF] HTTP POST /api/classification/98/facts responded 200 in 365.6742 ms
+2026-10-26 22:35:08.090 +07:00 [INF] HTTP GET /api/classification/98/reasoning responded 200 in 3.6691 ms
+2026-10-26 22:35:18.333 +07:00 [INF] HTTP POST /api/auth/login responded 200 in 22.6941 ms
+2026-10-26 22:35:18.675 +07:00 [INF] HTTP POST /api/classification/98/facts responded 200 in 339.1921 ms
+2026-10-26 22:35:18.681 +07:00 [INF] HTTP GET /api/classification/98/reasoning responded 200 in 3.3599 ms
+2026-10-26 22:35:32.506 +07:00 [INF] HTTP POST /api/auth/login responded 200 in 35.6444 ms
+2026-10-26 22:35:32.949 +07:00 [INF] HTTP POST /api/classification/98/facts responded 200 in 439.3833 ms
+2026-10-26 22:35:32.961 +07:00 [INF] HTTP GET /api/classification/98/reasoning responded 200 in 5.5852 ms
+2026-10-26 22:35:46.346 +07:00 [INF] HTTP POST /api/auth/login responded 200 in 36.1836 ms
+2026-10-26 22:35:46.363 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 13.1511 ms
+2026-10-26 22:35:46.388 +07:00 [INF] HTTP POST /api/classification/99/facts responded 200 in 19.4435 ms
+2026-10-26 22:35:46.787 +07:00 [INF] HTTP POST /api/classification/99/facts responded 200 in 394.1605 ms
+2026-10-26 22:35:46.796 +07:00 [INF] HTTP GET /api/classification/99/reasoning responded 200 in 5.4697 ms

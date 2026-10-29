@@ -1,0 +1,56 @@
+2026-09-08 16:03:01.862 +07:00 [INF] Database already seeded — skipping.
+2026-09-08 16:20:00.638 +07:00 [INF] Database already seeded — skipping.
+2026-09-08 16:22:27.528 +07:00 [INF] HTTP OPTIONS /api/classification/start responded 204 in 4.6815 ms
+2026-09-08 16:22:28.849 +07:00 [WRN] The query uses a row limiting operator ('Skip'/'Take') without an 'OrderBy' operator. This may lead to unpredictable results. If the 'Distinct' operator is used after 'OrderBy', then make sure to use the 'OrderBy' operator after 'Distinct' as the ordering would otherwise get erased.
+2026-09-08 16:22:29.347 +07:00 [WRN] The query uses a row limiting operator ('Skip'/'Take') without an 'OrderBy' operator. This may lead to unpredictable results. If the 'Distinct' operator is used after 'OrderBy', then make sure to use the 'OrderBy' operator after 'Distinct' as the ordering would otherwise get erased.
+2026-09-08 16:22:29.360 +07:00 [WRN] The query uses a row limiting operator ('Skip'/'Take') without an 'OrderBy' operator. This may lead to unpredictable results. If the 'Distinct' operator is used after 'OrderBy', then make sure to use the 'OrderBy' operator after 'Distinct' as the ordering would otherwise get erased.
+2026-09-08 16:22:30.003 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 2463.4725 ms
+2026-09-08 16:26:01.598 +07:00 [INF] Database already seeded — skipping.
+2026-09-08 16:26:07.609 +07:00 [WRN] The query uses a row limiting operator ('Skip'/'Take') without an 'OrderBy' operator. This may lead to unpredictable results. If the 'Distinct' operator is used after 'OrderBy', then make sure to use the 'OrderBy' operator after 'Distinct' as the ordering would otherwise get erased.
+2026-09-08 16:26:07.828 +07:00 [WRN] The query uses a row limiting operator ('Skip'/'Take') without an 'OrderBy' operator. This may lead to unpredictable results. If the 'Distinct' operator is used after 'OrderBy', then make sure to use the 'OrderBy' operator after 'Distinct' as the ordering would otherwise get erased.
+2026-09-08 16:26:07.897 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 489.1393 ms
+2026-09-08 16:26:13.875 +07:00 [INF] Database already seeded — skipping.
+2026-09-08 16:26:22.551 +07:00 [WRN] The query uses a row limiting operator ('Skip'/'Take') without an 'OrderBy' operator. This may lead to unpredictable results. If the 'Distinct' operator is used after 'OrderBy', then make sure to use the 'OrderBy' operator after 'Distinct' as the ordering would otherwise get erased.
+2026-09-08 16:26:22.788 +07:00 [WRN] The query uses a row limiting operator ('Skip'/'Take') without an 'OrderBy' operator. This may lead to unpredictable results. If the 'Distinct' operator is used after 'OrderBy', then make sure to use the 'OrderBy' operator after 'Distinct' as the ordering would otherwise get erased.
+2026-09-08 16:26:22.854 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 507.5878 ms
+2026-09-08 16:27:04.021 +07:00 [INF] Database already seeded — skipping.
+2026-09-08 16:28:20.242 +07:00 [INF] HTTP OPTIONS /api/classification/start responded 204 in 2.8860 ms
+2026-09-08 16:28:20.686 +07:00 [WRN] The query uses a row limiting operator ('Skip'/'Take') without an 'OrderBy' operator. This may lead to unpredictable results. If the 'Distinct' operator is used after 'OrderBy', then make sure to use the 'OrderBy' operator after 'Distinct' as the ordering would otherwise get erased.
+2026-09-08 16:28:21.012 +07:00 [WRN] The query uses a row limiting operator ('Skip'/'Take') without an 'OrderBy' operator. This may lead to unpredictable results. If the 'Distinct' operator is used after 'OrderBy', then make sure to use the 'OrderBy' operator after 'Distinct' as the ordering would otherwise get erased.
+2026-09-08 16:28:21.107 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 854.1269 ms
+2026-09-08 16:28:23.546 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 350.7509 ms
+2026-09-08 16:28:27.264 +07:00 [INF] HTTP OPTIONS /api/classification/start responded 204 in 0.2128 ms
+2026-09-08 16:28:27.613 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 346.2782 ms
+2026-09-08 16:28:47.560 +07:00 [INF] HTTP OPTIONS /api/classification/null/facts responded 204 in 0.0902 ms
+2026-09-08 16:28:47.564 +07:00 [INF] HTTP POST /api/classification/null/facts responded 404 in 0.2471 ms
+2026-09-08 16:29:09.508 +07:00 [INF] HTTP OPTIONS /api/classification/null/facts responded 204 in 0.2763 ms
+2026-09-08 16:29:09.511 +07:00 [INF] HTTP POST /api/classification/null/facts responded 404 in 0.4153 ms
+2026-09-08 16:29:09.713 +07:00 [INF] HTTP POST /api/classification/null/facts responded 404 in 0.1121 ms
+2026-09-08 16:29:10.387 +07:00 [INF] HTTP POST /api/classification/null/facts responded 404 in 0.1478 ms
+2026-09-08 16:29:10.924 +07:00 [INF] HTTP POST /api/classification/null/facts responded 404 in 0.1706 ms
+2026-09-08 16:39:30.839 +07:00 [INF] Database already seeded — skipping.
+2026-09-08 16:40:23.253 +07:00 [INF] HTTP OPTIONS /api/classification/start responded 204 in 2.7083 ms
+2026-09-08 16:40:23.699 +07:00 [WRN] The query uses a row limiting operator ('Skip'/'Take') without an 'OrderBy' operator. This may lead to unpredictable results. If the 'Distinct' operator is used after 'OrderBy', then make sure to use the 'OrderBy' operator after 'Distinct' as the ordering would otherwise get erased.
+2026-09-08 16:40:24.108 +07:00 [WRN] The query uses a row limiting operator ('Skip'/'Take') without an 'OrderBy' operator. This may lead to unpredictable results. If the 'Distinct' operator is used after 'OrderBy', then make sure to use the 'OrderBy' operator after 'Distinct' as the ordering would otherwise get erased.
+2026-09-08 16:40:24.205 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 939.9111 ms
+2026-09-08 16:40:36.127 +07:00 [INF] HTTP OPTIONS /api/classification/null/facts responded 204 in 1.1198 ms
+2026-09-08 16:40:36.133 +07:00 [INF] HTTP POST /api/classification/null/facts responded 404 in 1.3854 ms
+2026-09-08 16:40:37.276 +07:00 [INF] HTTP POST /api/classification/null/facts responded 404 in 2.5648 ms
+2026-09-08 16:40:37.472 +07:00 [INF] HTTP POST /api/classification/null/facts responded 404 in 0.4417 ms
+2026-09-08 16:40:37.696 +07:00 [INF] HTTP POST /api/classification/null/facts responded 404 in 0.1406 ms
+2026-09-08 16:41:03.303 +07:00 [INF] HTTP OPTIONS /api/classification/start responded 204 in 0.0832 ms
+2026-09-08 16:41:03.700 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 393.0234 ms
+2026-09-08 16:41:10.026 +07:00 [INF] HTTP OPTIONS /api/classification/start responded 204 in 0.1858 ms
+2026-09-08 16:41:10.344 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 314.3413 ms
+2026-09-08 16:43:13.172 +07:00 [INF] Database already seeded — skipping.
+2026-09-08 16:43:23.181 +07:00 [WRN] The query uses a row limiting operator ('Skip'/'Take') without an 'OrderBy' operator. This may lead to unpredictable results. If the 'Distinct' operator is used after 'OrderBy', then make sure to use the 'OrderBy' operator after 'Distinct' as the ordering would otherwise get erased.
+2026-09-08 16:43:23.473 +07:00 [WRN] The query uses a row limiting operator ('Skip'/'Take') without an 'OrderBy' operator. This may lead to unpredictable results. If the 'Distinct' operator is used after 'OrderBy', then make sure to use the 'OrderBy' operator after 'Distinct' as the ordering would otherwise get erased.
+2026-09-08 16:43:23.538 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 552.5535 ms
+2026-09-08 16:44:01.408 +07:00 [INF] Database already seeded — skipping.
+2026-09-08 16:44:14.628 +07:00 [WRN] The query uses a row limiting operator ('Skip'/'Take') without an 'OrderBy' operator. This may lead to unpredictable results. If the 'Distinct' operator is used after 'OrderBy', then make sure to use the 'OrderBy' operator after 'Distinct' as the ordering would otherwise get erased.
+2026-09-08 16:44:14.954 +07:00 [WRN] The query uses a row limiting operator ('Skip'/'Take') without an 'OrderBy' operator. This may lead to unpredictable results. If the 'Distinct' operator is used after 'OrderBy', then make sure to use the 'OrderBy' operator after 'Distinct' as the ordering would otherwise get erased.
+2026-09-08 16:44:15.032 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 598.9762 ms
+2026-09-08 16:44:21.336 +07:00 [INF] Database already seeded — skipping.
+2026-09-08 16:44:39.632 +07:00 [WRN] The query uses a row limiting operator ('Skip'/'Take') without an 'OrderBy' operator. This may lead to unpredictable results. If the 'Distinct' operator is used after 'OrderBy', then make sure to use the 'OrderBy' operator after 'Distinct' as the ordering would otherwise get erased.
+2026-09-08 16:44:39.887 +07:00 [WRN] The query uses a row limiting operator ('Skip'/'Take') without an 'OrderBy' operator. This may lead to unpredictable results. If the 'Distinct' operator is used after 'OrderBy', then make sure to use the 'OrderBy' operator after 'Distinct' as the ordering would otherwise get erased.
+2026-09-08 16:44:39.951 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 513.1832 ms

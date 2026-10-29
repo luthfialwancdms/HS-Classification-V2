@@ -1,0 +1,74 @@
+{
+  "kumhs": [
+    {
+      "rule": "KUM HS 1",
+      "trigger": "SELALU - ini titik mulai wajib",
+      "isi": "Klasifikasi barang ditentukan menurut uraian yang terdapat dalam pos dan Catatan Bagian atau Bab, serta berdasarkan ketentuan KUM HS berikut ini bila tidak bertentangan.",
+      "implikasi_ai": "AI harus SELALU mulai dari sini. Baca uraian pos + Catatan Bagian + Catatan Bab. Jika satu pos sudah memberikan klasifikasi yang jelas dan lengkap, BERHENTI di sini. Tidak perlu lanjut ke KUM HS 2-6.",
+      "contoh": "Crane barge: EN 89.05 secara eksplisit menyebut floating crane → selesai di KUM HS 1."
+    },
+    {
+      "rule": "KUM HS 2(a)",
+      "trigger": "Barang belum lengkap, belum selesai, atau belum dirakit/disajikan terurai",
+      "isi": "Penyebutan barang mencakup pula barang tersebut dalam keadaan belum lengkap atau belum selesai, asalkan pada waktu diajukan sudah mempunyai karakter pokok barang lengkap atau selesai. Juga mencakup barang dalam keadaan belum dirakit atau disajikan terurai.",
+      "implikasi_ai": "Trigger jika: kondisi impor = CKD/SKD/belum lengkap/belum dirakit. Klasifikasikan seperti barang lengkapnya jika karakter pokok sudah ada.",
+      "contoh": "Mesin yang diimpor terurai (CKD) tapi semua komponennya ada → diklasifikasi seperti mesin lengkap."
+    },
+    {
+      "rule": "KUM HS 2(b)",
+      "trigger": "Barang adalah campuran atau kombinasi dari bahan/material",
+      "isi": "Penyebutan bahan atau zat dalam suatu pos mencakup pula campuran atau gabungan bahan atau zat tersebut dengan bahan atau zat lain.",
+      "implikasi_ai": "Trigger jika: material_utama = campuran/mixture/multi-material. Pos yang menyebut material X juga mencakup campuran yang mengandung X. Jika campuran memenuhi lebih dari satu pos, lanjut ke KUM HS 3.",
+      "contoh": "Cairan mengandung alkohol + ekstrak buah → bisa masuk pos minuman beralkohol atau ekstrak buah, lanjut ke KUM HS 3."
+    },
+    {
+      "rule": "KUM HS 3(a)",
+      "trigger": "Dua atau lebih pos prima facie dapat diterapkan (setelah KUM HS 1 dan 2)",
+      "isi": "Pos yang memberikan uraian paling spesifik (specific description) harus diutamakan daripada pos yang memberikan uraian lebih umum.",
+      "implikasi_ai": "Bandingkan kandidat: mana yang paling spesifik menggambarkan barang ini? Yang spesifik menang. Jika keduanya sama-sama spesifik atau keduanya sama-sama umum, lanjut ke 3(b).",
+      "contoh": "WEA08/WEA35: 8704.10 (dumper off-highway - spesifik) menang atas 8704.21 (kendaraan diesel - umum)."
+    },
+    {
+      "rule": "KUM HS 3(b)",
+      "trigger": "KUM HS 3(a) tidak menghasilkan keputusan: campuran, barang komposit, atau set untuk penjualan eceran",
+      "isi": "Campuran, barang komposit dari bahan berbeda, barang yang terdiri dari komponen berbeda, dan barang dalam set untuk penjualan eceran: diklasifikasikan menurut bahan atau komponen yang memberikan karakter utama (essential character).",
+      "implikasi_ai": "Identifikasi komponen mana yang memberikan karakter utama: bisa dari nilai, volume, berat, peran dalam fungsi, atau presentasi. Komponen itu menentukan pos.",
+      "contoh": "Laptop dengan kamera built-in: fungsi pengolahan data memberikan karakter utama → 84.71, bukan 85.25 (kamera)."
+    },
+    {
+      "rule": "KUM HS 3(c)",
+      "trigger": "KUM HS 3(a) dan 3(b) tidak menghasilkan keputusan",
+      "isi": "Barang diklasifikasikan ke pos yang terakhir menurut urutan penomoran di antara pos-pos yang dapat dipertimbangkan.",
+      "implikasi_ai": "Last resort: pilih nomor pos yang paling belakang/terbesar di antara kandidat yang tersisa.",
+      "contoh": "Jarang dipakai. Safety net jika 3(a) dan 3(b) benar-benar tidak bisa memutuskan."
+    },
+    {
+      "rule": "KUM HS 4",
+      "trigger": "Barang tidak dapat diklasifikasikan berdasarkan KUM HS 1-3",
+      "isi": "Barang yang tidak dapat diklasifikasikan sesuai ketentuan di atas, diklasifikasikan ke dalam pos yang sesuai dengan barang yang paling menyerupainya.",
+      "implikasi_ai": "WAJIB flag untuk expert review jika sampai di sini. Artinya tidak ada pos yang jelas menggambarkan barang. Berikan rekomendasi berdasarkan kemiripan tapi confidence = LOW dan harus direview ahli.",
+      "contoh": "Barang baru yang belum ada pos spesifiknya → cari yang paling mirip."
+    },
+    {
+      "rule": "KUM HS 5(a)",
+      "trigger": "Wadah/tempat khusus yang sesuai dengan barang di dalamnya",
+      "isi": "Kotak kamera, kotak alat musik, kotak senjata, kotak instrumen, dsb yang berbentuk khusus/sesuai untuk barang tertentu, cocok untuk penggunaan jangka panjang, diajukan bersama barangnya: diklasifikasikan bersama barang tsb.",
+      "implikasi_ai": "Trigger jika: barang disajikan dengan case/wadah khusus yang dirancang spesifik untuk barang itu. Case diklasifikasi bersama barang utama.",
+      "contoh": "Kamera dalam tas kamera khusus yang dijual bersama → ikut klasifikasi kamera."
+    },
+    {
+      "rule": "KUM HS 5(b)",
+      "trigger": "Kemasan yang berisi barang",
+      "isi": "Kemasan yang diajukan bersama barang: diklasifikasikan bersama barang tersebut jika kemasan itu lazim digunakan untuk mengemas barang. Tidak berlaku untuk kemasan yang jelas mempunyai karakter yang cocok untuk digunakan berulang.",
+      "implikasi_ai": "Kemasan sekali pakai/biasa ikut barang. Kemasan reusable yang punya nilai sendiri (misal palet besi, drum baja) bisa diklasifikasi terpisah.",
+      "contoh": "Botol kaca berisi minuman → botol ikut klasifikasi minuman."
+    },
+    {
+      "rule": "KUM HS 6",
+      "trigger": "Setelah pos 4-digit ditentukan, untuk menentukan subpos",
+      "isi": "Klasifikasi barang ke dalam subpos dari suatu pos harus ditentukan menurut uraian subpos dan catatan subpos serta KUM HS 1-5 yang berlaku secara mutatis mutandis. Perbandingan hanya antara subpos pada tingkat yang sama.",
+      "implikasi_ai": "Setelah heading 4-digit dikunci, ulangi proses yang sama untuk memilih subpos. Bandingkan hanya subpos setingkat (misalnya semua subpos 1-dash dulu, baru 2-dash). Prinsip spesifisitas KUM HS 3(a) berlaku di sini.",
+      "contoh": "Setelah 87.04 dikunci: bandingkan 8704.10 vs 8704.21 vs 8704.22 dll. 8704.10 (dumper off-highway) menang karena spesifik."
+    }
+  ]
+}

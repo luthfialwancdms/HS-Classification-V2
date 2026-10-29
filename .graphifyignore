@@ -1,0 +1,17 @@
+# graphify scope: source + docs only. Data dumps, images and build artifacts are not architecture.
+data/*.json
+data/*.csv
+*.csv
+hs-classifier/src/data/*.json
+hs-classifier-api/*/bin/
+hs-classifier-api/*/obj/
+hs-classifier-api/.vs/
+hs-classifier/node_modules/
+hs-classifier/dist/
+docs/*.pdf
+docs/*.docx
+docs/*.pptx
+*.png
+*.svg
+archify-demo.html
+docs/hs_v2_architecture.html

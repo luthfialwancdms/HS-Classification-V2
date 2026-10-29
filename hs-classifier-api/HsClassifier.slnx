@@ -1,0 +1,7 @@
+<Solution>
+  <Project Path="HsClassifier.API/HsClassifier.API.csproj" />
+  <Project Path="HsClassifier.Application/HsClassifier.Application.csproj" />
+  <Project Path="HsClassifier.Domain/HsClassifier.Domain.csproj" />
+  <Project Path="HsClassifier.Infrastructure/HsClassifier.Infrastructure.csproj" />
+  <Project Path="HsClassifier.Tests/HsClassifier.Tests.csproj" />
+</Solution>

@@ -1,0 +1,503 @@
+2026-10-27 06:23:58.817 +07:00 [INF] Database already seeded — skipping.
+2026-10-27 06:24:02.433 +07:00 [INF] Hierarchy seeded: 1029 headings, 1321 one-dash groups, 1878 subheadings.
+2026-10-27 06:24:06.267 +07:00 [INF] MFN seeded: 10807 rates; skipped 277 unparseable, 135 codes not in active version.
+2026-10-27 06:27:05.669 +07:00 [INF] HTTP POST /api/auth/login responded 200 in 2667.1599 ms
+2026-10-27 06:27:05.801 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 109.9515 ms
+2026-10-27 06:27:05.930 +07:00 [INF] HTTP POST /api/classification/100/facts responded 200 in 74.6526 ms
+2026-10-27 06:27:06.509 +07:00 [WRN] The query uses a row limiting operator ('Skip'/'Take') without an 'OrderBy' operator. This may lead to unpredictable results. If the 'Distinct' operator is used after 'OrderBy', then make sure to use the 'OrderBy' operator after 'Distinct' as the ordering would otherwise get erased.
+2026-10-27 06:27:06.757 +07:00 [INF] HTTP POST /api/classification/100/facts responded 200 in 822.3503 ms
+2026-10-27 06:27:06.780 +07:00 [INF] HTTP GET /api/classification/100/reasoning responded 200 in 19.2489 ms
+2026-10-27 06:27:06.830 +07:00 [INF] HTTP POST /api/auth/login responded 200 in 22.6633 ms
+2026-10-27 06:27:06.837 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 4.2470 ms
+2026-10-27 06:27:06.846 +07:00 [INF] HTTP POST /api/classification/101/facts responded 200 in 6.2119 ms
+2026-10-27 06:27:07.163 +07:00 [INF] HTTP POST /api/classification/101/facts responded 200 in 312.3074 ms
+2026-10-27 06:27:07.169 +07:00 [INF] HTTP GET /api/classification/101/reasoning responded 200 in 3.4858 ms
+2026-10-27 06:27:07.220 +07:00 [INF] HTTP POST /api/auth/login responded 200 in 24.3093 ms
+2026-10-27 06:27:07.229 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 5.9593 ms
+2026-10-27 06:27:07.239 +07:00 [INF] HTTP POST /api/classification/102/facts responded 200 in 6.3298 ms
+2026-10-27 06:27:07.249 +07:00 [INF] HTTP POST /api/classification/102/facts responded 200 in 6.1444 ms
+2026-10-27 06:27:07.880 +07:00 [INF] HTTP POST /api/classification/102/facts responded 200 in 629.4859 ms
+2026-10-27 06:27:07.885 +07:00 [INF] HTTP GET /api/classification/102/reasoning responded 200 in 2.4022 ms
+2026-10-27 06:27:07.918 +07:00 [INF] HTTP POST /api/auth/login responded 200 in 23.2366 ms
+2026-10-27 06:27:07.924 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 3.7545 ms
+2026-10-27 06:27:08.454 +07:00 [INF] HTTP POST /api/classification/103/facts responded 200 in 526.8778 ms
+2026-10-27 06:27:08.459 +07:00 [INF] HTTP GET /api/classification/103/reasoning responded 200 in 2.4828 ms
+2026-10-27 06:27:08.497 +07:00 [INF] HTTP POST /api/auth/login responded 200 in 24.2901 ms
+2026-10-27 06:27:08.505 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 5.9677 ms
+2026-10-27 06:27:09.447 +07:00 [INF] HTTP POST /api/classification/104/facts responded 200 in 939.3227 ms
+2026-10-27 06:27:09.452 +07:00 [INF] HTTP GET /api/classification/104/reasoning responded 200 in 2.5246 ms
+2026-10-27 06:27:19.201 +07:00 [INF] HTTP POST /api/auth/login responded 200 in 21.5659 ms
+2026-10-27 06:27:19.223 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 17.7003 ms
+2026-10-27 06:27:19.245 +07:00 [INF] HTTP POST /api/classification/105/facts responded 200 in 7.0307 ms
+2026-10-27 06:27:19.546 +07:00 [INF] HTTP POST /api/classification/105/facts responded 200 in 296.0744 ms
+2026-10-27 06:27:19.552 +07:00 [INF] HTTP GET /api/classification/105/reasoning responded 200 in 2.1180 ms
+2026-10-27 06:32:15.586 +07:00 [INF] Database already seeded — skipping.
+2026-10-27 06:32:18.310 +07:00 [INF] Hierarchy seeded: 1029 headings, 1321 one-dash groups, 1878 subheadings.
+2026-10-27 06:32:20.945 +07:00 [INF] MFN seeded: 10807 rates; skipped 277 unparseable, 135 codes not in active version.
+2026-10-27 06:44:40.957 +07:00 [INF] Database already seeded — skipping.
+2026-10-27 06:44:43.347 +07:00 [INF] Hierarchy seeded: 1029 headings, 1321 one-dash groups, 1878 subheadings.
+2026-10-27 06:44:46.018 +07:00 [INF] MFN seeded: 10807 rates; skipped 277 unparseable, 135 codes not in active version.
+2026-10-27 06:44:46.587 +07:00 [INF] HTTP POST /api/auth/login responded 200 in 166.9548 ms
+2026-10-27 06:44:46.587 +07:00 [INF] HTTP POST /api/auth/login responded 200 in 126.0464 ms
+2026-10-27 06:44:46.587 +07:00 [INF] HTTP POST /api/auth/login responded 200 in 57.7142 ms
+2026-10-27 06:44:46.587 +07:00 [INF] HTTP POST /api/auth/login responded 200 in 160.3408 ms
+2026-10-27 06:44:46.745 +07:00 [WRN] The query uses a row limiting operator ('Skip'/'Take') without an 'OrderBy' operator. This may lead to unpredictable results. If the 'Distinct' operator is used after 'OrderBy', then make sure to use the 'OrderBy' operator after 'Distinct' as the ordering would otherwise get erased.
+2026-10-27 06:44:46.843 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 245.2679 ms
+2026-10-27 06:44:46.846 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 247.1862 ms
+2026-10-27 06:44:46.899 +07:00 [INF] HTTP GET /api/classification/106/reasoning responded 200 in 41.7599 ms
+2026-10-27 06:44:46.901 +07:00 [INF] HTTP GET /api/classification/107/reasoning responded 200 in 40.2614 ms
+2026-10-27 06:44:46.985 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 390.5639 ms
+2026-10-27 06:44:46.992 +07:00 [INF] HTTP GET /api/classification/108/reasoning responded 200 in 3.5391 ms
+2026-10-27 06:44:47.888 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 1292.2835 ms
+2026-10-27 06:44:47.907 +07:00 [INF] HTTP GET /api/classification/109/reasoning responded 200 in 3.0283 ms
+2026-10-27 06:45:11.724 +07:00 [INF] HTTP POST /api/auth/login responded 200 in 21.6593 ms
+2026-10-27 06:45:11.989 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 262.5684 ms
+2026-10-27 06:45:11.994 +07:00 [INF] HTTP GET /api/classification/110/reasoning responded 200 in 3.0099 ms
+2026-10-27 06:45:12.027 +07:00 [INF] HTTP POST /api/auth/login responded 200 in 22.6921 ms
+2026-10-27 06:45:12.432 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 401.2784 ms
+2026-10-27 06:45:12.437 +07:00 [INF] HTTP GET /api/classification/111/reasoning responded 200 in 2.6144 ms
+2026-10-27 06:55:54.667 +07:00 [INF] Database already seeded — skipping.
+2026-10-27 06:55:58.361 +07:00 [INF] Hierarchy seeded: 1029 headings, 1321 one-dash groups, 1878 subheadings.
+2026-10-27 06:56:01.875 +07:00 [INF] MFN seeded: 10807 rates; skipped 277 unparseable, 135 codes not in active version.
+2026-10-27 06:56:02.266 +07:00 [INF] HTTP POST /api/auth/login responded 200 in 181.6204 ms
+2026-10-27 06:56:02.920 +07:00 [WRN] The query uses a row limiting operator ('Skip'/'Take') without an 'OrderBy' operator. This may lead to unpredictable results. If the 'Distinct' operator is used after 'OrderBy', then make sure to use the 'OrderBy' operator after 'Distinct' as the ordering would otherwise get erased.
+2026-10-27 06:56:03.275 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 1000.4237 ms
+2026-10-27 06:56:03.740 +07:00 [INF] HTTP POST /api/classification/112/facts responded 200 in 461.4973 ms
+2026-10-27 06:56:03.770 +07:00 [INF] HTTP GET /api/classification/112/reasoning responded 200 in 25.5324 ms
+2026-10-27 07:08:04.429 +07:00 [INF] Database already seeded — skipping.
+2026-10-27 07:08:06.979 +07:00 [INF] Hierarchy seeded: 1029 headings, 1321 one-dash groups, 1878 subheadings.
+2026-10-27 07:08:09.659 +07:00 [INF] MFN seeded: 10807 rates; skipped 277 unparseable, 135 codes not in active version.
+2026-10-27 07:08:10.289 +07:00 [INF] HTTP POST /api/auth/login responded 200 in 148.4567 ms
+2026-10-27 07:08:10.847 +07:00 [WRN] The query uses a row limiting operator ('Skip'/'Take') without an 'OrderBy' operator. This may lead to unpredictable results. If the 'Distinct' operator is used after 'OrderBy', then make sure to use the 'OrderBy' operator after 'Distinct' as the ordering would otherwise get erased.
+2026-10-27 07:08:11.176 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 880.3598 ms
+2026-10-27 07:08:11.504 +07:00 [INF] HTTP POST /api/classification/113/facts responded 200 in 322.6159 ms
+2026-10-27 07:08:11.526 +07:00 [INF] HTTP GET /api/classification/113/reasoning responded 200 in 18.9882 ms
+2026-10-27 07:12:27.392 +07:00 [INF] HTTP POST /api/auth/login responded 200 in 20.8029 ms
+2026-10-27 07:12:28.464 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 1069.8859 ms
+2026-10-27 07:12:28.470 +07:00 [INF] HTTP GET /api/classification/114/reasoning responded 200 in 2.7240 ms
+2026-10-27 21:03:04.204 +07:00 [INF] Database already seeded — skipping.
+2026-10-27 21:03:08.143 +07:00 [INF] Hierarchy seeded: 1029 headings, 1321 one-dash groups, 1878 subheadings.
+2026-10-27 21:03:11.303 +07:00 [INF] MFN seeded: 10807 rates; skipped 277 unparseable, 135 codes not in active version.
+2026-10-27 21:04:22.150 +07:00 [INF] HTTP POST /api/auth/login responded 200 in 167.8855 ms
+2026-10-27 21:04:22.245 +07:00 [INF] HTTP POST /api/admin/versions responded 200 in 70.3629 ms
+2026-10-27 21:04:25.445 +07:00 [INF] HTTP POST /api/admin/btki/upload responded 200 in 3159.9674 ms
+2026-10-27 21:04:36.304 +07:00 [INF] HTTP POST /api/admin/btki/commit/34a48a45-826f-430b-b1a2-b077d3cf29fa responded 200 in 10778.0023 ms
+2026-10-27 21:04:36.575 +07:00 [INF] HTTP GET /api/admin/versions/34a48a45-826f-430b-b1a2-b077d3cf29fa/diff responded 200 in 264.4323 ms
+2026-10-27 21:05:14.609 +07:00 [INF] HTTP POST /api/auth/login responded 200 in 28.9323 ms
+2026-10-27 21:05:14.843 +07:00 [INF] HTTP GET /api/admin/versions/34a48a45-826f-430b-b1a2-b077d3cf29fa/diff responded 200 in 220.2073 ms
+2026-10-27 21:06:33.781 +07:00 [INF] Database already seeded — skipping.
+2026-10-27 21:06:37.940 +07:00 [INF] Hierarchy seeded: 1029 headings, 1321 one-dash groups, 1878 subheadings.
+2026-10-27 21:06:41.105 +07:00 [INF] MFN seeded: 10807 rates; skipped 277 unparseable, 135 codes not in active version.
+2026-10-27 21:06:57.513 +07:00 [INF] HTTP POST /api/auth/login responded 200 in 172.4609 ms
+2026-10-27 21:06:57.599 +07:00 [INF] HTTP POST /api/admin/versions responded 200 in 70.1535 ms
+2026-10-27 21:07:00.729 +07:00 [INF] HTTP POST /api/admin/btki/upload responded 200 in 3075.0828 ms
+2026-10-27 21:07:12.176 +07:00 [INF] HTTP POST /api/admin/btki/commit/8af2a38c-77bc-4890-9cf2-825ddf835303 responded 200 in 11387.0934 ms
+2026-10-27 21:07:12.440 +07:00 [INF] HTTP GET /api/admin/versions/8af2a38c-77bc-4890-9cf2-825ddf835303/diff responded 200 in 257.5428 ms
+2026-10-27 21:10:36.030 +07:00 [INF] Database already seeded — skipping.
+2026-10-27 21:10:40.055 +07:00 [INF] Hierarchy seeded: 1029 headings, 1321 one-dash groups, 1878 subheadings.
+2026-10-27 21:10:42.935 +07:00 [INF] MFN seeded: 10807 rates; skipped 277 unparseable, 135 codes not in active version.
+2026-10-27 21:10:57.406 +07:00 [INF] HTTP POST /api/auth/login responded 200 in 169.1545 ms
+2026-10-27 21:10:59.024 +07:00 [WRN] The query uses a row limiting operator ('Skip'/'Take') without an 'OrderBy' operator. This may lead to unpredictable results. If the 'Distinct' operator is used after 'OrderBy', then make sure to use the 'OrderBy' operator after 'Distinct' as the ordering would otherwise get erased.
+2026-10-27 21:11:01.252 +07:00 [INF] OpenAI-compatible term suggestion: - / -
+2026-10-27 21:11:01.339 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 3908.5723 ms
+2026-10-27 21:11:16.826 +07:00 [INF] HTTP POST /api/auth/login responded 200 in 24.6458 ms
+2026-10-27 21:11:18.436 +07:00 [INF] OpenAI-compatible term suggestion: - / -
+2026-10-27 21:11:18.443 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 1601.7518 ms
+2026-10-27 21:11:19.804 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 1333.2717 ms
+2026-10-27 21:11:21.248 +07:00 [INF] HTTP POST /api/classification/117/facts responded 200 in 1407.8162 ms
+2026-10-27 21:11:21.882 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 630.0969 ms
+2026-10-27 21:11:22.398 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 512.5367 ms
+2026-10-27 21:11:24.484 +07:00 [INF] OpenAI-compatible term suggestion: - / -
+2026-10-27 21:11:24.498 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 2095.2476 ms
+2026-10-27 21:11:25.592 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 1090.5864 ms
+2026-10-27 21:11:26.697 +07:00 [INF] HTTP POST /api/classification/121/facts responded 200 in 1100.8146 ms
+2026-10-27 21:11:27.888 +07:00 [INF] HTTP POST /api/classification/121/facts responded 200 in 1176.5967 ms
+2026-10-27 21:11:29.028 +07:00 [INF] HTTP POST /api/classification/121/facts responded 200 in 1137.2284 ms
+2026-10-27 21:11:29.388 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 356.3163 ms
+2026-10-27 21:11:29.708 +07:00 [INF] HTTP POST /api/classification/122/facts responded 200 in 316.9768 ms
+2026-10-27 21:11:30.035 +07:00 [INF] HTTP POST /api/classification/122/facts responded 200 in 322.9124 ms
+2026-10-27 21:11:30.421 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 384.1135 ms
+2026-10-27 21:11:30.765 +07:00 [INF] HTTP POST /api/classification/123/facts responded 200 in 340.9812 ms
+2026-10-27 21:11:31.137 +07:00 [INF] HTTP POST /api/classification/123/facts responded 200 in 368.1925 ms
+2026-10-27 21:11:31.501 +07:00 [INF] HTTP POST /api/classification/123/facts responded 200 in 361.4758 ms
+2026-10-27 21:11:32.107 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 602.3520 ms
+2026-10-27 21:11:32.207 +07:00 [INF] HTTP POST /api/classification/124/facts responded 200 in 86.3061 ms
+2026-10-27 21:11:32.287 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 76.1296 ms
+2026-10-27 21:11:32.366 +07:00 [INF] HTTP POST /api/classification/125/facts responded 200 in 74.4820 ms
+2026-10-27 21:11:32.446 +07:00 [INF] HTTP POST /api/classification/125/facts responded 200 in 77.1341 ms
+2026-10-27 21:11:32.545 +07:00 [INF] HTTP POST /api/classification/125/facts responded 200 in 95.8522 ms
+2026-10-27 21:11:32.603 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 54.5189 ms
+2026-10-27 21:11:33.160 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 554.3020 ms
+2026-10-27 21:11:33.722 +07:00 [INF] HTTP POST /api/classification/127/facts responded 200 in 557.6303 ms
+2026-10-27 21:11:34.680 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 954.1967 ms
+2026-10-27 21:11:35.642 +07:00 [INF] HTTP POST /api/classification/128/facts responded 200 in 958.5262 ms
+2026-10-27 21:11:35.972 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 326.5937 ms
+2026-10-27 21:11:36.320 +07:00 [INF] HTTP POST /api/classification/129/facts responded 200 in 345.1528 ms
+2026-10-27 21:11:36.693 +07:00 [INF] HTTP POST /api/classification/129/facts responded 200 in 369.2250 ms
+2026-10-27 21:11:37.638 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 940.7848 ms
+2026-10-27 21:12:34.574 +07:00 [INF] HTTP POST /api/auth/login responded 200 in 26.9403 ms
+2026-10-27 21:12:34.641 +07:00 [INF] HTTP POST /api/admin/versions/8af2a38c-77bc-4890-9cf2-825ddf835303/activate responded 200 in 60.8523 ms
+2026-10-27 21:12:34.667 +07:00 [INF] HTTP GET /api/admin/versions responded 200 in 21.8275 ms
+2026-10-27 21:12:34.980 +07:00 [INF] HTTP POST /api/auth/login responded 200 in 23.7942 ms
+2026-10-27 21:12:42.915 +07:00 [INF] OpenAI-compatible term suggestion: - / -
+2026-10-27 21:12:42.927 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 7932.2499 ms
+2026-10-27 21:12:44.167 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 1221.8623 ms
+2026-10-27 21:12:45.567 +07:00 [INF] HTTP POST /api/classification/132/facts responded 200 in 1376.9034 ms
+2026-10-27 21:12:46.236 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 663.0132 ms
+2026-10-27 21:12:46.943 +07:00 [INF] HTTP POST /api/classification/133/facts responded 200 in 703.9876 ms
+2026-10-27 21:12:47.478 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 532.1858 ms
+2026-10-27 21:12:48.029 +07:00 [INF] HTTP POST /api/classification/134/facts responded 200 in 543.6208 ms
+2026-10-27 21:12:48.648 +07:00 [INF] HTTP POST /api/classification/134/facts responded 200 in 604.9895 ms
+2026-10-27 21:12:50.557 +07:00 [INF] OpenAI-compatible term suggestion: - / -
+2026-10-27 21:12:50.583 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 1930.9961 ms
+2026-10-27 21:12:51.802 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 1214.0930 ms
+2026-10-27 21:12:52.870 +07:00 [INF] HTTP POST /api/classification/136/facts responded 200 in 1064.4090 ms
+2026-10-27 21:12:54.106 +07:00 [INF] HTTP POST /api/classification/136/facts responded 200 in 1232.7533 ms
+2026-10-27 21:12:54.472 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 362.3728 ms
+2026-10-27 21:12:54.832 +07:00 [INF] HTTP POST /api/classification/137/facts responded 200 in 358.1418 ms
+2026-10-27 21:12:55.191 +07:00 [INF] HTTP POST /api/classification/137/facts responded 200 in 355.0874 ms
+2026-10-27 21:12:55.544 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 350.8489 ms
+2026-10-27 21:12:55.896 +07:00 [INF] HTTP POST /api/classification/138/facts responded 200 in 348.6271 ms
+2026-10-27 21:12:56.248 +07:00 [INF] HTTP POST /api/classification/138/facts responded 200 in 347.0022 ms
+2026-10-27 21:12:56.624 +07:00 [INF] HTTP POST /api/classification/138/facts responded 200 in 372.2907 ms
+2026-10-27 21:12:56.691 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 64.6746 ms
+2026-10-27 21:12:56.782 +07:00 [INF] HTTP POST /api/classification/139/facts responded 200 in 88.3893 ms
+2026-10-27 21:12:56.877 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 92.0930 ms
+2026-10-27 21:12:56.961 +07:00 [INF] HTTP POST /api/classification/140/facts responded 200 in 80.0849 ms
+2026-10-27 21:12:57.040 +07:00 [INF] HTTP POST /api/classification/140/facts responded 200 in 76.2896 ms
+2026-10-27 21:12:57.137 +07:00 [INF] HTTP POST /api/classification/140/facts responded 200 in 93.2566 ms
+2026-10-27 21:12:57.221 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 80.9840 ms
+2026-10-27 21:12:57.743 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 519.9708 ms
+2026-10-27 21:12:58.182 +07:00 [INF] HTTP POST /api/classification/142/facts responded 200 in 435.1298 ms
+2026-10-27 21:12:59.162 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 977.2372 ms
+2026-10-27 21:13:00.121 +07:00 [INF] HTTP POST /api/classification/143/facts responded 200 in 956.5293 ms
+2026-10-27 21:13:00.451 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 327.3555 ms
+2026-10-27 21:13:00.761 +07:00 [INF] HTTP POST /api/classification/144/facts responded 200 in 301.4037 ms
+2026-10-27 21:13:01.125 +07:00 [INF] HTTP POST /api/classification/144/facts responded 200 in 360.5747 ms
+2026-10-27 21:13:02.042 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 914.1136 ms
+2026-10-27 21:17:02.318 +07:00 [INF] HTTP POST /api/auth/login responded 200 in 95.0304 ms
+2026-10-27 21:17:03.297 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 964.1137 ms
+2026-10-27 21:17:03.318 +07:00 [INF] HTTP GET /api/classification/146/reasoning responded 200 in 17.1662 ms
+2026-10-27 21:18:20.480 +07:00 [INF] HTTP POST /api/auth/login responded 200 in 27.7147 ms
+2026-10-27 21:18:20.524 +07:00 [INF] HTTP POST /api/admin/versions/f5f2cc0f-0e3c-4a34-afe9-5e7c673824a3/activate responded 200 in 38.5608 ms
+2026-10-27 21:18:20.532 +07:00 [INF] HTTP GET /api/admin/versions responded 200 in 4.3097 ms
+2026-10-27 21:20:02.201 +07:00 [INF] Database already seeded — skipping.
+2026-10-27 21:20:06.146 +07:00 [INF] Hierarchy seeded: 1029 headings, 1321 one-dash groups, 1878 subheadings.
+2026-10-27 21:20:09.241 +07:00 [INF] MFN seeded: 10807 rates; skipped 277 unparseable, 135 codes not in active version.
+2026-10-27 21:20:12.467 +07:00 [INF] HTTP POST /api/auth/login responded 200 in 167.0906 ms
+2026-10-27 21:20:13.727 +07:00 [WRN] The query uses a row limiting operator ('Skip'/'Take') without an 'OrderBy' operator. This may lead to unpredictable results. If the 'Distinct' operator is used after 'OrderBy', then make sure to use the 'OrderBy' operator after 'Distinct' as the ordering would otherwise get erased.
+2026-10-27 21:20:16.934 +07:00 [INF] OpenAI-compatible term suggestion: - / -
+2026-10-27 21:20:17.023 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 4536.1707 ms
+2026-10-27 21:20:18.333 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 1294.0279 ms
+2026-10-27 21:20:19.691 +07:00 [INF] HTTP POST /api/classification/148/facts responded 200 in 1337.7933 ms
+2026-10-27 21:20:20.356 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 661.7634 ms
+2026-10-27 21:20:20.804 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 444.7025 ms
+2026-10-27 21:20:22.530 +07:00 [INF] OpenAI-compatible term suggestion: - / -
+2026-10-27 21:20:22.542 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 1733.9934 ms
+2026-10-27 21:20:23.654 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 1106.4790 ms
+2026-10-27 21:20:24.717 +07:00 [INF] HTTP POST /api/classification/152/facts responded 200 in 1056.8846 ms
+2026-10-27 21:20:25.812 +07:00 [INF] HTTP POST /api/classification/152/facts responded 200 in 1079.5773 ms
+2026-10-27 21:20:26.937 +07:00 [INF] HTTP POST /api/classification/152/facts responded 200 in 1120.8162 ms
+2026-10-27 21:20:27.277 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 336.6645 ms
+2026-10-27 21:20:27.619 +07:00 [INF] HTTP POST /api/classification/153/facts responded 200 in 339.7492 ms
+2026-10-27 21:20:28.036 +07:00 [INF] HTTP POST /api/classification/153/facts responded 200 in 413.1991 ms
+2026-10-27 21:20:28.401 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 361.3013 ms
+2026-10-27 21:20:28.769 +07:00 [INF] HTTP POST /api/classification/154/facts responded 200 in 364.4086 ms
+2026-10-27 21:20:29.122 +07:00 [INF] HTTP POST /api/classification/154/facts responded 200 in 349.1046 ms
+2026-10-27 21:20:29.461 +07:00 [INF] HTTP POST /api/classification/154/facts responded 200 in 335.0309 ms
+2026-10-27 21:20:29.745 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 281.0819 ms
+2026-10-27 21:20:29.829 +07:00 [INF] HTTP POST /api/classification/155/facts responded 200 in 79.1333 ms
+2026-10-27 21:20:29.907 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 74.2407 ms
+2026-10-27 21:20:29.978 +07:00 [INF] HTTP POST /api/classification/156/facts responded 200 in 67.3199 ms
+2026-10-27 21:20:30.053 +07:00 [INF] HTTP POST /api/classification/156/facts responded 200 in 72.0936 ms
+2026-10-27 21:20:30.137 +07:00 [INF] HTTP POST /api/classification/156/facts responded 200 in 81.1396 ms
+2026-10-27 21:20:30.194 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 52.4412 ms
+2026-10-27 21:20:30.699 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 502.2844 ms
+2026-10-27 21:20:31.179 +07:00 [INF] HTTP POST /api/classification/158/facts responded 200 in 474.5561 ms
+2026-10-27 21:20:32.153 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 971.3526 ms
+2026-10-27 21:20:33.109 +07:00 [INF] HTTP POST /api/classification/159/facts responded 200 in 950.9386 ms
+2026-10-27 21:20:33.451 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 338.2500 ms
+2026-10-27 21:20:33.798 +07:00 [INF] HTTP POST /api/classification/160/facts responded 200 in 344.3500 ms
+2026-10-27 21:20:34.127 +07:00 [INF] HTTP POST /api/classification/160/facts responded 200 in 323.7014 ms
+2026-10-27 21:20:35.123 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 993.4846 ms
+2026-10-27 21:20:55.908 +07:00 [INF] HTTP POST /api/auth/login responded 200 in 25.7046 ms
+2026-10-27 21:20:57.372 +07:00 [INF] OpenAI-compatible term suggestion: - / -
+2026-10-27 21:20:57.386 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 1461.3126 ms
+2026-10-27 21:20:58.652 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 1251.4281 ms
+2026-10-27 21:20:59.935 +07:00 [INF] HTTP POST /api/classification/163/facts responded 200 in 1263.9572 ms
+2026-10-27 21:21:00.587 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 648.2279 ms
+2026-10-27 21:21:01.065 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 475.5262 ms
+2026-10-27 21:21:02.205 +07:00 [INF] OpenAI-compatible term suggestion: - / -
+2026-10-27 21:21:02.210 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 1139.0061 ms
+2026-10-27 21:21:03.228 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 1015.3447 ms
+2026-10-27 21:21:04.265 +07:00 [INF] HTTP POST /api/classification/167/facts responded 200 in 1032.4985 ms
+2026-10-27 21:21:05.345 +07:00 [INF] HTTP POST /api/classification/167/facts responded 200 in 1068.6584 ms
+2026-10-27 21:21:06.407 +07:00 [INF] HTTP POST /api/classification/167/facts responded 200 in 1059.2323 ms
+2026-10-27 21:21:06.743 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 333.0269 ms
+2026-10-27 21:21:07.088 +07:00 [INF] HTTP POST /api/classification/168/facts responded 200 in 341.6376 ms
+2026-10-27 21:21:07.425 +07:00 [INF] HTTP POST /api/classification/168/facts responded 200 in 334.8779 ms
+2026-10-27 21:21:07.781 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 353.0683 ms
+2026-10-27 21:21:08.057 +07:00 [INF] HTTP POST /api/classification/169/facts responded 200 in 272.9881 ms
+2026-10-27 21:21:08.380 +07:00 [INF] HTTP POST /api/classification/169/facts responded 200 in 320.1367 ms
+2026-10-27 21:21:08.733 +07:00 [INF] HTTP POST /api/classification/169/facts responded 200 in 348.6501 ms
+2026-10-27 21:21:08.805 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 69.5159 ms
+2026-10-27 21:21:08.854 +07:00 [INF] HTTP POST /api/classification/170/facts responded 200 in 45.3323 ms
+2026-10-27 21:21:08.920 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 62.2560 ms
+2026-10-27 21:21:08.981 +07:00 [INF] HTTP POST /api/classification/171/facts responded 200 in 58.1479 ms
+2026-10-27 21:21:09.036 +07:00 [INF] HTTP POST /api/classification/171/facts responded 200 in 48.8191 ms
+2026-10-27 21:21:09.105 +07:00 [INF] HTTP POST /api/classification/171/facts responded 200 in 66.0059 ms
+2026-10-27 21:21:09.167 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 59.4529 ms
+2026-10-27 21:21:09.589 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 419.9299 ms
+2026-10-27 21:21:10.086 +07:00 [INF] HTTP POST /api/classification/173/facts responded 200 in 493.7749 ms
+2026-10-27 21:21:10.966 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 877.2249 ms
+2026-10-27 21:21:11.950 +07:00 [INF] HTTP POST /api/classification/174/facts responded 200 in 980.8435 ms
+2026-10-27 21:21:12.290 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 337.6168 ms
+2026-10-27 21:21:12.641 +07:00 [INF] HTTP POST /api/classification/175/facts responded 200 in 347.4439 ms
+2026-10-27 21:21:12.986 +07:00 [INF] HTTP POST /api/classification/175/facts responded 200 in 342.2467 ms
+2026-10-27 21:21:13.956 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 967.7964 ms
+2026-10-27 21:21:14.229 +07:00 [INF] HTTP POST /api/auth/login responded 200 in 21.2896 ms
+2026-10-27 21:21:14.267 +07:00 [INF] HTTP POST /api/admin/versions responded 200 in 27.3907 ms
+2026-10-27 21:21:16.955 +07:00 [INF] HTTP POST /api/admin/btki/upload responded 200 in 2660.0576 ms
+2026-10-27 21:21:27.437 +07:00 [INF] HTTP POST /api/admin/btki/commit/bcb7f6f5-2f6b-4300-921a-cdc374e70fd2 responded 200 in 10444.7183 ms
+2026-10-27 21:23:00.222 +07:00 [INF] HTTP POST /api/auth/login responded 200 in 27.3904 ms
+2026-10-27 21:23:00.287 +07:00 [INF] HTTP POST /api/admin/versions/bcb7f6f5-2f6b-4300-921a-cdc374e70fd2/activate responded 200 in 59.9988 ms
+2026-10-27 21:23:00.304 +07:00 [INF] HTTP GET /api/admin/versions responded 200 in 11.5213 ms
+2026-10-27 21:23:00.586 +07:00 [INF] HTTP POST /api/auth/login responded 200 in 22.5942 ms
+2026-10-27 21:23:04.205 +07:00 [INF] OpenAI-compatible term suggestion: - / -
+2026-10-27 21:23:04.232 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 3630.3424 ms
+2026-10-27 21:23:05.514 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 1264.4673 ms
+2026-10-27 21:23:06.931 +07:00 [INF] HTTP POST /api/classification/178/facts responded 200 in 1396.3693 ms
+2026-10-27 21:23:07.587 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 652.9122 ms
+2026-10-27 21:23:08.181 +07:00 [INF] HTTP POST /api/classification/179/facts responded 200 in 591.1204 ms
+2026-10-27 21:23:08.427 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 243.0402 ms
+2026-10-27 21:23:08.706 +07:00 [INF] HTTP POST /api/classification/180/facts responded 200 in 273.1157 ms
+2026-10-27 21:23:09.234 +07:00 [INF] HTTP POST /api/classification/180/facts responded 200 in 514.5383 ms
+2026-10-27 21:23:10.542 +07:00 [INF] OpenAI-compatible term suggestion: - / -
+2026-10-27 21:23:10.554 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 1317.4038 ms
+2026-10-27 21:23:11.767 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 1210.6737 ms
+2026-10-27 21:23:12.829 +07:00 [INF] HTTP POST /api/classification/182/facts responded 200 in 1058.4629 ms
+2026-10-27 21:23:13.976 +07:00 [INF] HTTP POST /api/classification/182/facts responded 200 in 1143.4806 ms
+2026-10-27 21:23:14.322 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 343.6291 ms
+2026-10-27 21:23:14.631 +07:00 [INF] HTTP POST /api/classification/183/facts responded 200 in 306.1843 ms
+2026-10-27 21:23:14.948 +07:00 [INF] HTTP POST /api/classification/183/facts responded 200 in 312.9104 ms
+2026-10-27 21:23:15.252 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 300.7738 ms
+2026-10-27 21:23:15.589 +07:00 [INF] HTTP POST /api/classification/184/facts responded 200 in 334.9355 ms
+2026-10-27 21:23:15.964 +07:00 [INF] HTTP POST /api/classification/184/facts responded 200 in 370.9599 ms
+2026-10-27 21:23:16.345 +07:00 [INF] HTTP POST /api/classification/184/facts responded 200 in 378.3721 ms
+2026-10-27 21:23:16.940 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 591.6289 ms
+2026-10-27 21:23:17.054 +07:00 [INF] HTTP POST /api/classification/185/facts responded 200 in 111.1227 ms
+2026-10-27 21:23:17.150 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 93.3872 ms
+2026-10-27 21:23:17.250 +07:00 [INF] HTTP POST /api/classification/186/facts responded 200 in 94.9067 ms
+2026-10-27 21:23:17.352 +07:00 [INF] HTTP POST /api/classification/186/facts responded 200 in 99.4016 ms
+2026-10-27 21:23:17.446 +07:00 [INF] HTTP POST /api/classification/186/facts responded 200 in 91.0190 ms
+2026-10-27 21:23:17.555 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 104.6902 ms
+2026-10-27 21:23:18.126 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 569.1564 ms
+2026-10-27 21:23:18.667 +07:00 [INF] HTTP POST /api/classification/188/facts responded 200 in 535.6805 ms
+2026-10-27 21:23:19.442 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 770.9984 ms
+2026-10-27 21:23:20.222 +07:00 [INF] HTTP POST /api/classification/189/facts responded 200 in 775.9252 ms
+2026-10-27 21:23:20.494 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 269.7604 ms
+2026-10-27 21:23:21.396 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 898.0867 ms
+2026-10-27 21:23:40.654 +07:00 [INF] HTTP POST /api/auth/login responded 200 in 22.4897 ms
+2026-10-27 21:23:41.942 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 1272.8848 ms
+2026-10-27 21:23:41.967 +07:00 [INF] HTTP GET /api/classification/192/reasoning responded 200 in 20.4533 ms
+2026-10-27 21:25:50.132 +07:00 [INF] Database already seeded — skipping.
+2026-10-27 21:25:52.589 +07:00 [INF] Hierarchy seeded: 3 headings, 601 one-dash groups, 361 subheadings.
+2026-10-27 21:25:53.098 +07:00 [INF] MFN seeded: 0 rates; skipped 277 unparseable, 135 codes not in active version.
+2026-10-27 21:26:20.290 +07:00 [INF] HTTP POST /api/auth/login responded 200 in 386.2259 ms
+2026-10-27 21:26:21.700 +07:00 [WRN] The query uses a row limiting operator ('Skip'/'Take') without an 'OrderBy' operator. This may lead to unpredictable results. If the 'Distinct' operator is used after 'OrderBy', then make sure to use the 'OrderBy' operator after 'Distinct' as the ordering would otherwise get erased.
+2026-10-27 21:26:27.160 +07:00 [INF] OpenAI-compatible term suggestion: - / -
+2026-10-27 21:26:27.412 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 7066.1225 ms
+2026-10-27 21:26:29.072 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 1604.4434 ms
+2026-10-27 21:26:30.943 +07:00 [INF] HTTP POST /api/classification/194/facts responded 200 in 1830.3819 ms
+2026-10-27 21:26:31.756 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 805.5659 ms
+2026-10-27 21:26:32.638 +07:00 [INF] HTTP POST /api/classification/195/facts responded 200 in 874.0754 ms
+2026-10-27 21:26:33.303 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 658.2029 ms
+2026-10-27 21:26:34.616 +07:00 [INF] OpenAI-compatible term suggestion: - / -
+2026-10-27 21:26:34.636 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 1323.7247 ms
+2026-10-27 21:26:36.142 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 1494.2938 ms
+2026-10-27 21:26:37.671 +07:00 [INF] HTTP POST /api/classification/198/facts responded 200 in 1501.2433 ms
+2026-10-27 21:26:39.152 +07:00 [INF] HTTP POST /api/classification/198/facts responded 200 in 1474.9726 ms
+2026-10-27 21:26:39.627 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 466.7931 ms
+2026-10-27 21:26:40.084 +07:00 [INF] HTTP POST /api/classification/199/facts responded 200 in 448.6621 ms
+2026-10-27 21:26:40.558 +07:00 [INF] HTTP POST /api/classification/199/facts responded 200 in 462.5607 ms
+2026-10-27 21:26:41.053 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 488.1517 ms
+2026-10-27 21:26:41.485 +07:00 [INF] HTTP POST /api/classification/200/facts responded 200 in 426.0119 ms
+2026-10-27 21:26:41.973 +07:00 [INF] HTTP POST /api/classification/200/facts responded 200 in 478.6375 ms
+2026-10-27 21:26:42.442 +07:00 [INF] HTTP POST /api/classification/200/facts responded 200 in 462.0098 ms
+2026-10-27 21:26:42.575 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 125.2804 ms
+2026-10-27 21:26:42.726 +07:00 [INF] HTTP POST /api/classification/201/facts responded 200 in 139.7730 ms
+2026-10-27 21:26:42.844 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 104.9757 ms
+2026-10-27 21:26:42.957 +07:00 [INF] HTTP POST /api/classification/202/facts responded 200 in 106.5875 ms
+2026-10-27 21:26:43.081 +07:00 [INF] HTTP POST /api/classification/202/facts responded 200 in 114.8285 ms
+2026-10-27 21:26:43.245 +07:00 [INF] HTTP POST /api/classification/202/facts responded 200 in 149.8155 ms
+2026-10-27 21:26:43.393 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 142.4305 ms
+2026-10-27 21:26:44.193 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 789.0023 ms
+2026-10-27 21:26:44.934 +07:00 [INF] HTTP POST /api/classification/204/facts responded 200 in 735.6440 ms
+2026-10-27 21:26:46.118 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 1176.2343 ms
+2026-10-27 21:26:47.376 +07:00 [INF] HTTP POST /api/classification/205/facts responded 200 in 1247.9304 ms
+2026-10-27 21:26:47.823 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 437.9706 ms
+2026-10-27 21:26:49.052 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 1221.1658 ms
+2026-10-27 21:26:49.556 +07:00 [INF] HTTP POST /api/auth/login responded 200 in 40.8265 ms
+2026-10-27 21:26:49.661 +07:00 [INF] HTTP POST /api/admin/versions/f5f2cc0f-0e3c-4a34-afe9-5e7c673824a3/activate responded 200 in 96.8957 ms
+2026-10-27 21:26:49.725 +07:00 [INF] HTTP GET /api/admin/versions responded 200 in 51.0605 ms
+2026-10-27 21:26:50.339 +07:00 [INF] HTTP POST /api/auth/login responded 200 in 41.6199 ms
+2026-10-27 21:26:57.847 +07:00 [INF] OpenAI-compatible term suggestion: - / -
+2026-10-27 21:26:57.859 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 7487.9925 ms
+2026-10-27 21:26:59.629 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 1711.6901 ms
+2026-10-27 21:27:01.459 +07:00 [INF] HTTP POST /api/classification/209/facts responded 200 in 1791.3803 ms
+2026-10-27 21:27:02.411 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 942.3782 ms
+2026-10-27 21:27:03.158 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 740.2384 ms
+2026-10-27 21:27:05.137 +07:00 [INF] OpenAI-compatible term suggestion: - / -
+2026-10-27 21:27:05.173 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 2007.7392 ms
+2026-10-27 21:27:06.610 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 1429.9941 ms
+2026-10-27 21:27:08.024 +07:00 [INF] HTTP POST /api/classification/213/facts responded 200 in 1401.5338 ms
+2026-10-27 21:27:09.424 +07:00 [INF] HTTP POST /api/classification/213/facts responded 200 in 1376.5955 ms
+2026-10-27 21:27:10.950 +07:00 [INF] HTTP POST /api/classification/213/facts responded 200 in 1516.1600 ms
+2026-10-27 21:27:11.393 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 436.0255 ms
+2026-10-27 21:27:11.788 +07:00 [INF] HTTP POST /api/classification/214/facts responded 200 in 386.0901 ms
+2026-10-27 21:27:12.211 +07:00 [INF] HTTP POST /api/classification/214/facts responded 200 in 416.6069 ms
+2026-10-27 21:27:12.675 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 456.9936 ms
+2026-10-27 21:27:13.115 +07:00 [INF] HTTP POST /api/classification/215/facts responded 200 in 431.5991 ms
+2026-10-27 21:27:13.570 +07:00 [INF] HTTP POST /api/classification/215/facts responded 200 in 443.8253 ms
+2026-10-27 21:27:14.032 +07:00 [INF] HTTP POST /api/classification/215/facts responded 200 in 456.2333 ms
+2026-10-27 21:27:14.171 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 129.8227 ms
+2026-10-27 21:27:14.335 +07:00 [INF] HTTP POST /api/classification/216/facts responded 200 in 143.1651 ms
+2026-10-27 21:27:14.450 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 107.1277 ms
+2026-10-27 21:27:14.556 +07:00 [INF] HTTP POST /api/classification/217/facts responded 200 in 97.8249 ms
+2026-10-27 21:27:14.667 +07:00 [INF] HTTP POST /api/classification/217/facts responded 200 in 105.1825 ms
+2026-10-27 21:27:14.800 +07:00 [INF] HTTP POST /api/classification/217/facts responded 200 in 126.4682 ms
+2026-10-27 21:27:14.873 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 66.3402 ms
+2026-10-27 21:27:15.609 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 732.2419 ms
+2026-10-27 21:27:16.311 +07:00 [INF] HTTP POST /api/classification/219/facts responded 200 in 693.3275 ms
+2026-10-27 21:27:17.521 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 1200.6017 ms
+2026-10-27 21:27:18.663 +07:00 [INF] HTTP POST /api/classification/220/facts responded 200 in 1132.6769 ms
+2026-10-27 21:27:19.116 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 445.1622 ms
+2026-10-27 21:27:20.260 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 1138.1990 ms
+2026-10-27 21:27:43.981 +07:00 [INF] HTTP POST /api/auth/login responded 200 in 57.7808 ms
+2026-10-27 21:27:44.060 +07:00 [INF] HTTP POST /api/admin/versions/bcb7f6f5-2f6b-4300-921a-cdc374e70fd2/activate responded 200 in 65.3944 ms
+2026-10-27 21:27:44.080 +07:00 [INF] HTTP GET /api/admin/versions responded 200 in 6.6736 ms
+2026-10-27 21:27:44.860 +07:00 [INF] HTTP POST /api/auth/login responded 200 in 39.8737 ms
+2026-10-27 21:27:47.777 +07:00 [INF] OpenAI-compatible term suggestion: - / -
+2026-10-27 21:27:47.796 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 2907.5446 ms
+2026-10-27 21:27:49.415 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 1556.6620 ms
+2026-10-27 21:27:51.052 +07:00 [INF] HTTP POST /api/classification/224/facts responded 200 in 1597.5414 ms
+2026-10-27 21:27:51.821 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 758.9913 ms
+2026-10-27 21:27:52.777 +07:00 [INF] HTTP POST /api/classification/225/facts responded 200 in 949.6858 ms
+2026-10-27 21:27:53.421 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 635.8080 ms
+2026-10-27 21:27:54.429 +07:00 [INF] OpenAI-compatible term suggestion: - / -
+2026-10-27 21:27:54.447 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 1019.7055 ms
+2026-10-27 21:27:55.942 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 1485.5498 ms
+2026-10-27 21:27:57.417 +07:00 [INF] HTTP POST /api/classification/228/facts responded 200 in 1449.9425 ms
+2026-10-27 21:27:58.866 +07:00 [INF] HTTP POST /api/classification/228/facts responded 200 in 1433.1653 ms
+2026-10-27 21:27:59.314 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 442.1287 ms
+2026-10-27 21:27:59.756 +07:00 [INF] HTTP POST /api/classification/229/facts responded 200 in 434.0651 ms
+2026-10-27 21:28:00.226 +07:00 [INF] HTTP POST /api/classification/229/facts responded 200 in 463.2792 ms
+2026-10-27 21:28:00.670 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 438.2559 ms
+2026-10-27 21:28:01.116 +07:00 [INF] HTTP POST /api/classification/230/facts responded 200 in 436.0430 ms
+2026-10-27 21:28:01.578 +07:00 [INF] HTTP POST /api/classification/230/facts responded 200 in 452.0289 ms
+2026-10-27 21:28:02.036 +07:00 [INF] HTTP POST /api/classification/230/facts responded 200 in 452.0043 ms
+2026-10-27 21:28:02.143 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 99.3972 ms
+2026-10-27 21:28:02.285 +07:00 [INF] HTTP POST /api/classification/231/facts responded 200 in 131.6826 ms
+2026-10-27 21:28:02.405 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 113.1948 ms
+2026-10-27 21:28:02.518 +07:00 [INF] HTTP POST /api/classification/232/facts responded 200 in 105.1512 ms
+2026-10-27 21:28:02.639 +07:00 [INF] HTTP POST /api/classification/232/facts responded 200 in 114.7884 ms
+2026-10-27 21:28:02.790 +07:00 [INF] HTTP POST /api/classification/232/facts responded 200 in 143.9919 ms
+2026-10-27 21:28:02.926 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 127.3789 ms
+2026-10-27 21:28:03.645 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 713.4197 ms
+2026-10-27 21:28:04.366 +07:00 [INF] HTTP POST /api/classification/234/facts responded 200 in 714.5270 ms
+2026-10-27 21:28:05.631 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 1254.8565 ms
+2026-10-27 21:28:06.957 +07:00 [INF] HTTP POST /api/classification/235/facts responded 200 in 1319.5728 ms
+2026-10-27 21:28:07.606 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 641.5620 ms
+2026-10-27 21:28:08.958 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 1344.6241 ms
+2026-10-27 21:36:26.113 +07:00 [INF] Database already seeded — skipping.
+2026-10-27 21:36:35.160 +07:00 [INF] Hierarchy seeded: 3 headings, 601 one-dash groups, 361 subheadings.
+2026-10-27 21:36:36.819 +07:00 [INF] MFN seeded: 0 rates; skipped 277 unparseable, 135 codes not in active version.
+2026-10-27 21:36:41.649 +07:00 [INF] HTTP OPTIONS /api/admin/versions responded 204 in 12.0697 ms
+2026-10-27 21:36:41.649 +07:00 [INF] HTTP OPTIONS /api/admin/versions responded 204 in 12.0976 ms
+2026-10-27 21:36:42.040 +07:00 [INF] HTTP GET /api/admin/versions responded 401 in 364.2569 ms
+2026-10-27 21:36:42.061 +07:00 [INF] HTTP GET /api/admin/versions responded 401 in 15.1445 ms
+2026-10-27 21:37:28.688 +07:00 [INF] HTTP OPTIONS /api/auth/login responded 204 in 0.5106 ms
+2026-10-27 21:37:29.639 +07:00 [INF] HTTP POST /api/auth/login responded 200 in 926.9320 ms
+2026-10-27 21:37:29.660 +07:00 [INF] HTTP OPTIONS /api/admin/versions responded 204 in 0.2053 ms
+2026-10-27 21:37:29.662 +07:00 [INF] HTTP OPTIONS /api/admin/versions responded 204 in 1.4772 ms
+2026-10-27 21:37:29.957 +07:00 [INF] HTTP GET /api/admin/versions responded 200 in 267.3704 ms
+2026-10-27 21:37:30.024 +07:00 [INF] HTTP GET /api/admin/versions responded 200 in 64.2320 ms
+2026-10-27 21:37:41.653 +07:00 [INF] HTTP OPTIONS /api/classification/cases responded 204 in 0.2577 ms
+2026-10-27 21:37:41.655 +07:00 [INF] HTTP OPTIONS /api/classification/cases responded 204 in 0.2253 ms
+2026-10-27 21:37:42.342 +07:00 [INF] HTTP GET /api/classification/cases responded 200 in 685.0023 ms
+2026-10-27 21:37:42.426 +07:00 [INF] HTTP GET /api/classification/cases responded 200 in 80.4028 ms
+2026-10-27 21:37:47.909 +07:00 [INF] HTTP OPTIONS /api/classification/237 responded 204 in 0.9429 ms
+2026-10-27 21:37:47.909 +07:00 [INF] HTTP OPTIONS /api/classification/237/reasoning responded 204 in 0.9447 ms
+2026-10-27 21:37:48.321 +07:00 [INF] HTTP GET /api/classification/237/reasoning responded 200 in 402.2297 ms
+2026-10-27 21:37:48.362 +07:00 [INF] HTTP GET /api/classification/237 responded 200 in 445.6854 ms
+2026-10-27 21:37:48.368 +07:00 [INF] HTTP OPTIONS /api/classification/237/tariffs responded 204 in 0.2031 ms
+2026-10-27 21:37:48.711 +07:00 [INF] HTTP GET /api/classification/237/tariffs responded 200 in 338.4717 ms
+2026-10-27 21:38:17.199 +07:00 [INF] HTTP OPTIONS /api/classification/cases responded 204 in 0.1758 ms
+2026-10-27 21:38:17.199 +07:00 [INF] HTTP OPTIONS /api/classification/cases responded 204 in 0.0748 ms
+2026-10-27 21:38:17.329 +07:00 [INF] HTTP GET /api/classification/cases responded 200 in 121.9443 ms
+2026-10-27 21:38:17.416 +07:00 [INF] HTTP GET /api/classification/cases responded 200 in 84.3117 ms
+2026-10-27 21:38:17.724 +07:00 [INF] HTTP OPTIONS /api/classification/cases responded 204 in 0.3515 ms
+2026-10-27 21:38:17.728 +07:00 [INF] HTTP OPTIONS /api/classification/cases responded 204 in 0.2295 ms
+2026-10-27 21:38:17.883 +07:00 [INF] HTTP GET /api/classification/cases responded 200 in 154.6476 ms
+2026-10-27 21:38:17.961 +07:00 [INF] HTTP GET /api/classification/cases responded 200 in 73.4612 ms
+2026-10-27 21:38:18.559 +07:00 [INF] HTTP GET /api/classification/cases responded 200 in 104.6472 ms
+2026-10-27 21:38:18.656 +07:00 [INF] HTTP GET /api/classification/cases responded 200 in 93.8327 ms
+2026-10-27 21:38:21.016 +07:00 [INF] HTTP OPTIONS /api/classification/226/reasoning responded 204 in 0.1892 ms
+2026-10-27 21:38:21.016 +07:00 [INF] HTTP OPTIONS /api/classification/226 responded 204 in 0.1890 ms
+2026-10-27 21:38:21.155 +07:00 [INF] HTTP GET /api/classification/226 responded 200 in 134.0886 ms
+2026-10-27 21:38:21.155 +07:00 [INF] HTTP GET /api/classification/226/reasoning responded 200 in 133.8125 ms
+2026-10-27 21:38:25.594 +07:00 [INF] HTTP OPTIONS /api/classification/222/reasoning responded 204 in 0.2986 ms
+2026-10-27 21:38:25.594 +07:00 [INF] HTTP OPTIONS /api/classification/222 responded 204 in 0.3502 ms
+2026-10-27 21:38:25.743 +07:00 [INF] HTTP GET /api/classification/222 responded 200 in 142.7756 ms
+2026-10-27 21:38:25.750 +07:00 [INF] HTTP GET /api/classification/222/reasoning responded 200 in 136.7313 ms
+2026-10-27 21:38:25.756 +07:00 [INF] HTTP OPTIONS /api/classification/222/tariffs responded 204 in 0.1935 ms
+2026-10-27 21:38:25.882 +07:00 [INF] HTTP GET /api/classification/222/tariffs responded 200 in 119.3686 ms
+2026-10-27 21:38:28.704 +07:00 [INF] HTTP OPTIONS /api/classification/236 responded 204 in 0.1604 ms
+2026-10-27 21:38:28.704 +07:00 [INF] HTTP OPTIONS /api/classification/236/reasoning responded 204 in 0.1034 ms
+2026-10-27 21:38:28.858 +07:00 [INF] HTTP GET /api/classification/236 responded 200 in 148.2043 ms
+2026-10-27 21:38:28.860 +07:00 [INF] HTTP GET /api/classification/236/reasoning responded 200 in 151.1239 ms
+2026-10-27 21:38:28.865 +07:00 [INF] HTTP OPTIONS /api/classification/236/tariffs responded 204 in 0.1010 ms
+2026-10-27 21:38:28.955 +07:00 [INF] HTTP GET /api/classification/236/tariffs responded 200 in 83.7472 ms
+2026-10-27 21:39:26.708 +07:00 [INF] HTTP OPTIONS /api/auth/login responded 204 in 0.5729 ms
+2026-10-27 21:39:26.893 +07:00 [INF] HTTP POST /api/auth/login responded 200 in 171.3770 ms
+2026-10-27 21:39:28.622 +07:00 [INF] HTTP OPTIONS /api/classification/cases responded 204 in 0.1588 ms
+2026-10-27 21:39:28.629 +07:00 [INF] HTTP OPTIONS /api/classification/cases responded 204 in 0.1676 ms
+2026-10-27 21:39:28.757 +07:00 [INF] HTTP GET /api/classification/cases responded 200 in 121.2302 ms
+2026-10-27 21:39:28.817 +07:00 [INF] HTTP GET /api/classification/cases responded 200 in 56.8491 ms
+2026-10-27 21:42:12.048 +07:00 [INF] HTTP OPTIONS /api/classification/start responded 204 in 0.1459 ms
+2026-10-27 21:42:12.441 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 385.2379 ms
+2026-10-27 21:42:24.115 +07:00 [INF] HTTP OPTIONS /api/classification/238/facts responded 204 in 0.1328 ms
+2026-10-27 21:42:26.302 +07:00 [WRN] The query uses a row limiting operator ('Skip'/'Take') without an 'OrderBy' operator. This may lead to unpredictable results. If the 'Distinct' operator is used after 'OrderBy', then make sure to use the 'OrderBy' operator after 'Distinct' as the ordering would otherwise get erased.
+2026-10-27 21:42:26.992 +07:00 [INF] HTTP POST /api/classification/238/facts responded 200 in 2872.0707 ms
+2026-10-27 21:42:26.999 +07:00 [INF] HTTP OPTIONS /api/classification/238/reasoning responded 204 in 0.3120 ms
+2026-10-27 21:42:27.074 +07:00 [INF] HTTP GET /api/classification/238/reasoning responded 200 in 68.8323 ms
+2026-10-27 21:43:37.742 +07:00 [INF] HTTP OPTIONS /api/classification/start responded 204 in 0.1534 ms
+2026-10-27 21:43:37.868 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 120.4572 ms
+2026-10-27 21:44:11.098 +07:00 [INF] HTTP OPTIONS /api/classification/start responded 204 in 0.1525 ms
+2026-10-27 21:44:13.967 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 2866.1488 ms
+2026-10-27 21:44:42.796 +07:00 [INF] HTTP OPTIONS /api/classification/240/facts responded 204 in 0.1001 ms
+2026-10-27 21:44:45.365 +07:00 [INF] HTTP POST /api/classification/240/facts responded 200 in 2563.7028 ms
+2026-10-27 21:44:52.405 +07:00 [INF] HTTP OPTIONS /api/classification/240/facts responded 204 in 0.6150 ms
+2026-10-27 21:45:00.424 +07:00 [INF] HTTP POST /api/classification/240/facts responded 200 in 8015.8575 ms
+2026-10-27 21:45:05.547 +07:00 [INF] HTTP OPTIONS /api/classification/240/facts responded 204 in 0.1238 ms
+2026-10-27 21:45:07.900 +07:00 [INF] HTTP POST /api/classification/240/facts responded 200 in 2350.7110 ms
+2026-10-27 21:45:12.775 +07:00 [INF] HTTP OPTIONS /api/classification/240/facts responded 204 in 0.3167 ms
+2026-10-27 21:45:15.276 +07:00 [INF] HTTP POST /api/classification/240/facts responded 200 in 2497.8783 ms
+2026-10-27 21:45:15.281 +07:00 [INF] HTTP OPTIONS /api/classification/240/reasoning responded 204 in 0.0783 ms
+2026-10-27 21:45:15.353 +07:00 [INF] HTTP GET /api/classification/240/reasoning responded 200 in 68.9645 ms
+2026-10-27 21:46:22.636 +07:00 [INF] HTTP OPTIONS /api/classification/cases responded 204 in 0.0831 ms
+2026-10-27 21:46:22.639 +07:00 [INF] HTTP OPTIONS /api/classification/cases responded 204 in 0.1221 ms
+2026-10-27 21:46:22.791 +07:00 [INF] HTTP GET /api/classification/cases responded 200 in 130.6052 ms
+2026-10-27 21:46:22.887 +07:00 [INF] HTTP GET /api/classification/cases responded 200 in 93.8843 ms
+2026-10-27 21:46:25.899 +07:00 [INF] HTTP OPTIONS /api/classification/239 responded 204 in 0.0894 ms
+2026-10-27 21:46:25.899 +07:00 [INF] HTTP OPTIONS /api/classification/239/reasoning responded 204 in 0.0843 ms
+2026-10-27 21:46:26.005 +07:00 [INF] HTTP GET /api/classification/239/reasoning responded 200 in 99.3249 ms
+2026-10-27 21:46:26.065 +07:00 [INF] HTTP GET /api/classification/239 responded 200 in 159.5398 ms
+2026-10-27 21:47:20.934 +07:00 [INF] HTTP OPTIONS /api/classification/start responded 204 in 0.1012 ms
+2026-10-27 21:47:21.052 +07:00 [INF] HTTP POST /api/classification/start responded 200 in 101.9050 ms
+2026-10-27 21:47:35.819 +07:00 [INF] HTTP OPTIONS /api/classification/241/facts responded 204 in 0.0722 ms
+2026-10-27 21:47:37.972 +07:00 [INF] HTTP POST /api/classification/241/facts responded 200 in 2149.2869 ms
+2026-10-27 21:47:45.094 +07:00 [INF] HTTP OPTIONS /api/classification/241/facts responded 204 in 0.0621 ms
+2026-10-27 21:47:47.147 +07:00 [INF] HTTP POST /api/classification/241/facts responded 200 in 2050.2350 ms
+2026-10-27 21:47:47.151 +07:00 [INF] HTTP OPTIONS /api/classification/241/reasoning responded 204 in 0.0629 ms
+2026-10-27 21:47:47.215 +07:00 [INF] HTTP GET /api/classification/241/reasoning responded 200 in 60.4786 ms

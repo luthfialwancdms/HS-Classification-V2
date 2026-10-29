@@ -1,0 +1,15 @@
+D:\Work\Project\Project_AI\hs-classifier-api\HsClassifier.Application\bin\Debug\net8.0\HsClassifier.Application.deps.json
+D:\Work\Project\Project_AI\hs-classifier-api\HsClassifier.Application\bin\Debug\net8.0\HsClassifier.Application.dll
+D:\Work\Project\Project_AI\hs-classifier-api\HsClassifier.Application\bin\Debug\net8.0\HsClassifier.Application.pdb
+D:\Work\Project\Project_AI\hs-classifier-api\HsClassifier.Application\bin\Debug\net8.0\HsClassifier.Domain.dll
+D:\Work\Project\Project_AI\hs-classifier-api\HsClassifier.Application\bin\Debug\net8.0\HsClassifier.Domain.pdb
+D:\Work\Project\Project_AI\hs-classifier-api\HsClassifier.Application\obj\Debug\net8.0\HsClassifier.Application.csproj.AssemblyReference.cache
+D:\Work\Project\Project_AI\hs-classifier-api\HsClassifier.Application\obj\Debug\net8.0\HsClassifier.Application.GeneratedMSBuildEditorConfig.editorconfig
+D:\Work\Project\Project_AI\hs-classifier-api\HsClassifier.Application\obj\Debug\net8.0\HsClassifier.Application.AssemblyInfoInputs.cache
+D:\Work\Project\Project_AI\hs-classifier-api\HsClassifier.Application\obj\Debug\net8.0\HsClassifier.Application.AssemblyInfo.cs
+D:\Work\Project\Project_AI\hs-classifier-api\HsClassifier.Application\obj\Debug\net8.0\HsClassifier.Application.csproj.CoreCompileInputs.cache
+D:\Work\Project\Project_AI\hs-classifier-api\HsClassifier.Application\obj\Debug\net8.0\HsClassi.8F69CB02.Up2Date
+D:\Work\Project\Project_AI\hs-classifier-api\HsClassifier.Application\obj\Debug\net8.0\HsClassifier.Application.dll
+D:\Work\Project\Project_AI\hs-classifier-api\HsClassifier.Application\obj\Debug\net8.0\refint\HsClassifier.Application.dll
+D:\Work\Project\Project_AI\hs-classifier-api\HsClassifier.Application\obj\Debug\net8.0\HsClassifier.Application.pdb
+D:\Work\Project\Project_AI\hs-classifier-api\HsClassifier.Application\obj\Debug\net8.0\ref\HsClassifier.Application.dll

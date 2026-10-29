@@ -1,0 +1,175 @@
+{
+  "dropdown_fields": {
+    "material_utama": {
+      "label": "Material Utama",
+      "multi": true,
+      "options": [
+        "Baja/Besi",
+        "Aluminium",
+        "Tembaga",
+        "Logam dasar lainnya",
+        "Plastik",
+        "Karet",
+        "Kayu",
+        "Kertas/Karton",
+        "Kaca",
+        "Keramik/Porselen",
+        "Tekstil/Serat",
+        "Kimia/Bahan kimia",
+        "Minyak/Hidrokarbon",
+        "Farmasi/Obat",
+        "Makanan/Pertanian",
+        "Campuran/Multi-material",
+        "Lainnya"
+      ]
+    },
+    "kondisi_impor": {
+      "label": "Kondisi Saat Impor",
+      "multi": false,
+      "options": [
+        "Lengkap dan jadi (siap pakai)",
+        "Belum lengkap (incomplete) - karakter pokok sudah ada",
+        "Belum selesai (unfinished) - proses produksi belum tuntas",
+        "Terurai / Belum dirakit (CKD - Completely Knocked Down)",
+        "Semi dirakit (SKD - Semi Knocked Down)",
+        "Curah (bulk)",
+        "Campuran bahan (mixture)",
+        "Bagian/Part dari mesin/barang lain",
+        "Set/Kit untuk penjualan eceran"
+      ]
+    },
+    "fungsi_utama": {
+      "label": "Fungsi Utama Barang",
+      "multi": false,
+      "options": [
+        "Mengangkut barang (transportasi darat)",
+        "Mengangkut orang (transportasi darat)",
+        "Mengangkut barang/orang (transportasi laut)",
+        "Mengangkat/Lifting (crane, hoist, forklift)",
+        "Menggali/Earthmoving (excavator, bulldozer)",
+        "Mengolah data / Komputasi",
+        "Komunikasi (telepon, radio, jaringan)",
+        "Menghasilkan/Mengkonversi energi listrik",
+        "Menggerakkan mekanik (motor, pompa, kompresor)",
+        "Pertanian (membajak, menanam, memanen)",
+        "Manufaktur/Pengolahan industri",
+        "Pengeboran/Pertambangan",
+        "Mengukur/Instrumen",
+        "Kesehatan/Medis",
+        "Hiburan/Audio-visual",
+        "Penyimpanan/Pendinginan",
+        "Konstruksi bangunan",
+        "Konsumsi langsung (makanan, minuman)",
+        "Penggunaan rumah tangga",
+        "Lainnya"
+      ]
+    },
+    "cara_kerja": {
+      "label": "Cara Kerja / Prinsip Operasi",
+      "multi": true,
+      "options": [
+        "Mekanis",
+        "Elektrik / Motor listrik",
+        "Hidrolik",
+        "Pneumatik",
+        "Diesel / Motor bakar",
+        "Bensin / Motor bakar",
+        "Digital / Elektronik",
+        "Manual / Tanpa tenaga",
+        "Kimia / Reaksi kimia",
+        "Optik / Laser",
+        "Lainnya"
+      ]
+    },
+    "mobilitas": {
+      "label": "Mobilitas",
+      "multi": false,
+      "options": [
+        "Self-propelled (bergerak sendiri)",
+        "Ditarik (towed)",
+        "Didorong",
+        "Statis / Tidak bergerak",
+        "Portabel (dibawa tangan)",
+        "Dipasang permanen",
+        "Terapung (floating)",
+        "Tidak relevan"
+      ]
+    },
+    "area_operasi": {
+      "label": "Area / Lingkungan Operasi",
+      "multi": false,
+      "options": [
+        "Jalan raya umum (on-road)",
+        "Off-highway / Perkebunan / Pertambangan",
+        "Di dalam bangunan / Pabrik / Gudang",
+        "Perairan / Laut / Sungai",
+        "Udara",
+        "Bawah tanah / Tambang bawah tanah",
+        "Rumah tangga",
+        "Tidak relevan"
+      ]
+    },
+    "sektor": {
+      "label": "Sektor / Industri Pengguna",
+      "multi": false,
+      "options": [
+        "Pertanian / Perkebunan / Kehutanan",
+        "Perikanan / Kelautan",
+        "Pertambangan / Energi",
+        "Konstruksi / Infrastruktur",
+        "Manufaktur / Industri",
+        "Transportasi / Logistik",
+        "Telekomunikasi / IT",
+        "Kesehatan / Farmasi",
+        "Makanan & Minuman",
+        "Tekstil / Garmen",
+        "Kimia / Petrokimia",
+        "Minyak & Gas",
+        "Rumah Tangga / Konsumen",
+        "Pemerintah / Militer",
+        "Lainnya"
+      ]
+    },
+    "apakah_part": {
+      "label": "Apakah ini bagian/part dari barang yang lebih besar?",
+      "multi": false,
+      "options": ["Ya", "Tidak", "Tidak yakin"]
+    },
+    "apakah_set": {
+      "label": "Apakah disajikan sebagai set/kit lengkap?",
+      "multi": false,
+      "options": ["Ya", "Tidak"]
+    },
+    "ada_komponen_tambahan": {
+      "label": "Apakah ada komponen/fungsi tambahan terintegrasi?",
+      "multi": false,
+      "options": ["Ya - sebutkan di keterangan tambahan", "Tidak"]
+    }
+  },
+  "text_fields": [
+    {
+      "key": "nama_dagang",
+      "label": "Nama Dagang / Brand / Model",
+      "placeholder": "Contoh: Agricultural Tractor WEA08, Crane Barge Majulah",
+      "required": true
+    },
+    {
+      "key": "nama_generik",
+      "label": "Nama Generik Barang",
+      "placeholder": "Contoh: Dumper, Floating Crane, Laptop",
+      "required": true
+    },
+    {
+      "key": "spesifikasi",
+      "label": "Spesifikasi Teknis Utama",
+      "placeholder": "Contoh: GVW 4.5 ton, Kapasitas angkat 200 ton, RAM 16GB layar 15 inch",
+      "required": false
+    },
+    {
+      "key": "keterangan_tambahan",
+      "label": "Keterangan Tambahan",
+      "placeholder": "Komponen tambahan, kondisi khusus, atau informasi lain yang relevan",
+      "required": false
+    }
+  ]
+}

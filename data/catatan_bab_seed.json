@@ -1,0 +1,54 @@
+{
+  "catatan_bagian": [
+    {
+      "bagian": "XVI",
+      "judul": "Mesin dan Peralatan Mekanik; Peralatan Listrik",
+      "bab": ["84", "85"],
+      "catatan_penting": [
+        "Catatan 1: Bagian XVI tidak mencakup barang yang lebih spesifik masuk ke Bagian lain.",
+        "Catatan 2: Bagian dari mesin (selain bagian dari barang pos 84.84, 85.44, dst) diklasifikasikan sesuai aturan: (a) bagian yang merupakan barang dari pos manapun dalam Bagian XVI diklas ke pos tersebut; (b) bagian lain yang cocok digunakan semata-mata atau terutama dengan jenis mesin tertentu diklas bersama mesin tersebut.",
+        "Catatan 3: Mesin komposit/multifungsi diklasifikasikan berdasarkan FUNGSI UTAMA. Jika tidak ada fungsi utama yang jelas, berlaku KUM HS 3."
+      ]
+    },
+    {
+      "bagian": "XVII",
+      "judul": "Kendaraan, Pesawat Udara, Kapal Laut, dan Peralatan Transportasi",
+      "bab": ["86", "87", "88", "89"],
+      "catatan_penting": [
+        "Catatan 1: Bagian XVII tidak mencakup barang dari Bab 84-85 yang terpisah dari kendaraan.",
+        "Catatan 2: Ekspresi 'bagian dan aksesori' tidak berlaku untuk barang yang bukan semata-mata atau terutama digunakan sebagai bagian kendaraan.",
+        "Catatan 3 Bab 87: Kendaraan yang dirancang untuk digunakan di jalan raya berbeda dari kendaraan off-highway. Klasifikasi tergantung konstruksi dan penggunaan yang dimaksudkan."
+      ]
+    }
+  ],
+  "catatan_bab": [
+    {
+      "bab": "84",
+      "judul": "Reaktor nuklir, ketel, mesin dan peralatan mekanik",
+      "catatan_penting": [
+        "Catatan 5: Pos 84.71 mencakup mesin pengolah data otomatis yang: (a) dapat menyimpan program pengolah yang diperlukan atau program-program sementara, dan data yang diperlukan; (b) dapat diprogram secara bebas sesuai kebutuhan pemakai; (c) dapat melakukan perhitungan aritmatika yang ditetapkan oleh pemakai; dan (d) dapat tanpa intervensi manusia menjalankan program pengolahan.",
+        "Catatan 6: Mesin yang melakukan fungsi spesifik selain pengolahan data, tidak diklasifikasikan ke 84.71 meski menggunakan komputer. Contoh: mesin tekstil yang dikendalikan komputer tetap masuk Bab 84 sesuai fungsinya.",
+        "Catatan 7: Unit dari mesin ADP 84.71 diklasifikasikan ke pos tsb hanya jika dapat diidentifikasi sebagai bagian dari sistem ADP.",
+        "Catatan 8: Mesin dengan dua atau lebih fungsi: Jika mesin dapat melakukan dua atau lebih fungsi alternatif, fungsi utamanya menentukan klasifikasi. Catatan ini berlaku mutatis mutandis untuk subpos."
+      ]
+    },
+    {
+      "bab": "87",
+      "judul": "Kendaraan selain yang bergerak di atas rel kereta api dan suku cadangnya",
+      "catatan_penting": [
+        "Pos 87.01 mencakup traktor, termasuk traktor crawler. Traktor pertanian didesain untuk menarik atau mendorong implement pertanian.",
+        "Pos 87.04: Kendaraan bermotor untuk pengangkutan barang. Dumper off-highway (87.04.10) berbeda dari kendaraan pengangkut biasa karena: konstruksi dump body dari baja tebal, sistem hidraulik dumping, tanpa axle suspension, ban earth-moving/off-highway, GVW dan kecepatan terbatas.",
+        "Kendaraan self-propelled yang terutama untuk mengangkut masuk 87.04, bukan 84.29 (alat konstruksi)."
+      ]
+    },
+    {
+      "bab": "89",
+      "judul": "Kapal laut dan bangunan terapung",
+      "catatan_penting": [
+        "Pos 89.01: Kapal untuk pengangkutan orang atau barang. Fungsi utama = transportasi.",
+        "Pos 89.05: Kapal mercusuar, kapal pemadam kebakaran, kapal keruk, crane terapung, dan kapal lain yang kemampuan bernavigasinya bersifat tambahan terhadap fungsi utama. Floating crane/crane barge masuk di sini karena fungsi utama = pengangkatan, bukan transportasi.",
+        "Perbedaan 89.01 vs 89.05: Tergantung apakah navigabilitas adalah fungsi utama atau fungsi tambahan."
+      ]
+    }
+  ]
+}

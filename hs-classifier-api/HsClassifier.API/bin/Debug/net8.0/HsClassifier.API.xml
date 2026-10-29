@@ -1,0 +1,107 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>HsClassifier.API</name>
+    </assembly>
+    <members>
+        <member name="M:HsClassifier.API.Controllers.AdminImportController.ParseBtkiAsync(System.Collections.Generic.List{Microsoft.AspNetCore.Http.IFormFile})">
+            <summary>
+            One .docx, or one or more .pdf (official chapter PDFs or the whole book). The same reader is used
+            for upload and commit, so the checksum of what was validated is what gets committed.
+            </summary>
+        </member>
+        <member name="M:HsClassifier.API.Controllers.AdminImportController.UploadBtki(System.Guid,System.Collections.Generic.List{Microsoft.AspNetCore.Http.IFormFile})">
+            <summary>
+            Upload BTKI (DOCX, atau PDF resmi per Bab / gabungan) ke sebuah versi: parse, dry run,
+            simpan laporan validasi (import batch), dan masukkan node STRUCTURE_AMBIGUITY ke antrian review.
+            </summary>
+        </member>
+        <member name="M:HsClassifier.API.Controllers.AdminImportController.CommitBtki(System.Guid,System.Collections.Generic.List{Microsoft.AspNetCore.Http.IFormFile})">
+            <summary>Commit file yang sama dengan upload terakhir. Diblokir bila ada error atau ambiguitas pending.</summary>
+        </member>
+        <member name="M:HsClassifier.API.Controllers.AdminImportController.ListBatches(System.Nullable{System.Guid})">
+            <summary>Daftar laporan validasi (import batch), terbaru dulu. Filter per versi opsional.</summary>
+        </member>
+        <member name="M:HsClassifier.API.Controllers.AdminImportController.GetBatch(System.Int64)">
+            <summary>Detail laporan validasi beserta antrian ambiguitasnya.</summary>
+        </member>
+        <member name="M:HsClassifier.API.Controllers.AdminImportController.Decide(System.Int64,HsClassifier.API.Controllers.AmbiguityDecisionRequest)">
+            <summary>Putuskan satu item ambiguitas: Approved (boleh koreksi parent) atau Rejected (node tidak di-commit).</summary>
+        </member>
+        <member name="M:HsClassifier.API.Controllers.AuthController.Login(HsClassifier.API.Controllers.LoginRequest)">
+            <summary>Login; returns a JWT to send as <c>Authorization: Bearer</c>.</summary>
+        </member>
+        <member name="M:HsClassifier.API.Controllers.AuthController.Register(HsClassifier.API.Controllers.RegisterRequest)">
+            <summary>Create a user. Admin only — self-registration would let anyone grant themselves Admin.</summary>
+        </member>
+        <member name="M:HsClassifier.API.Controllers.ClassificationController.FindOwnCaseAsync(System.Int64)">
+            <summary>Loads a case only if the caller owns it or is Admin/ExpertReviewer (prevents reading others' cases by id).</summary>
+        </member>
+        <member name="M:HsClassifier.API.Controllers.ClassificationController.ListCases(System.Nullable{HsClassifier.Domain.Enums.CaseStatus},System.String,System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Int32,System.Int32)">
+            <summary>Riwayat klasifikasi (paged, newest first). Classifier/Viewer: own cases; Admin/ExpertReviewer: all.</summary>
+            <param name="status">Determined | NeedClarification | NeedExpertReview | Rejected</param>
+            <param name="q">Cari di kode final atau fakta barang (nama dagang/generik)</param>
+        </member>
+        <member name="M:HsClassifier.API.Controllers.ClassificationController.GetCase(System.Int64)">
+            <summary>Detail satu case: fakta, kandidat, status, dan riwayat keputusan ahli.</summary>
+        </member>
+        <member name="M:HsClassifier.API.Controllers.ClassificationController.Start(HsClassifier.API.Controllers.ClassificationStartRequest)">
+            <summary>Mulai klasifikasi dari fakta barang.</summary>
+            <remarks>
+            Contoh body: <c>{ "facts": { "commercial_name": "Excavator", "primary_function": "menggali tanah", "assembled_status": "complete" } }</c>.
+            Response <c>status</c>: DETERMINED (finalCode + tariffs), NEED_CLARIFICATION (questions + candidateCodes;
+            jawab lewat <c>POST /{caseId}/facts</c>), NEED_EXPERT_REVIEW (tanpa kode final, candidateCodes untuk ahli),
+            atau ERROR (message berisi alasan validasi). Semua status selain ERROR mengembalikan caseId.
+            </remarks>
+        </member>
+        <member name="M:HsClassifier.API.Controllers.ClassificationController.SubmitFacts(System.Int64,HsClassifier.API.Controllers.ClassificationStartRequest)">
+            <summary>Tambah fakta (jawaban klarifikasi) ke case; fakta lama digabung, lalu klasifikasi dijalankan ulang.</summary>
+        </member>
+        <member name="M:HsClassifier.API.Controllers.ClassificationController.RequestReview(System.Int64,HsClassifier.API.Controllers.ReviewDecisionRequest,HsClassifier.Infrastructure.Services.ExpertReviewService)">
+            <summary>Ajukan case berstatus Determined ke antrian ahli ("Minta Expert Review"). Alasan wajib.</summary>
+        </member>
+        <member name="M:HsClassifier.API.Controllers.ClassificationController.GetStatus(System.Int64)">
+            <summary>Status, kode final, uraian resmi, dan confidence sebuah case.</summary>
+        </member>
+        <member name="M:HsClassifier.API.Controllers.ClassificationController.GetReasoning(System.Int64)">
+            <summary>Rantai reasoning KUM HS (urut) beserta sourceIds tiap langkah.</summary>
+        </member>
+        <member name="M:HsClassifier.API.Controllers.ClassificationController.GetTariffs(System.Int64)">
+            <summary>Tarif MFN, FTA yang tersedia, PPN, PPh 22 untuk kode final (dengan disclaimer). 404 jika belum ada kode final.</summary>
+        </member>
+        <member name="T:HsClassifier.API.Controllers.ReviewController">
+            <summary>
+            Expert review decisions. The queue itself is <c>GET /api/classification/cases?status=NeedExpertReview</c>
+            (Admin/ExpertReviewer see every case there).
+            </summary>
+        </member>
+        <member name="M:HsClassifier.API.Controllers.ReviewController.#ctor(HsClassifier.Infrastructure.Services.ExpertReviewService,HsClassifier.Infrastructure.Services.TariffLookupService)">
+            <summary>
+            Expert review decisions. The queue itself is <c>GET /api/classification/cases?status=NeedExpertReview</c>
+            (Admin/ExpertReviewer see every case there).
+            </summary>
+        </member>
+        <member name="M:HsClassifier.API.Controllers.ReviewController.Approve(System.Int64,HsClassifier.API.Controllers.ReviewDecisionRequest)">
+            <summary>
+            Setujui case dengan kode final. Kode di luar kandidat sistem diizinkan (dicatat EXPERT_OVERRIDE)
+            asal ada di BTKI aktif dan lolos validator. Alasan wajib.
+            </summary>
+        </member>
+        <member name="M:HsClassifier.API.Controllers.ReviewController.Reject(System.Int64,HsClassifier.API.Controllers.ReviewDecisionRequest)">
+            <summary>Tolak rekomendasi; case menjadi Rejected. Alasan wajib.</summary>
+        </member>
+        <member name="M:HsClassifier.API.Controllers.VersionsController.Diff(System.Guid,System.String,System.String,System.Int32)">
+            <summary>
+            What activating this version would change, compared with the active version (or with <c>against</c>):
+            codes added, removed, reworded, and texts that differ only by OCR-prone characters.
+            </summary>
+            <param name="id">Version to look at (the candidate).</param>
+            <param name="against">"active" (default) or the id of another version.</param>
+            <param name="chapter">Only list entries of this 2-digit chapter; the counts stay for the whole version.</param>
+            <param name="take">Entries listed per category (1-1000).</param>
+        </member>
+        <member name="M:HsClassifier.API.Controllers.VersionsController.Create(HsClassifier.API.Controllers.CreateVersionRequest)">
+            <summary>Tambah versi nomenklatur baru (status Uploaded). Upload DOCX lalu dilakukan ke versi ini.</summary>
+        </member>
+    </members>
+</doc>

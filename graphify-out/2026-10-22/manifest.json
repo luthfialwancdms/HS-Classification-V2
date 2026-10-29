@@ -1,0 +1,644 @@
+{
+  ".kiro/specs/hs-classification-v2/tasks.meta.json": {
+    "mtime": 1791425343.0776489,
+    "seen": 1792654230.7350225,
+    "ast_hash": "62cc5e3f653abccb5763e8214c40679f",
+    "semantic_hash": "62cc5e3f653abccb5763e8214c40679f"
+  },
+  ".vscode/settings.json": {
+    "mtime": 1788406773.4293292,
+    "seen": 1792654230.7350278,
+    "ast_hash": "73792b9af3fc811b105441cc773526b1",
+    "semantic_hash": "73792b9af3fc811b105441cc773526b1"
+  },
+  "data/check_missing.py": {
+    "mtime": 1786450670.2165408,
+    "seen": 1792654230.73503,
+    "ast_hash": "abc3718fd634477a4a7f80ee78371fc2",
+    "semantic_hash": "abc3718fd634477a4a7f80ee78371fc2"
+  },
+  "data/check_quality.py": {
+    "mtime": 1786450510.2261076,
+    "seen": 1792654230.7350311,
+    "ast_hash": "78a8c326de6152319872e4380431a540",
+    "semantic_hash": "78a8c326de6152319872e4380431a540"
+  },
+  "data/check_token_size.py": {
+    "mtime": 1786451057.2987156,
+    "seen": 1792654230.735032,
+    "ast_hash": "f6439c7aaa188fc5d545cc543a265a40",
+    "semantic_hash": "f6439c7aaa188fc5d545cc543a265a40"
+  },
+  "data/check_vague.py": {
+    "mtime": 1786451352.295175,
+    "seen": 1792654230.7350328,
+    "ast_hash": "0ad3054ae2115de5123f916505ceebf8",
+    "semantic_hash": "0ad3054ae2115de5123f916505ceebf8"
+  },
+  "data/convert_hscode_csv.py": {
+    "mtime": 1786519044.0430806,
+    "seen": 1792654230.7350338,
+    "ast_hash": "b6e3c59dc8a7ab062727c89c86550557",
+    "semantic_hash": "b6e3c59dc8a7ab062727c89c86550557"
+  },
+  "data/debug_parser.py": {
+    "mtime": 1786450552.3070753,
+    "seen": 1792654230.7350347,
+    "ast_hash": "025c320f1cb30de77a76e98e5a5d3c5e",
+    "semantic_hash": "025c320f1cb30de77a76e98e5a5d3c5e"
+  },
+  "data/enrich_btki.py": {
+    "mtime": 1786451326.669928,
+    "seen": 1792654230.7350354,
+    "ast_hash": "531275d57bc0f527742bb8fbb4273290",
+    "semantic_hash": "531275d57bc0f527742bb8fbb4273290"
+  },
+  "data/enrich_hs_headings_seed.py": {
+    "mtime": 1786522268.95551,
+    "seen": 1792654230.7350361,
+    "ast_hash": "105c5e46746d8bf6e2f696da26fce236",
+    "semantic_hash": "105c5e46746d8bf6e2f696da26fce236"
+  },
+  "data/fix_last_21.py": {
+    "mtime": 1786452767.5072877,
+    "seen": 1792654230.7350368,
+    "ast_hash": "10c0bb565742ca05d5c4be29bba8a168",
+    "semantic_hash": "10c0bb565742ca05d5c4be29bba8a168"
+  },
+  "data/fix_vague_51.py": {
+    "mtime": 1786452686.1017814,
+    "seen": 1792654230.735038,
+    "ast_hash": "0dc27296b204e427180f9f69d1e9b404",
+    "semantic_hash": "0dc27296b204e427180f9f69d1e9b404"
+  },
+  "data/parse_btki.py": {
+    "mtime": 1786450364.2164097,
+    "seen": 1792654230.7350388,
+    "ast_hash": "33e8a2ef91ec58dcc885c929acbe0395",
+    "semantic_hash": "33e8a2ef91ec58dcc885c929acbe0395"
+  },
+  "data/parse_btki_v2.py": {
+    "mtime": 1786450619.0140078,
+    "seen": 1792654230.7350395,
+    "ast_hash": "03a83461a420de51bdc4703acdfe1faf",
+    "semantic_hash": "03a83461a420de51bdc4703acdfe1faf"
+  },
+  "docs/hs_v2_architecture.json": {
+    "mtime": 1788406172.558178,
+    "seen": 1792654230.7350404,
+    "ast_hash": "1c9df962e1fc6b8500f625bd7551dfae",
+    "semantic_hash": "1c9df962e1fc6b8500f625bd7551dfae"
+  },
+  "hs-classifier-api/HsClassifier.API/Controllers/AdminImportController.cs": {
+    "mtime": 1791470762.5830789,
+    "seen": 1792654230.7350411,
+    "ast_hash": "7ce250201191fdca2b42a69d5ab504d3",
+    "semantic_hash": "7ce250201191fdca2b42a69d5ab504d3"
+  },
+  "hs-classifier-api/HsClassifier.API/Controllers/AdminTemplateController.cs": {
+    "mtime": 1791427577.850421,
+    "seen": 1792654230.7350419,
+    "ast_hash": "1fedc13f6151f8ae775b9d70b351c568",
+    "semantic_hash": "1fedc13f6151f8ae775b9d70b351c568"
+  },
+  "hs-classifier-api/HsClassifier.API/Controllers/AuthController.cs": {
+    "mtime": 1791427446.1259053,
+    "seen": 1792654230.7350428,
+    "ast_hash": "028db3cb14339c2efce07162ca7b2205",
+    "semantic_hash": "028db3cb14339c2efce07162ca7b2205"
+  },
+  "hs-classifier-api/HsClassifier.API/Controllers/BtkiController.cs": {
+    "mtime": 1788486989.2235992,
+    "seen": 1792654230.7350435,
+    "ast_hash": "48334e5d0ef9a610e38b9ff1c51f2a9d",
+    "semantic_hash": "48334e5d0ef9a610e38b9ff1c51f2a9d"
+  },
+  "hs-classifier-api/HsClassifier.API/Controllers/ClassificationController.cs": {
+    "mtime": 1791469379.4927619,
+    "seen": 1792654230.7350442,
+    "ast_hash": "8894ac02a74b6258164e8c3529aa28d0",
+    "semantic_hash": "8894ac02a74b6258164e8c3529aa28d0"
+  },
+  "hs-classifier-api/HsClassifier.API/Controllers/ReviewController.cs": {
+    "mtime": 1791469377.1281047,
+    "seen": 1792654230.7350452,
+    "ast_hash": "019e1c1e4031ec36c3626fe9a741ad0d",
+    "semantic_hash": "019e1c1e4031ec36c3626fe9a741ad0d"
+  },
+  "hs-classifier-api/HsClassifier.API/Controllers/VersionsController.cs": {
+    "mtime": 1791470781.2468097,
+    "seen": 1792654230.735046,
+    "ast_hash": "5aa4969d75585cd70a6a9799377258de",
+    "semantic_hash": "5aa4969d75585cd70a6a9799377258de"
+  },
+  "hs-classifier-api/HsClassifier.API/HsClassifier.API.csproj": {
+    "mtime": 1791445100.7351491,
+    "seen": 1792654230.735047,
+    "ast_hash": "0e4cd96a8eb8e70853f2775ecc84dee0",
+    "semantic_hash": "0e4cd96a8eb8e70853f2775ecc84dee0"
+  },
+  "hs-classifier-api/HsClassifier.API/Program.cs": {
+    "mtime": 1791440241.1073177,
+    "seen": 1792654230.7350483,
+    "ast_hash": "780385e1c7e3819b2f384331ae2679f0",
+    "semantic_hash": "780385e1c7e3819b2f384331ae2679f0"
+  },
+  "hs-classifier-api/HsClassifier.API/Properties/launchSettings.json": {
+    "mtime": 1788486838.6817229,
+    "seen": 1792654230.735049,
+    "ast_hash": "6435ab49e8d767d265f632f001ec5fea",
+    "semantic_hash": "6435ab49e8d767d265f632f001ec5fea"
+  },
+  "hs-classifier-api/HsClassifier.API/appsettings.Development.json": {
+    "mtime": 1791448127.0867598,
+    "seen": 1792654230.7350497,
+    "ast_hash": "b31c00668743547b469996bbbe0ad9a9",
+    "semantic_hash": "b31c00668743547b469996bbbe0ad9a9"
+  },
+  "hs-classifier-api/HsClassifier.API/appsettings.json": {
+    "mtime": 1791448117.756641,
+    "seen": 1792654230.7350504,
+    "ast_hash": "15fc0f1279e9791586422b4de61f1568",
+    "semantic_hash": "15fc0f1279e9791586422b4de61f1568"
+  },
+  "hs-classifier-api/HsClassifier.Application/Classification/FactExtractionService.cs": {
+    "mtime": 1791441626.7454383,
+    "seen": 1792654230.7350516,
+    "ast_hash": "095a3e4e9ce0c9a3168a092d817c2693",
+    "semantic_hash": "095a3e4e9ce0c9a3168a092d817c2693"
+  },
+  "hs-classifier-api/HsClassifier.Application/Classification/QuestionGeneratorService.cs": {
+    "mtime": 1791427125.578892,
+    "seen": 1792654230.7350523,
+    "ast_hash": "e0e199767f5cc734854b96bf0e6a8050",
+    "semantic_hash": "e0e199767f5cc734854b96bf0e6a8050"
+  },
+  "hs-classifier-api/HsClassifier.Application/Classification/Rules/RulesEngine.cs": {
+    "mtime": 1791447468.6912863,
+    "seen": 1792654230.7350528,
+    "ast_hash": "355c340ee4d46cc910199eac15af54c6",
+    "semantic_hash": "355c340ee4d46cc910199eac15af54c6"
+  },
+  "hs-classifier-api/HsClassifier.Application/HsClassifier.Application.csproj": {
+    "mtime": 1788413223.656765,
+    "seen": 1792654230.7350535,
+    "ast_hash": "baa18f23475b7327d5ff46bf48de1109",
+    "semantic_hash": "baa18f23475b7327d5ff46bf48de1109"
+  },
+  "hs-classifier-api/HsClassifier.Application/Interfaces/IDocxParser.cs": {
+    "mtime": 1788853230.059147,
+    "seen": 1792654230.7350543,
+    "ast_hash": "38fd1de3f6bbd298be1c2228afe3049a",
+    "semantic_hash": "38fd1de3f6bbd298be1c2228afe3049a"
+  },
+  "hs-classifier-api/HsClassifier.Application/Interfaces/IJwtService.cs": {
+    "mtime": 1788855126.5591774,
+    "seen": 1792654230.7350554,
+    "ast_hash": "f20c9c0b256426585aca397a85322e97",
+    "semantic_hash": "f20c9c0b256426585aca397a85322e97"
+  },
+  "hs-classifier-api/HsClassifier.Application/Interfaces/IVersionManager.cs": {
+    "mtime": 1788415524.5439513,
+    "seen": 1792654230.735056,
+    "ast_hash": "82951e71b5818a23dd0225839e7a70c5",
+    "semantic_hash": "82951e71b5818a23dd0225839e7a70c5"
+  },
+  "hs-classifier-api/HsClassifier.Application/Services/BtkiStructureService.cs": {
+    "mtime": 1791470987.1176891,
+    "seen": 1792654230.7350569,
+    "ast_hash": "c4d45ad74ef1085ca3c6301f11260b6a",
+    "semantic_hash": "c4d45ad74ef1085ca3c6301f11260b6a"
+  },
+  "hs-classifier-api/HsClassifier.Domain/Classification/ClassificationModels.cs": {
+    "mtime": 1791441624.331114,
+    "seen": 1792654230.7350576,
+    "ast_hash": "97b1d4ca58a0619cdcee4370593cc089",
+    "semantic_hash": "97b1d4ca58a0619cdcee4370593cc089"
+  },
+  "hs-classifier-api/HsClassifier.Domain/Entities/BtkiTariffLine.cs": {
+    "mtime": 1788413720.5786507,
+    "seen": 1792654230.7350585,
+    "ast_hash": "c6a86afa26080fe2ee02a730da2733cc",
+    "semantic_hash": "c6a86afa26080fe2ee02a730da2733cc"
+  },
+  "hs-classifier-api/HsClassifier.Domain/Entities/ClassificationAudit.cs": {
+    "mtime": 1791468428.0294607,
+    "seen": 1792654230.7350593,
+    "ast_hash": "87a01bfd33634352cb0ea8366b99669c",
+    "semantic_hash": "87a01bfd33634352cb0ea8366b99669c"
+  },
+  "hs-classifier-api/HsClassifier.Domain/Entities/NomenclatureVersion.cs": {
+    "mtime": 1788413720.5021374,
+    "seen": 1792654230.73506,
+    "ast_hash": "26f6c8752ac5d71c31dd5561e2e63137",
+    "semantic_hash": "26f6c8752ac5d71c31dd5561e2e63137"
+  },
+  "hs-classifier-api/HsClassifier.Domain/Entities/Notes.cs": {
+    "mtime": 1788413755.274557,
+    "seen": 1792654230.7350607,
+    "ast_hash": "7a320944d8912a45156a8381a839f626",
+    "semantic_hash": "7a320944d8912a45156a8381a839f626"
+  },
+  "hs-classifier-api/HsClassifier.Domain/Entities/Rates.cs": {
+    "mtime": 1788413735.848337,
+    "seen": 1792654230.7350614,
+    "ast_hash": "5e50e69b7ceb8fe04ca9132ff3dbf117",
+    "semantic_hash": "5e50e69b7ceb8fe04ca9132ff3dbf117"
+  },
+  "hs-classifier-api/HsClassifier.Domain/Enums/Enums.cs": {
+    "mtime": 1791468410.7984564,
+    "seen": 1792654230.7350624,
+    "ast_hash": "3e6e1ee4f907ab69b239903c03cdc56c",
+    "semantic_hash": "3e6e1ee4f907ab69b239903c03cdc56c"
+  },
+  "hs-classifier-api/HsClassifier.Domain/HsClassifier.Domain.csproj": {
+    "mtime": 1788413213.7607243,
+    "seen": 1792654230.735063,
+    "ast_hash": "a09b26111c660da58a84b7d66e16c694",
+    "semantic_hash": "a09b26111c660da58a84b7d66e16c694"
+  },
+  "hs-classifier-api/HsClassifier.Domain/Logic/VersionStateMachine.cs": {
+    "mtime": 1788415557.611391,
+    "seen": 1792654230.7350643,
+    "ast_hash": "63b9ef214b0e5adb1f08a4cf5f5aeef3",
+    "semantic_hash": "63b9ef214b0e5adb1f08a4cf5f5aeef3"
+  },
+  "hs-classifier-api/HsClassifier.Infrastructure/DependencyInjection.cs": {
+    "mtime": 1791469379.6770296,
+    "seen": 1792654230.735065,
+    "ast_hash": "d4e7052cc5330d204e82c3c0e56e9636",
+    "semantic_hash": "d4e7052cc5330d204e82c3c0e56e9636"
+  },
+  "hs-classifier-api/HsClassifier.Infrastructure/HsClassifier.Infrastructure.csproj": {
+    "mtime": 1788414418.9700415,
+    "seen": 1792654230.735066,
+    "ast_hash": "6a878c3080d44e179d20eb114492061c",
+    "semantic_hash": "6a878c3080d44e179d20eb114492061c"
+  },
+  "hs-classifier-api/HsClassifier.Infrastructure/Migrations/20260903055415_InitialCreate.Designer.cs": {
+    "mtime": 1788414855.9819381,
+    "seen": 1792654230.7350667,
+    "ast_hash": "c09f7a6456f6b1a1cc8696d19399cf7f",
+    "semantic_hash": "c09f7a6456f6b1a1cc8696d19399cf7f"
+  },
+  "hs-classifier-api/HsClassifier.Infrastructure/Migrations/20260903055415_InitialCreate.cs": {
+    "mtime": 1788414855.9819381,
+    "seen": 1792654230.7350674,
+    "ast_hash": "8cb46b06612f330a0726664e67bf74bf",
+    "semantic_hash": "8cb46b06612f330a0726664e67bf74bf"
+  },
+  "hs-classifier-api/HsClassifier.Infrastructure/Migrations/20261008140846_ExpertReviewAndImportBatches.Designer.cs": {
+    "mtime": 1791468526.9017763,
+    "seen": 1792654230.735068,
+    "ast_hash": "cc6e0ad3a5dc66632aea468b9beee58e",
+    "semantic_hash": "cc6e0ad3a5dc66632aea468b9beee58e"
+  },
+  "hs-classifier-api/HsClassifier.Infrastructure/Migrations/20261008140846_ExpertReviewAndImportBatches.cs": {
+    "mtime": 1791468526.9017763,
+    "seen": 1792654230.735069,
+    "ast_hash": "95b1f3c5c3dff6e13c50e2384f06e1da",
+    "semantic_hash": "95b1f3c5c3dff6e13c50e2384f06e1da"
+  },
+  "hs-classifier-api/HsClassifier.Infrastructure/Migrations/HsClassifierDbContextModelSnapshot.cs": {
+    "mtime": 1791468526.9037836,
+    "seen": 1792654230.7350698,
+    "ast_hash": "3e0e065335493e91517b56476977db32",
+    "semantic_hash": "3e0e065335493e91517b56476977db32"
+  },
+  "hs-classifier-api/HsClassifier.Infrastructure/Parsing/DocxParser.cs": {
+    "mtime": 1788853298.735494,
+    "seen": 1792654230.7350705,
+    "ast_hash": "7ae8d1f46dca7aeaf4b372c8ac8fdf04",
+    "semantic_hash": "7ae8d1f46dca7aeaf4b372c8ac8fdf04"
+  },
+  "hs-classifier-api/HsClassifier.Infrastructure/Persistence/HsClassifierDbContext.cs": {
+    "mtime": 1791468468.7643468,
+    "seen": 1792654230.7350712,
+    "ast_hash": "946963e78fdfae36c42a26c258df66c8",
+    "semantic_hash": "946963e78fdfae36c42a26c258df66c8"
+  },
+  "hs-classifier-api/HsClassifier.Infrastructure/Seeding/BtkiCsvSeeder.cs": {
+    "mtime": 1791441860.3928452,
+    "seen": 1792654230.735072,
+    "ast_hash": "e6219be382deb56b71d275a5f9145941",
+    "semantic_hash": "e6219be382deb56b71d275a5f9145941"
+  },
+  "hs-classifier-api/HsClassifier.Infrastructure/Services/BtkiImportService.cs": {
+    "mtime": 1791470717.004605,
+    "seen": 1792654230.7350729,
+    "ast_hash": "4af04323605d3f310cbd9e69d4f3b298",
+    "semantic_hash": "4af04323605d3f310cbd9e69d4f3b298"
+  },
+  "hs-classifier-api/HsClassifier.Infrastructure/Services/CandidateGeneratorService.cs": {
+    "mtime": 1791444920.1023657,
+    "seen": 1792654230.7350736,
+    "ast_hash": "b4d5167d90c090fd13be5903819117a6",
+    "semantic_hash": "b4d5167d90c090fd13be5903819117a6"
+  },
+  "hs-classifier-api/HsClassifier.Infrastructure/Services/CaseQueries.cs": {
+    "mtime": 1791468582.6657054,
+    "seen": 1792654230.7350743,
+    "ast_hash": "c720555a9061aac768fc4fe8654792f6",
+    "semantic_hash": "c720555a9061aac768fc4fe8654792f6"
+  },
+  "hs-classifier-api/HsClassifier.Infrastructure/Services/ClassificationOrchestrator.cs": {
+    "mtime": 1791468491.6811485,
+    "seen": 1792654230.7350752,
+    "ast_hash": "a771662afacc0a006c9835309ebf6933",
+    "semantic_hash": "a771662afacc0a006c9835309ebf6933"
+  },
+  "hs-classifier-api/HsClassifier.Infrastructure/Services/ClassificationValidator.cs": {
+    "mtime": 1788854376.638199,
+    "seen": 1792654230.7350762,
+    "ast_hash": "d06e55600f4bbb2f8d6286db5f2bf131",
+    "semantic_hash": "d06e55600f4bbb2f8d6286db5f2bf131"
+  },
+  "hs-classifier-api/HsClassifier.Infrastructure/Services/ExpertReviewService.cs": {
+    "mtime": 1791469407.3476307,
+    "seen": 1792654230.735077,
+    "ast_hash": "c213992b5e37d85b029b94ec4982cc03",
+    "semantic_hash": "c213992b5e37d85b029b94ec4982cc03"
+  },
+  "hs-classifier-api/HsClassifier.Infrastructure/Services/GeminiTermSuggester.cs": {
+    "mtime": 1791447093.4762642,
+    "seen": 1792654230.7350776,
+    "ast_hash": "9b9197d8ec14f4f14d08916f9499d854",
+    "semantic_hash": "9b9197d8ec14f4f14d08916f9499d854"
+  },
+  "hs-classifier-api/HsClassifier.Infrastructure/Services/GroqTermSuggester.cs": {
+    "mtime": 1791448475.58887,
+    "seen": 1792654230.7350783,
+    "ast_hash": "97256d251d62376da3d25ced3f8cdbd9",
+    "semantic_hash": "97256d251d62376da3d25ced3f8cdbd9"
+  },
+  "hs-classifier-api/HsClassifier.Infrastructure/Services/JwtService.cs": {
+    "mtime": 1788855126.7446158,
+    "seen": 1792654230.735079,
+    "ast_hash": "a455c219d83b0bc592137dd990af1412",
+    "semantic_hash": "a455c219d83b0bc592137dd990af1412"
+  },
+  "hs-classifier-api/HsClassifier.Infrastructure/Services/PasswordHashing.cs": {
+    "mtime": 1791427435.3197513,
+    "seen": 1792654230.73508,
+    "ast_hash": "b45a6986b76d61afbdaab5961185e958",
+    "semantic_hash": "b45a6986b76d61afbdaab5961185e958"
+  },
+  "hs-classifier-api/HsClassifier.Infrastructure/Services/TariffLookupService.cs": {
+    "mtime": 1788854376.801191,
+    "seen": 1792654230.7350807,
+    "ast_hash": "10da94ff639e4af5807199a9c1be8d03",
+    "semantic_hash": "10da94ff639e4af5807199a9c1be8d03"
+  },
+  "hs-classifier-api/HsClassifier.Infrastructure/Services/VersionManager.cs": {
+    "mtime": 1791470718.3683794,
+    "seen": 1792654230.7350814,
+    "ast_hash": "3a53aa0ddd1d4c4e9af1d88d0d766488",
+    "semantic_hash": "3a53aa0ddd1d4c4e9af1d88d0d766488"
+  },
+  "hs-classifier-api/HsClassifier.Infrastructure/Template/TemplateIngestionService.cs": {
+    "mtime": 1788855567.042318,
+    "seen": 1792654230.7350821,
+    "ast_hash": "1361bab6b0d096cc2573969450638672",
+    "semantic_hash": "1361bab6b0d096cc2573969450638672"
+  },
+  "hs-classifier-api/HsClassifier.Tests/AmbiguityQueueTests.cs": {
+    "mtime": 1791471052.5120094,
+    "seen": 1792654230.735083,
+    "ast_hash": "d76b632f95ac4380cece95340bbfbcef",
+    "semantic_hash": "d76b632f95ac4380cece95340bbfbcef"
+  },
+  "hs-classifier-api/HsClassifier.Tests/CaseHistoryTests.cs": {
+    "mtime": 1791468671.3532834,
+    "seen": 1792654230.7350838,
+    "ast_hash": "0dffe24859792f96345343db7f979306",
+    "semantic_hash": "0dffe24859792f96345343db7f979306"
+  },
+  "hs-classifier-api/HsClassifier.Tests/ExpertReviewTests.cs": {
+    "mtime": 1791469441.3832548,
+    "seen": 1792654230.7350845,
+    "ast_hash": "befb181a6579dc04a7c29a0175818aac",
+    "semantic_hash": "befb181a6579dc04a7c29a0175818aac"
+  },
+  "hs-classifier-api/HsClassifier.Tests/GroqParseTests.cs": {
+    "mtime": 1791445079.6724548,
+    "seen": 1792654230.7350852,
+    "ast_hash": "cd39b866c483125cedbb8e46f2c2834c",
+    "semantic_hash": "cd39b866c483125cedbb8e46f2c2834c"
+  },
+  "hs-classifier-api/HsClassifier.Tests/HsClassifier.Tests.csproj": {
+    "mtime": 1791466202.149549,
+    "seen": 1792654230.735086,
+    "ast_hash": "d4f3205e55f86478d735e954f9379761",
+    "semantic_hash": "d4f3205e55f86478d735e954f9379761"
+  },
+  "hs-classifier-api/HsClassifier.Tests/KumHs6Tests.cs": {
+    "mtime": 1791447501.269888,
+    "seen": 1792654230.7350872,
+    "ast_hash": "5777ec50f028c88614b74d2863c7b6fe",
+    "semantic_hash": "5777ec50f028c88614b74d2863c7b6fe"
+  },
+  "hs-classifier-api/HsClassifier.Tests/VersionLifecycleTests.cs": {
+    "mtime": 1791466218.8762696,
+    "seen": 1792654230.7350876,
+    "ast_hash": "96b30357980c00e50701bde63f17b121",
+    "semantic_hash": "96b30357980c00e50701bde63f17b121"
+  },
+  "hs-classifier-api/HsClassifier.slnx": {
+    "mtime": 1791427670.4607122,
+    "seen": 1792654230.7350883,
+    "ast_hash": "465e3203e7e3ca448fade245cb41f74b",
+    "semantic_hash": "465e3203e7e3ca448fade245cb41f74b"
+  },
+  "hs-classifier/eslint.config.js": {
+    "mtime": 1785383189.4483206,
+    "seen": 1792654230.7350893,
+    "ast_hash": "3aa4b57d7f08181d86bde52a4dcb7f22",
+    "semantic_hash": "3aa4b57d7f08181d86bde52a4dcb7f22"
+  },
+  "hs-classifier/package.json": {
+    "mtime": 1785383415.577799,
+    "seen": 1792654230.7350903,
+    "ast_hash": "654513c84c73cd785eb99a2f4e3402cc",
+    "semantic_hash": "654513c84c73cd785eb99a2f4e3402cc"
+  },
+  "hs-classifier/src/App.jsx": {
+    "mtime": 1791470485.4232378,
+    "seen": 1792654230.7350907,
+    "ast_hash": "bba57e40cf976fc5ab79142645f6c864",
+    "semantic_hash": "bba57e40cf976fc5ab79142645f6c864"
+  },
+  "hs-classifier/src/components/AdminDashboard.jsx": {
+    "mtime": 1791471315.622015,
+    "seen": 1792654230.7350917,
+    "ast_hash": "ea27fb78ec81b5910e9b4b13f441420c",
+    "semantic_hash": "ea27fb78ec81b5910e9b4b13f441420c"
+  },
+  "hs-classifier/src/components/ClassificationForm.jsx": {
+    "mtime": 1785383526.568563,
+    "seen": 1792654230.7350926,
+    "ast_hash": "2ffea72f01223c80c986aa556ace023b",
+    "semantic_hash": "2ffea72f01223c80c986aa556ace023b"
+  },
+  "hs-classifier/src/components/HistoryPage.jsx": {
+    "mtime": 1791469076.834201,
+    "seen": 1792654230.7350936,
+    "ast_hash": "aa91dc7215dd44263490efc1dfcfd962",
+    "semantic_hash": "aa91dc7215dd44263490efc1dfcfd962"
+  },
+  "hs-classifier/src/components/MultiSelectField.jsx": {
+    "mtime": 1785383468.959814,
+    "seen": 1792654230.7350943,
+    "ast_hash": "460ec8839be0430586297665241feeda",
+    "semantic_hash": "460ec8839be0430586297665241feeda"
+  },
+  "hs-classifier/src/components/ResultPanel.jsx": {
+    "mtime": 1791470438.8399186,
+    "seen": 1792654230.735095,
+    "ast_hash": "f025fdca76591827124f9ca9ba478201",
+    "semantic_hash": "f025fdca76591827124f9ca9ba478201"
+  },
+  "hs-classifier/src/components/ReviewPage.jsx": {
+    "mtime": 1791470504.9391665,
+    "seen": 1792654230.7350957,
+    "ast_hash": "d6f4f690cf6cc34849b38f17451cd1d4",
+    "semantic_hash": "d6f4f690cf6cc34849b38f17451cd1d4"
+  },
+  "hs-classifier/src/components/SelectField.jsx": {
+    "mtime": 1785383459.7467034,
+    "seen": 1792654230.7350967,
+    "ast_hash": "d054c79ee5258cce033eb0da439fd421",
+    "semantic_hash": "d054c79ee5258cce033eb0da439fd421"
+  },
+  "hs-classifier/src/components/TextField.jsx": {
+    "mtime": 1785383478.1235776,
+    "seen": 1792654230.7350974,
+    "ast_hash": "805b6ecc0f046aa2c546a7b2351648bb",
+    "semantic_hash": "805b6ecc0f046aa2c546a7b2351648bb"
+  },
+  "hs-classifier/src/main.jsx": {
+    "mtime": 1785383600.3217597,
+    "seen": 1792654230.7350988,
+    "ast_hash": "e13723e2574429d9a6d849727e3ff695",
+    "semantic_hash": "e13723e2574429d9a6d849727e3ff695"
+  },
+  "hs-classifier/src/services/apiClient.js": {
+    "mtime": 1791470351.5874467,
+    "seen": 1792654230.7350996,
+    "ast_hash": "df55f5404583ab4d0eb522469dad03b6",
+    "semantic_hash": "df55f5404583ab4d0eb522469dad03b6"
+  },
+  "hs-classifier/vercel.json": {
+    "mtime": 1791468862.8599186,
+    "seen": 1792654230.7351005,
+    "ast_hash": "a12e210719f722ae12273bd078484ad2",
+    "semantic_hash": "a12e210719f722ae12273bd078484ad2"
+  },
+  "hs-classifier/vite.config.js": {
+    "mtime": 1785383429.34822,
+    "seen": 1792654230.7351012,
+    "ast_hash": "5b641ab5f85eff4b0b9acec3417ca9b5",
+    "semantic_hash": "5b641ab5f85eff4b0b9acec3417ca9b5"
+  },
+  "parse_btki.py": {
+    "mtime": 1786450288.1661909,
+    "seen": 1792654230.735102,
+    "ast_hash": "8f626e4980013c04aee6999ada11e779",
+    "semantic_hash": "8f626e4980013c04aee6999ada11e779"
+  },
+  ".kiro/specs/hs-classification-v2/design.md": {
+    "mtime": 1788408050.1906028,
+    "seen": 1792654230.7351027,
+    "ast_hash": "3a310c3ebbcf65a58b26811559304e9c",
+    "semantic_hash": "3a310c3ebbcf65a58b26811559304e9c"
+  },
+  ".kiro/specs/hs-classification-v2/requirements.md": {
+    "mtime": 1788408021.7956846,
+    "seen": 1792654230.7351036,
+    "ast_hash": "2b0fb09374d8b86ca3fc8a298dc618a0",
+    "semantic_hash": "2b0fb09374d8b86ca3fc8a298dc618a0"
+  },
+  ".kiro/specs/hs-classification-v2/tasks.md": {
+    "mtime": 1791471950.3167722,
+    "seen": 1792654230.7351043,
+    "ast_hash": "74197f49ce661e9fb563db12de717f14",
+    "semantic_hash": "74197f49ce661e9fb563db12de717f14"
+  },
+  "data/README.md": {
+    "mtime": 1785382464.4141366,
+    "seen": 1792654230.7351053,
+    "ast_hash": "b3dd759dd3dc4cf3d21c639b49604c53",
+    "semantic_hash": "b3dd759dd3dc4cf3d21c639b49604c53"
+  },
+  "data/btki_parse_report.md": {
+    "mtime": 1786450648.0659904,
+    "seen": 1792654230.735106,
+    "ast_hash": "c5107a7a4c0b1c1445ca59e167abd677",
+    "semantic_hash": "c5107a7a4c0b1c1445ca59e167abd677"
+  },
+  "docs/AI_HS_Classification_Intelligence_V2_Product_Logic_UI_and_Coding_Prompt.md": {
+    "mtime": 1786332227.4112597,
+    "seen": 1792654230.7351067,
+    "ast_hash": "a69bab2f26dba9bf7d614d4fb3da56e3",
+    "semantic_hash": "a69bab2f26dba9bf7d614d4fb3da56e3"
+  },
+  "docs/DATABASE_SCHEMA.md": {
+    "mtime": 1786066898.3757048,
+    "seen": 1792654230.7351077,
+    "ast_hash": "14e4455f61780d13ad872ef3aa3574b3",
+    "semantic_hash": "14e4455f61780d13ad872ef3aa3574b3"
+  },
+  "docs/PRESENTATION.md": {
+    "mtime": 1786067321.2280512,
+    "seen": 1792654230.7351084,
+    "ast_hash": "84e82fd695ff07771b7cf1031e99ec02",
+    "semantic_hash": "84e82fd695ff07771b7cf1031e99ec02"
+  },
+  "docs/PROJECT_SUMMARY.md": {
+    "mtime": 1787065392.5312936,
+    "seen": 1792654230.7351093,
+    "ast_hash": "0936c4ce76d428b7cb576230e53de0bf",
+    "semantic_hash": "0936c4ce76d428b7cb576230e53de0bf"
+  },
+  "docs/TASK_LIST.md": {
+    "mtime": 1788408099.5130632,
+    "seen": 1792654230.73511,
+    "ast_hash": "60a58b118515174d0635b536d84cc311",
+    "semantic_hash": "60a58b118515174d0635b536d84cc311"
+  },
+  "docs/TECHNICAL.md": {
+    "mtime": 1785480143.1594098,
+    "seen": 1792654230.735111,
+    "ast_hash": "0e98b43d6b917976c74df48df0ce704e",
+    "semantic_hash": "0e98b43d6b917976c74df48df0ce704e"
+  },
+  "docs/USER_GUIDE.md": {
+    "mtime": 1785470573.302089,
+    "seen": 1792654230.7351117,
+    "ast_hash": "cd5a21d0405968ae26d65b6975183c52",
+    "semantic_hash": "cd5a21d0405968ae26d65b6975183c52"
+  },
+  "docs/WORKFLOW_END_TO_END.md": {
+    "mtime": 1787068048.6689649,
+    "seen": 1792654230.7351124,
+    "ast_hash": "faaf07014b621cd4d1676e9cfa54bab7",
+    "semantic_hash": "faaf07014b621cd4d1676e9cfa54bab7"
+  },
+  "docs/ui_wireframe.html": {
+    "mtime": 1788406773.3983176,
+    "seen": 1792654230.7351131,
+    "ast_hash": "baa53aa0d86d4ceeedd882664571541a",
+    "semantic_hash": "baa53aa0d86d4ceeedd882664571541a"
+  },
+  "hs-classifier/README.md": {
+    "mtime": 1785383189.449322,
+    "seen": 1792654230.735114,
+    "ast_hash": "a28dc4cb878325f3e9e5649f3e1469ac",
+    "semantic_hash": "a28dc4cb878325f3e9e5649f3e1469ac"
+  },
+  "hs-classifier/index.html": {
+    "mtime": 1785383189.4423203,
+    "seen": 1792654230.7351148,
+    "ast_hash": "52624ccdd19783c8fa0b112c8bd85a07",
+    "semantic_hash": "52624ccdd19783c8fa0b112c8bd85a07"
+  }
+}

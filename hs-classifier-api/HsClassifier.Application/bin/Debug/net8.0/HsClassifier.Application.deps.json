@@ -1,0 +1,39 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v8.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v8.0": {
+      "HsClassifier.Application/1.0.0": {
+        "dependencies": {
+          "HsClassifier.Domain": "1.0.0"
+        },
+        "runtime": {
+          "HsClassifier.Application.dll": {}
+        }
+      },
+      "HsClassifier.Domain/1.0.0": {
+        "runtime": {
+          "HsClassifier.Domain.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "HsClassifier.Application/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "HsClassifier.Domain/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}
