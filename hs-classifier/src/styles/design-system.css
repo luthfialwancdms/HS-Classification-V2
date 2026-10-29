@@ -507,6 +507,17 @@ summary:focus-visible, .reason-details > summary:focus-visible {
   outline: 2px solid var(--primary); outline-offset: 2px;
 }
 
+/* ── rev1 · butir 3: dropdown user (menggantikan tombol Keluar terpisah) ───── */
+.user-menu { position: relative; }
+.user-menu-trigger { display: flex; align-items: center; gap: 9px; background: transparent; border: 0; padding: 4px 6px; border-radius: 8px; color: inherit; }
+.user-menu-trigger:hover { background: #f2f4f7; }
+.user-menu-trigger .user-copy { text-align: left; }
+.user-dropdown { position: absolute; right: 0; top: calc(100% + 8px); min-width: 190px; background: #fff; border: 1px solid var(--line); border-radius: 10px; box-shadow: 0 12px 32px rgba(15, 28, 45, .16); padding: 8px; z-index: 30; }
+.user-dropdown-role { margin: 2px 6px 8px; font-size: 12px; color: var(--muted); }
+.user-dropdown-item { display: flex; align-items: center; gap: 8px; width: 100%; border: 0; background: transparent; padding: 9px 10px; border-radius: 7px; font-size: 13px; font-weight: 700; color: var(--red); text-align: left; }
+.user-dropdown-item:hover { background: var(--red-bg); }
+.user-menu-trigger:focus-visible, .user-dropdown-item:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+
 
 
 

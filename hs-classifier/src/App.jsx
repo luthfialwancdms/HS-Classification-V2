@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { AlertTriangle, ClipboardCheck, History, LayoutDashboard, LogOut, Menu, Sparkles } from 'lucide-react'
+import { AlertTriangle, ChevronDown, ClipboardCheck, History, LayoutDashboard, LogOut, Menu, Sparkles } from 'lucide-react'
 import ClassificationForm from './components/ClassificationForm'
 import ResultPanel from './components/ResultPanel'
 import AdminDashboard from './components/AdminDashboard'
@@ -28,8 +28,11 @@ export default function App() {
 
   const [authed, setAuthed] = useState(() => !!getToken())
   const [menuOpen, setMenuOpen] = useState(false) // tampilan saja: drawer navigasi di mobile
+  const [userMenuOpen, setUserMenuOpen] = useState(false) // tampilan saja: dropdown user
   const burgerRef = useRef(null)
   const resultRef = useRef(null)
+  const userMenuRef = useRef(null)
+  const userMenuItemRef = useRef(null)
   const role = authed ? getRole() : null
   const allowed = (v) => !VIEWS[v][2] || VIEWS[v][2].includes(role)
   const isAdmin = role === 'Admin'
@@ -44,6 +47,19 @@ export default function App() {
 
   // Tampilan saja: tutup drawer mobile lalu kembalikan fokus ke tombol pembukanya.
   const closeMenu = () => { setMenuOpen(false); burgerRef.current?.focus() }
+
+  // Tampilan saja: dropdown user (Esc / klik di luar menutup, fokus balik ke trigger).
+  const closeUserMenu = () => { setUserMenuOpen(false); userMenuRef.current?.querySelector('.user-menu-trigger')?.focus() }
+
+  useEffect(() => {
+    if (!userMenuOpen) return
+    userMenuItemRef.current?.focus()
+    const onDown = (e) => { if (!userMenuRef.current?.contains(e.target)) setUserMenuOpen(false) }
+    const onKey = (e) => { if (e.key === 'Escape') closeUserMenu() }
+    document.addEventListener('mousedown', onDown)
+    document.addEventListener('keydown', onKey)
+    return () => { document.removeEventListener('mousedown', onDown); document.removeEventListener('keydown', onKey) }
+  }, [userMenuOpen])
 
   // Di bawah 1050px hasil menumpuk di bawah form → geser tampilan ke hasil setelah analisis selesai.
   useEffect(() => {
@@ -95,11 +111,24 @@ export default function App() {
           </div>
         </div>
         <div className="top-actions">
-          <div className="user-menu">
-            <div className="avatar">{String(role || '?').slice(0, 2).toUpperCase()}</div>
-            <div className="user-copy"><strong>{role}</strong><span>Sesi aktif</span></div>
+          <div className="user-menu" ref={userMenuRef}>
+            <button type="button" className="user-menu-trigger" id="user-menu-trigger"
+              aria-haspopup="menu" aria-expanded={userMenuOpen} aria-controls="user-menu"
+              onClick={() => setUserMenuOpen(open => !open)}>
+              <span className="avatar">{String(role || '?').slice(0, 2).toUpperCase()}</span>
+              <span className="user-copy"><strong>{role}</strong><span>Sesi aktif</span></span>
+              <ChevronDown size={16} className="muted" aria-hidden="true" />
+            </button>
+            {userMenuOpen && (
+              <div className="user-dropdown" role="menu" id="user-menu" aria-labelledby="user-menu-trigger">
+                <p className="user-dropdown-role">Role: <strong>{role}</strong></p>
+                <button type="button" role="menuitem" ref={userMenuItemRef} className="user-dropdown-item"
+                  onClick={() => { setUserMenuOpen(false); logout() }}>
+                  <LogOut size={15} aria-hidden="true" /> Logout
+                </button>
+              </div>
+            )}
           </div>
-          <button type="button" onClick={logout} className="ghost-button"><LogOut size={15} aria-hidden="true" /> Keluar</button>
         </div>
       </header>
 
