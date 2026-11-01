@@ -31,6 +31,9 @@ public class AdminImportController(IDocxParser parser, IBtkiPdfParser pdfParser,
         var extensions = files.Select(f => Path.GetExtension(f.FileName).ToLowerInvariant()).Distinct().ToList();
         if (extensions.Count != 1 || extensions[0] is not (".docx" or ".pdf"))
             return (null, "Upload file .docx saja, atau satu/banyak file .pdf (jangan dicampur).");
+        var kind = extensions[0] == ".docx" ? UploadKind.Docx : UploadKind.Pdf;
+        foreach (var f in files)
+            if (UploadGuard.Check(f, kind) is { } bad) return (null, $"{f.FileName}: {bad}");
 
         if (extensions[0] == ".docx")
         {
@@ -152,11 +155,13 @@ public class AdminImportController(IDocxParser parser, IBtkiPdfParser pdfParser,
 
     [HttpPost("en/upload")]
     [Consumes("multipart/form-data")]
+    [RequestSizeLimit(50_000_000)]
     public async Task<IActionResult> UploadEN(IFormFile file)
     {
         if (file is null || file.Length == 0) return BadRequest(new { message = "No file uploaded." });
         if (!file.FileName.EndsWith(".docx", StringComparison.OrdinalIgnoreCase))
             return BadRequest(new { message = "Only .docx files are accepted." });
+        if (UploadGuard.Check(file, UploadKind.Docx) is { } bad) return BadRequest(new { message = bad });
 
         await using var stream = file.OpenReadStream();
         var result = await parser.ParseENAsync(stream, file.FileName);
@@ -180,11 +185,13 @@ public class AdminImportController(IDocxParser parser, IBtkiPdfParser pdfParser,
 
     [HttpPost("notes/upload")]
     [Consumes("multipart/form-data")]
+    [RequestSizeLimit(50_000_000)]
     public async Task<IActionResult> UploadNotes(IFormFile file)
     {
         if (file is null || file.Length == 0) return BadRequest(new { message = "No file uploaded." });
         if (!file.FileName.EndsWith(".docx", StringComparison.OrdinalIgnoreCase))
             return BadRequest(new { message = "Only .docx files are accepted." });
+        if (UploadGuard.Check(file, UploadKind.Docx) is { } bad) return BadRequest(new { message = bad });
 
         await using var stream = file.OpenReadStream();
         var result = await parser.ParseLegalNotesAsync(stream, file.FileName);

@@ -1,4 +1,4 @@
-﻿using HsClassifier.Domain.Enums;
+using HsClassifier.Domain.Enums;
 using HsClassifier.Infrastructure.Template;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -29,9 +29,11 @@ public class AdminTemplateController(TemplateIngestionService templateService) :
     // POST /api/admin/template/validate
     [HttpPost("validate")]
     [Consumes("multipart/form-data")]
+    [RequestSizeLimit(20_000_000)]
     public IActionResult Validate(IFormFile file)
     {
         if (file is null || file.Length == 0) return BadRequest(new { message = "No file." });
+        if (UploadGuard.Check(file, UploadKind.Csv, UploadKind.Xlsx) is { } bad) return BadRequest(new { message = bad });
         using var stream = file.OpenReadStream();
         var result = templateService.ValidateFile(stream, file.FileName);
         return Ok(new
@@ -49,9 +51,11 @@ public class AdminTemplateController(TemplateIngestionService templateService) :
     // POST /api/admin/template/preview/{versionId}
     [HttpPost("preview/{versionId:guid}")]
     [Consumes("multipart/form-data")]
+    [RequestSizeLimit(20_000_000)]
     public async Task<IActionResult> Preview(Guid versionId, IFormFile file)
     {
         if (file is null || file.Length == 0) return BadRequest(new { message = "No file." });
+        if (UploadGuard.Check(file, UploadKind.Csv, UploadKind.Xlsx) is { } bad) return BadRequest(new { message = bad });
         using var stream = file.OpenReadStream();
         var validated = templateService.ValidateFile(stream, file.FileName);
         if (!validated.IsValid)
@@ -71,9 +75,11 @@ public class AdminTemplateController(TemplateIngestionService templateService) :
     // POST /api/admin/template/commit/{versionId}
     [HttpPost("commit/{versionId:guid}")]
     [Consumes("multipart/form-data")]
+    [RequestSizeLimit(20_000_000)]
     public async Task<IActionResult> Commit(Guid versionId, IFormFile file)
     {
         if (file is null || file.Length == 0) return BadRequest(new { message = "No file." });
+        if (UploadGuard.Check(file, UploadKind.Csv, UploadKind.Xlsx) is { } bad) return BadRequest(new { message = bad });
 
         var method = file.FileName.EndsWith(".xlsx", StringComparison.OrdinalIgnoreCase)
             ? IngestionMethod.XlsxTemplate : IngestionMethod.CsvTemplate;

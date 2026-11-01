@@ -1,4 +1,6 @@
-﻿using System.Text;
+﻿using System.Security.Claims;
+using System.Text;
+using System.Threading.RateLimiting;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using HsClassifier.Infrastructure.Persistence;
@@ -91,6 +93,27 @@ builder.Services.AddAuthorizationBuilder()
 // Health checks
 builder.Services.AddHealthChecks();
 
+// Rate limits (per minute). "classify": per signed-in user; "auth": per IP, slows password guessing.
+// Defaults in code; override with RateLimit:ClassifyPerMinute / RateLimit:LoginPerMinute.
+builder.Services.AddRateLimiter(o =>
+{
+    o.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
+    o.OnRejected = async (ctx, ct) =>
+    {
+        ctx.HttpContext.Response.ContentType = "application/json";
+        await ctx.HttpContext.Response.WriteAsJsonAsync(
+            new { message = "Terlalu banyak permintaan. Tunggu sebentar lalu coba lagi." }, ct);
+    };
+    int Limit(string key, int fallback) => builder.Configuration.GetValue(key, fallback) is var n && n > 0 ? n : fallback;
+    string Ip(HttpContext h) => h.Connection.RemoteIpAddress?.ToString() ?? "unknown";
+    o.AddPolicy("classify", h => RateLimitPartition.GetFixedWindowLimiter(
+        h.User.FindFirstValue(ClaimTypes.NameIdentifier) ?? Ip(h),
+        _ => new FixedWindowRateLimiterOptions { PermitLimit = Limit("RateLimit:ClassifyPerMinute", 20), Window = TimeSpan.FromMinutes(1), QueueLimit = 0 }));
+    o.AddPolicy("auth", h => RateLimitPartition.GetFixedWindowLimiter(
+        Ip(h),
+        _ => new FixedWindowRateLimiterOptions { PermitLimit = Limit("RateLimit:LoginPerMinute", 10), Window = TimeSpan.FromMinutes(1), QueueLimit = 0 }));
+});
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -102,6 +125,7 @@ if (app.Environment.IsDevelopment())
 app.UseSerilogRequestLogging();
 app.UseCors("ReactFrontend");
 app.UseAuthentication();
+app.UseRateLimiter();
 app.UseAuthorization();
 app.MapControllers();
 app.MapHealthChecks("/health").AllowAnonymous();

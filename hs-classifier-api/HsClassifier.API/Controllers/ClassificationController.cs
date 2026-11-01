@@ -6,6 +6,7 @@ using HsClassifier.Infrastructure.Persistence;
 using HsClassifier.Infrastructure.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
 
 namespace HsClassifier.API.Controllers;
@@ -21,6 +22,8 @@ public class ClassificationController(
     private const string Writers = $"{nameof(UserRole.Admin)},{nameof(UserRole.Classifier)}";
 
     private int UserId => int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+
+    private string Role => User.FindFirstValue(ClaimTypes.Role) ?? string.Empty;
 
     private bool SeesAll => CaseQueries.SeesAll(User.FindAll(ClaimTypes.Role).Select(c => c.Value));
 
@@ -103,14 +106,35 @@ public class ClassificationController(
     /// Response <c>status</c>: DETERMINED (finalCode + tariffs), NEED_CLARIFICATION (questions + candidateCodes;
     /// jawab lewat <c>POST /{caseId}/facts</c>), NEED_EXPERT_REVIEW (tanpa kode final, candidateCodes untuk ahli),
     /// atau ERROR (message berisi alasan validasi). Semua status selain ERROR mengembalikan caseId.
+    /// Memakai kuota harian per pengguna (<c>GET /quota</c>); Admin dan ExpertReviewer tidak dibatasi.
+    /// Kuota habis: HTTP 429 <c>{ message, limit, used, resetAt }</c>. Menjawab klarifikasi tidak menambah hitungan.
     /// </remarks>
     [Authorize(Roles = Writers)]
+    [EnableRateLimiting("classify")]
     [HttpPost("start")]
-    public async Task<IActionResult> Start([FromBody] ClassificationStartRequest req)
-        => Ok(await orchestrator.ClassifyAsync(UserId, req.Facts ?? new()));
+    public async Task<IActionResult> Start([FromBody] ClassificationStartRequest req, [FromServices] DailyQuotaService quota)
+    {
+        var q = await quota.TryConsumeAsync(UserId, Role);
+        if (!q.Allowed)
+            return StatusCode(StatusCodes.Status429TooManyRequests, new
+            {
+                message = $"Kuota klasifikasi harian habis ({q.Used} dari {q.Limit}). Kuota diperbarui saat pergantian hari.",
+                limit = q.Limit, used = q.Used, resetAt = q.ResetAt,
+            });
+        return Ok(await orchestrator.ClassifyAsync(UserId, req.Facts ?? new()));
+    }
+
+    /// <summary>Sisa kuota klasifikasi hari ini. <c>limit</c> 0 = tidak dibatasi.</summary>
+    [HttpGet("quota")]
+    public async Task<IActionResult> GetQuota([FromServices] DailyQuotaService quota)
+    {
+        var q = await quota.GetAsync(UserId, Role);
+        return Ok(new { limit = q.Limit, used = q.Used, remaining = q.Limit == 0 ? (int?)null : Math.Max(q.Limit - q.Used, 0), resetAt = q.ResetAt });
+    }
 
     /// <summary>Tambah fakta (jawaban klarifikasi) ke case; fakta lama digabung, lalu klasifikasi dijalankan ulang.</summary>
     [Authorize(Roles = Writers)]
+    [EnableRateLimiting("classify")]
     [HttpPost("{caseId:long}/facts")]
     public async Task<IActionResult> SubmitFacts(long caseId, [FromBody] ClassificationStartRequest req)
     {

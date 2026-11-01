@@ -23,6 +23,7 @@ public class HsClassifierDbContext : DbContext
     public DbSet<ImportBatch> ImportBatches => Set<ImportBatch>();
     public DbSet<AmbiguityItem> AmbiguityItems => Set<AmbiguityItem>();
     public DbSet<AiUsageLog> AiUsageLogs => Set<AiUsageLog>();
+    public DbSet<DailyUsage> DailyUsages => Set<DailyUsage>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -250,6 +251,13 @@ public class HsClassifierDbContext : DbContext
             e.Property(x => x.ErrorCode).HasMaxLength(30);
             e.HasIndex(x => x.CreatedAt);
             e.HasIndex(x => new { x.Status, x.CreatedAt });
+        });
+
+        // DailyUsage — per-user daily classification counter (quota)
+        modelBuilder.Entity<DailyUsage>(e =>
+        {
+            e.HasKey(x => new { x.UserId, x.Day });
+            e.Property(x => x.Count).IsConcurrencyToken();
         });
     }
 }

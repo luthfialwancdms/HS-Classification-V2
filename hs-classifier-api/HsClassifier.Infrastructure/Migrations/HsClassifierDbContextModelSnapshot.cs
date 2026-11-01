@@ -380,6 +380,23 @@ namespace HsClassifier.Infrastructure.Migrations
                     b.ToTable("ClassificationCases");
                 });
 
+            modelBuilder.Entity("HsClassifier.Domain.Entities.DailyUsage", b =>
+                {
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<DateOnly>("Day")
+                        .HasColumnType("date");
+
+                    b.Property<int>("Count")
+                        .IsConcurrencyToken()
+                        .HasColumnType("int");
+
+                    b.HasKey("UserId", "Day");
+
+                    b.ToTable("DailyUsages");
+                });
+
             modelBuilder.Entity("HsClassifier.Domain.Entities.ExpertCorrection", b =>
                 {
                     b.Property<long>("Id")

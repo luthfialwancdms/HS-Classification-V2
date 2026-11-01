@@ -36,6 +36,7 @@ public static class DependencyInjection
         services.AddSingleton<IAiUsageRecorder, AiUsageRecorder>();
         services.AddSingleton<AiConnectionChecker>();
         services.AddScoped<AiUsageReportService>();
+        services.AddScoped<DailyQuotaService>();
         services.AddScoped<ClassificationOrchestrator>();
         services.AddScoped<ExpertReviewService>();
         services.AddScoped<BtkiCsvSeeder>();
