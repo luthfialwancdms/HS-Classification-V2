@@ -127,8 +127,8 @@ export default function ClassificationForm({ onSubmit, isLoading }) {
       </div>
 
       {SECTIONS.map((section) => (
-        <div key={section.title}>
-          <div className="section-label">{section.title}</div>
+        <div key={section.title} className="form-section">
+          <h3 className="section-title">{section.title}</h3>
           <div className="form-grid">
             {section.fields.map((key) => (
               <div key={key} className={WIDE.has(key) ? 'span-2' : undefined}>
