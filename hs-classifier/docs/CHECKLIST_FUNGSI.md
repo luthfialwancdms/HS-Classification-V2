@@ -100,12 +100,12 @@ Catatan P1 — perubahan yang **bukan** tampilan:
 | ID | Perilaku | Status P2 |
 |---|---|---|
 | K1 | 5 seksi berurutan: Identitas Barang, Fisik & Material, Fungsi & Cara Kerja, Konteks Penggunaan, Karakteristik Tambahan — urutan dan pengelompokan field tidak berubah | ✅ terbaca urut 1–5 di DOM |
-| K2 | 14 field dengan `name`/key persis: `nama_dagang`, `nama_generik`, `spesifikasi`, `keterangan_tambahan`, `material_utama`, `kondisi_impor`, `fungsi_utama`, `cara_kerja`, `mobilitas`, `area_operasi`, `sektor`, `apakah_part`, `apakah_set`, `ada_komponen_tambahan` | ✅ 4 text + 8 select + 2 chip group = 14 |
+| K2 | 14 field dengan `name`/key persis: `nama_dagang`, `nama_generik`, `spesifikasi`, `keterangan_tambahan`, `material_utama`, `kondisi_impor`, `fungsi_utama`, `cara_kerja`, `mobilitas`, `area_operasi`, `sektor`, `apakah_part`, `apakah_set`, `ada_komponen_tambahan` | ✅ 4 text + 8 select + 2 chip group = 14 · **REV1 butir 6:** `apakah_part`, `apakah_set`, `ada_komponen_tambahan` kini grup radio (fieldset+legend, `name` = key field, opsi dari `dropdown_master.json`) → 4 text + 5 select + 3 radio + 2 chip = 14 (DOM/stub). Payload `POST /api/classification/start` identik dengan versi select pada 4 skenario (default, Ya/Ya/Ya, Tidak yakin/Tidak/Tidak, part=Tidak) |
 | K3 | Label, placeholder, daftar opsi, dan tanda `*` (required) berasal dari `dropdown_master.json` — tidak di-hardcode | ✅ label + placeholder + `*` dari JSON |
 | K4 | `material_utama` & `cara_kerja` = multi-select chip (toggle, tampil "Dipilih: ...") | ✅ 2 chip terpilih → "Dipilih: Baja/Besi, Tembaga" |
 | K5 | Submit tanpa `nama_generik` → `alert('Nama generik barang wajib diisi.')`, tidak ada request | ✅ alert terkirim, tidak ada hasil |
 | K6 | Submit valid → `classifyWithBackend(form)`; tombol submit jadi `Menganalisis...` dan submit+reset `disabled` | ✅ label `Menganalisis...`, tombol disabled, spinner tampil |
-| K7 | `Reset` mengembalikan seluruh form ke nilai awal, tanpa request | ✅ input/select kosong, chip terpilih 0 |
+| K7 | `Reset` mengembalikan seluruh form ke nilai awal, tanpa request | ✅ input/select kosong, chip terpilih 0 · REV1: radio terpilih 3 → 0, 0 request baru (DOM/stub); tombol Reset kini `.reset-button` (butir 7), perilaku sama |
 
 
 ### C — Banner klarifikasi (`NEED_CLARIFICATION`)
@@ -146,7 +146,7 @@ Catatan P2 — perubahan perilaku di luar tampilan (semua atas instruksi Anda):
 
 | ID | Perilaku | Status P3 |
 |---|---|---|
-| H1 | Filter `q`, `status`, `from`, `to`; setiap perubahan filter mereset halaman ke 1 | ✅ request berurutan `q` → `status` → `from` → `to`, semuanya `page=1` |
+| H1 | Filter `q`, `status`, `from`, `to`; setiap perubahan filter mereset halaman ke 1 | ✅ request berurutan `q` → `status` → `from` → `to`, semuanya `page=1` · REV1 butir 8: toolbar kini kartu `.panel.toolbar` (grid, kontrol 46px); diverifikasi ulang dari halaman 2 → `page=1` (DOM/stub) |
 | H2 | Paginasi 20 per halaman; kontrol halaman hanya tampil bila > 1 halaman; tombol disabled di ujung | ✅ 20 item (hal. 1) / 5 item (hal. 2), total 25; `Sebelumnya` disabled di hal. 1; pager hilang saat hasil 0 |
 | H3 | Indikator "Memuat…" / "N total case" (`aria-live="polite"`), empty state "Belum ada case", error list `role="alert"` | ✅ "25 case", "0 case" + "Belum ada case", alert berisi pesan API apa adanya |
 | H4 | Baris case: nama barang (fallback `Case #id`), StatusBadge, kode final (monospace, `—` bila kosong), tanggal `id-ID`, nama user hanya untuk Admin/ExpertReviewer | ✅ tanggal + badge (4 status) + nama + kode + user |
@@ -159,7 +159,7 @@ Catatan P2 — perubahan perilaku di luar tampilan (semua atas instruksi Anda):
 
 | ID | Perilaku | Status P4 |
 |---|---|---|
-| E1 | Halaman = `HistoryPage` dengan filter status awal `NeedExpertReview`, judul "Case Expert Review", kolom user tampil | ✅ judul, eyebrow `EXPERT WORKFLOW`, subtitle, 2 kartu semuanya "Review ahli", user tampil |
+| E1 | Halaman = `HistoryPage` dengan filter status awal `NeedExpertReview`, judul "Case Expert Review", kolom user tampil | ✅ judul, eyebrow `EXPERT WORKFLOW`, subtitle, 2 kartu semuanya "Review ahli", user tampil · REV1 butir 9: toolbar Review = toolbar Riwayat (komponen sama, kelas `panel toolbar`); request pertama `status=NeedExpertReview` (DOM/stub) |
 | E2 | Panel keputusan hanya untuk status `NEED_EXPERT_REVIEW` | ✅ kondisi `if (detail.status !== 'NEED_EXPERT_REVIEW') return null` tidak berubah; panel tampil untuk status itu |
 | E3 | Kandidat yang bisa dipilih hanya yang cocok `^\d{4}\.\d{2}\.\d{2}$`; heading 4 digit ditampilkan terpisah sebagai hint | ✅ 2 radio kandidat + 1 radio override; hint "Heading kandidat: 8429" |
 | E4 | Mode override: input kode manual + tombol `Cek di BTKI` → preview uraian atau "tidak ditemukan di BTKI aktif"; catatan EXPERT_OVERRIDE saat override | ✅ valid → kotak hijau + uraian; format salah & kode tak ada → notice bahaya "tidak ditemukan di BTKI aktif" |

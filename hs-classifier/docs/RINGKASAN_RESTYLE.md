@@ -28,8 +28,22 @@ Prinsip yang dipegang: hanya lapisan presentasi berubah. `services/`, `src/data/
 | 2 | `21ebb3d` | rapatkan jarak atas menu sidebar |
 | 3 | `9e25104` | dropdown user + logout |
 | 4 | `0a3a63a` | `restyle: panel hasil di bawah form (non-modal)` |
+| 5 | `b9e52b7` | judul seksi form 1–5: `h3.section-title` 17px/800 navy + garis bawah, satu gaya untuk kelimanya (sebelumnya 11px uppercase) |
+| 6 | `12ff998` | Karakteristik Tambahan: 3 pertanyaan jadi radio (`RadioGroupField`, opsi dari data) |
+| 7 | `a4e5c95` | tombol Reset: `.reset-button` (bg `--blue-bg`, border `--primary`, teks `--primary-dark` 6.05:1) |
+| 8 | `a658f8f` | toolbar filter dalam kartu `.panel`, 4 kontrol setinggi 46px, kotak cari terlebar (font 16px) |
+| 9 | _tanpa commit sendiri_ | Review Ahli merender `HistoryPage`, jadi toolbarnya komponen yang sama dan sudah tercakup `a658f8f` |
 
 **Perubahan UI disengaja, butir 4:** panel hasil pindah dari kolom kanan (sticky) ke bawah form selebar penuh. Panel hanya ada setelah hasil final (DETERMINED / NEED_EXPERT_REVIEW / REJECTED); kartu "Belum ada analisis" tidak ditampilkan lagi. Loading dan error API tampil sebagai elemen halaman (`.loading-panel`, notice `role="alert"`), bukan di dalam panel. Header panel punya `Perkecil/Perbesar` dan `Hapus hasil` (`setResult(null)`, setter yang sudah ada). Halaman scroll ke panel dan fokus ke judulnya. Banner klarifikasi tetap inline, kini di antara form dan panel. Riwayat memakai `ResultPanel` tanpa prop baru, jadi perilakunya tidak berubah.
+
+**Perubahan UI disengaja, butir 5–9:**
+- Butir 5: judul seksi bukan lagi label uppercase 11px; elemen jadi `<h3>` (hirarki di bawah `<h2>` Data Barang). Kelas `.section-label` dihapus.
+- Butir 6: radio tidak bisa dikosongkan lagi setelah dipilih (select lama punya "-- Pilih --" yang mengembalikan nilai `''`). Kembali ke kosong hanya lewat `Reset`. Nilai awal tetap kosong; nilai yang dikirim tidak berubah. Radio memakai atribut `name` = key field (select lama tidak punya `name`) untuk navigasi panah native.
+- Butir 7: `Reset` tampil sebagai tombol tonal ber-border; `.ghost-button` tidak diubah (masih dipakai "Cek di BTKI" di Review).
+- Butir 8–9: toolbar filter Riwayat dan Review Ahli menjadi kartu; kontrol 46px (sebelumnya kotak cari 22px dan lainnya 35px); layout 4 kolom ≥1181px, kotak cari satu baris penuh + 3 kontrol di 861–1180px, menumpuk 1 kolom ≤860px.
+- **Interpretasi butir 8:** "kotak cari lebih tinggi" dan "semua kontrol sama tinggi" tidak bisa dipenuhi bersamaan. Diambil: semua 46px; kotak cari paling lebar, font 16px (lainnya 14px), ikon 18px, padding 14px.
+
+**Sumber verifikasi butir 5–9:** lint + build (sesi ini); DOM + stub `fetch` lewat Chrome headless CDP (sesi ini, harness di luar repo; tidak ada panggilan ke backend asli). Penilaian visual: tidak dilakukan, milik Anda.
 
 **Interpretasi butir 4 (perlu konfirmasi Anda):** "Hapus hasil → keadaan kosong" diimplementasikan sebagai panel hilang sepenuhnya, bukan kartu kosong.
 
@@ -45,7 +59,7 @@ Prinsip yang dipegang: hanya lapisan presentasi berubah. `services/`, `src/data/
 | D2 | **Token digelapkan** untuk kontras teks 9–11px | `--muted` `#6d817d`→`#637572` (4.55:1), `--primary` `#1d8175`→`#1c7b6f`, `--green` `#1e8a61`→`#1b7e58`, `--amber` `#b66a16`→`#a45f14`, `--red` `#c9464d`→`#c1434a`; teks `#98a2b3`→`var(--muted)` |
 | D3 | `.btki-check span` `#4a8d71`→`#407961` (3.55:1 → **4.6:1**, hue sama) | P6 (c) |
 | D4 | `.brand-name` `font-weight: 750` → **800** | Paket statis Lexend hanya kelipatan 100 |
-| D5 | **Tanpa modal hasil** | Hasil tetap panel inline di kolom kanan (keputusan Q4) |
+| D5 | **Tanpa modal hasil** | Hasil tetap panel inline (keputusan Q4); sejak REV1 butir 4 di bawah form, bukan kolom kanan |
 | D6 | **Tanpa tab** di detail riwayat/review | Semua seksi tampil bertumpuk sebagai kartu (Q7) |
 | D7 | **Tanpa shadcn/cva/clsx/tailwind-merge** | Gaya tombol ditiru dengan className + CSS variable; dependency hanya font + lucide |
 | D8 | `@import` Google Fonts, `tw-animate-css`, `shadcn/tailwind.css`, `@custom-variant dark` dibuang | Tidak dipakai; font dibundel |
@@ -59,7 +73,7 @@ Prinsip yang dipegang: hanya lapisan presentasi berubah. `services/`, `src/data/
 | Layar | Sebelum | Sesudah |
 |---|---|---|
 | Shell | navbar horizontal di header | **topbar 68px + sidebar 240px**; di ≤720px sidebar jadi drawer off-canvas + overlay, fokus balik ke tombol burger |
-| Klasifikasi | 2 kolom Tailwind, hasil `lg:sticky` | **2 kolom ≥1051px** dengan kolom hasil sticky; **<1051px menumpuk** (form di atas) + auto-scroll ke hasil setelah analisis |
+| Klasifikasi | 2 kolom Tailwind, hasil `lg:sticky` | ~~2 kolom + sticky~~ **diganti REV1 butir 4:** satu kolom, form selebar penuh, panel hasil di bawah form |
 | Riwayat | grid 2 kolom penuh | `.master-detail` 330px + 1fr; daftar ≤620px dengan scroll sendiri (≥721px) |
 | Review | panel Tailwind di kolom detail | `.expert-panel` v0 di kolom detail |
 | Admin | tab horizontal di atas konten | `.admin-layout` 210px + 1fr, nav vertikal (horizontal ≤1050px) |
@@ -83,7 +97,7 @@ Catatan: acuan v0 menumpuk form & hasil dalam satu kolom di semua lebar. 2 kolom
 - Banner klarifikasi memakai `.panel` + `.notice` + `.field`/`.choice`.
 - Panel hasil: heading "Hasil Analisis" selalu tampil; urutan blok: hero → meta → tarif → confidence → flag expert → reasoning → minta review.
 - Reasoning tetap `<details>` per langkah (tertutup default) — v0 selalu terbuka (perilaku R11).
-- Pertanyaan ya/tidak form tetap `<select>` (bukan radio-grid v0) agar nama field & nilai tidak berubah.
+- ~~Pertanyaan ya/tidak form tetap `<select>`~~ **diganti REV1 butir 6:** `apakah_part`, `apakah_set`, `ada_komponen_tambahan` memakai radio (`RadioGroupField`), opsi dibangkitkan dari `dropdown_master.json`; nama field dan nilai terkirim tidak berubah.
 - Riwayat: toolbar filter nyata (cari/status/dari/sampai) menggantikan tombol filter dekoratif; tanpa `stats-grid` (Q5); tanpa tab (Q7); data tabular tetap `.data-table`.
 - Review: tanpa `.queue`/`.review-card`/badge URGENT (tidak ada data urgensi).
 - Admin: tabel + `.metric-grid` (v0 hanya mencontohkan `.version-row`); angka hanya dari API.
