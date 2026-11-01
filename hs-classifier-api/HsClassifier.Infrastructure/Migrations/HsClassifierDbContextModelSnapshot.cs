@@ -22,6 +22,72 @@ namespace HsClassifier.Infrastructure.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("HsClassifier.Domain.Entities.AiUsageLog", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<long?>("CaseId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int?>("CompletionTokens")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2(3)");
+
+                    b.Property<string>("ErrorCode")
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.Property<string>("Host")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<int?>("HttpStatus")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Kind")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<int>("LatencyMs")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Model")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<int?>("PromptTokens")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Provider")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
+
+                    b.Property<int?>("TotalTokens")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedAt");
+
+                    b.HasIndex("Status", "CreatedAt");
+
+                    b.ToTable("AiUsageLogs");
+                });
+
             modelBuilder.Entity("HsClassifier.Domain.Entities.AmbiguityItem", b =>
                 {
                     b.Property<long>("Id")

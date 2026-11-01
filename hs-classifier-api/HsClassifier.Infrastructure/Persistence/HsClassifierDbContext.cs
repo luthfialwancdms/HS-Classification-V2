@@ -22,6 +22,7 @@ public class HsClassifierDbContext : DbContext
     public DbSet<ExpertCorrection> ExpertCorrections => Set<ExpertCorrection>();
     public DbSet<ImportBatch> ImportBatches => Set<ImportBatch>();
     public DbSet<AmbiguityItem> AmbiguityItems => Set<AmbiguityItem>();
+    public DbSet<AiUsageLog> AiUsageLogs => Set<AiUsageLog>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -234,6 +235,21 @@ public class HsClassifierDbContext : DbContext
             e.HasIndex(x => new { x.BatchId, x.Decision });
             e.HasOne(x => x.Batch).WithMany(b => b.Items)
              .HasForeignKey(x => x.BatchId).OnDelete(DeleteBehavior.Cascade);
+        });
+
+        // AiUsageLog — one row per AI request (metadata only; see entity remarks)
+        modelBuilder.Entity<AiUsageLog>(e =>
+        {
+            e.HasKey(x => x.Id);
+            e.Property(x => x.CreatedAt).HasColumnType("datetime2(3)");
+            e.Property(x => x.Kind).HasConversion<string>().HasMaxLength(20).IsRequired();
+            e.Property(x => x.Provider).HasMaxLength(30).IsRequired();
+            e.Property(x => x.Host).HasMaxLength(100);
+            e.Property(x => x.Model).HasMaxLength(100).IsRequired();
+            e.Property(x => x.Status).HasConversion<string>().HasMaxLength(10).IsRequired();
+            e.Property(x => x.ErrorCode).HasMaxLength(30);
+            e.HasIndex(x => x.CreatedAt);
+            e.HasIndex(x => new { x.Status, x.CreatedAt });
         });
     }
 }
