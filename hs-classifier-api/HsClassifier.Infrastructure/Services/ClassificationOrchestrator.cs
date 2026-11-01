@@ -5,6 +5,7 @@ using HsClassifier.Domain.Classification;
 using HsClassifier.Domain.Entities;
 using HsClassifier.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using DomainConf = HsClassifier.Domain.Classification.ConfidenceLevel;
 using EntityConf = HsClassifier.Domain.Enums.ConfidenceLevel;
 using EntityStatus = HsClassifier.Domain.Enums.CaseStatus;
@@ -22,11 +23,26 @@ public class ClassificationOrchestrator(
     CandidateGeneratorService candidateGenerator,
     ClassificationValidator validator,
     TariffLookupService tariffLookup,
-    ITermSuggester termSuggester)
+    ITermSuggester termSuggester,
+    IConfiguration config)
 {
     private readonly FactExtractionService _facts = new();
     private readonly QuestionGeneratorService _questions = new();
-    private readonly RulesEngine _rules = new();
+    private readonly RulesEngine _rules = new(ReadEssentialCharacter(config));
+
+    /// <summary>
+    /// KUM HS 3(b) settings from <c>Rules:EssentialCharacter</c> (<c>Weights:Function</c>, <c>Weights:Material</c>, …,
+    /// <c>MinMargin</c>, <c>MinFactorWins</c>); anything missing or unparseable keeps the documented default.
+    /// </summary>
+    public static EssentialCharacterOptions ReadEssentialCharacter(IConfiguration c)
+    {
+        var d = EssentialCharacterOptions.Default;
+        double Num(string key, double fallback) =>
+            double.TryParse(c[$"Rules:EssentialCharacter:{key}"], System.Globalization.NumberStyles.Float,
+                System.Globalization.CultureInfo.InvariantCulture, out var v) && v >= 0 ? v : fallback;
+        return new(d.Weights.ToDictionary(kv => kv.Key, kv => Num($"Weights:{kv.Key}", kv.Value)),
+            Num("MinMargin", d.MinMargin), (int)Num("MinFactorWins", d.MinFactorWins));
+    }
 
     /// <param name="existingCase">When set, new facts are merged into the stored facts of this case.</param>
     public async Task<ClassificationSessionResult> ClassifyAsync(

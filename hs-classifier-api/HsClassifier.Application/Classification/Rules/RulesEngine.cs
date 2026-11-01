@@ -7,9 +7,11 @@ namespace HsClassifier.Application.Classification.Rules;
 /// INVARIANT: Final code always from DB (enforced by Validator downstream).
 /// ponytail: sequential decision tree, short-circuits at earliest conclusive rule.
 /// </summary>
-public class RulesEngine
+public class RulesEngine(EssentialCharacterOptions? essentialCharacter = null)
 {
     public const string FallbackRule = "KUM_HS_1_NO_MATCH";
+
+    private readonly EssentialCharacterOptions _essential = essentialCharacter ?? EssentialCharacterOptions.Default;
 
     // ─── Main Entry Point ──────────────────────────────────────────────────────
 
@@ -21,7 +23,10 @@ public class RulesEngine
         var (retained, eliminated) = ApplyKumHs1(facts, candidates, result.ReasoningChain);
         result.EliminatedCandidates.AddRange(eliminated);
         if (result.ReasoningChain.Any(s => s.Rule == FallbackRule))
+        {
             result.Status = ResultStatus.NeedExpertReview;
+            AddMostAkinEvidence(facts, candidates, result.ReasoningChain);
+        }
 
         if (retained.Count == 0)
         {
@@ -48,26 +53,13 @@ public class RulesEngine
         if (retained.Count == 1) return ApplyKumHs6(facts, retained[0], result);
         if (retained.Count == 0) { result.Status = ResultStatus.NeedExpertReview; return result; }
 
-        // Tasks 10.1-10.3: KUM HS 3
-        var selected = ApplyKumHs3(facts, retained, result.ReasoningChain);
-        if (selected is not null) return ApplyKumHs6(facts, selected, result);
-
-        // Task 11.1: KUM HS 4 — most akin (rare, flag for expert)
-        var akin = retained.FirstOrDefault();
-        if (akin is not null)
-        {
-            result.ReasoningChain.Add(new ReasoningStep
-            {
-                Rule = "KUM_HS_4", CandidateCode = akin.Code,
-                Decision = CandidateDecision.Retained,
-                Reason = "KUM HS 4 applied — most akin heading selected. Expert review recommended.",
-            });
-            result.Status = ResultStatus.NeedExpertReview;
-            return ApplyKumHs6(facts, akin, result);
-        }
-
-        result.Status = ResultStatus.NeedExpertReview;
-        return result;
+        // Tasks 10.1-10.3: KUM HS 3. 3(c) always picks one heading, so the only way out without one is 3(b)
+        // waiting for the user's answers (status and questions are already on the result).
+        var selected = ApplyKumHs3(facts, retained, result);
+        // ponytail: KUM HS 4 is not a step here. Every tie ends in 3(c); the case KUM HS 4 exists for (no
+        // heading fits) is the NO_MATCH fallback above, which now records the most akin headings as evidence
+        // (AddMostAkinEvidence) and still goes to an expert.
+        return selected is null ? result : ApplyKumHs6(facts, selected, result);
     }
 
     // ─── KUM HS 1 ─────────────────────────────────────────────────────────────
@@ -162,11 +154,18 @@ public class RulesEngine
         if (mixture.Contains("mixture", StringComparison.OrdinalIgnoreCase)
             || mixture.Contains("campuran", StringComparison.OrdinalIgnoreCase))
         {
+            // 2(b) extends a heading's reference to a material to mixtures of it: record which candidates
+            // name the goods' material. Nothing is eliminated here; several candidates go on to KUM HS 3.
+            var materialTerms = Terms(facts.GetValue("material"));
+            var naming = candidates.Where(c => Terms(WithoutExclusions(c.Description.Split(" / ")[0])).Overlaps(materialTerms))
+                .Select(c => c.Code).ToList();
             chain.Add(new ReasoningStep
             {
                 Rule = "KUM_HS_2B",
                 Decision = CandidateDecision.Unresolved,
-                Reason = "Material mixture detected — multiple headings possible. Proceeding to KUM HS 3.",
+                Reason = "Material mixture detected — multiple headings possible. Proceeding to KUM HS 3." +
+                         (naming.Count > 0 ? $" Pos yang uraiannya menyebut bahan barang: {string.Join(", ", naming)}." : ""),
+                SourceIds = candidates.Select(c => c.SourceId ?? c.Code).ToList(),
             });
         }
 
@@ -175,9 +174,11 @@ public class RulesEngine
 
     // ─── KUM HS 3 ─────────────────────────────────────────────────────────────
 
+    /// <returns>The chosen heading, or null when 3(b) needs the user's answers first (result already holds the questions).</returns>
     private CandidateHeading? ApplyKumHs3(
-        FactSet facts, List<CandidateHeading> candidates, List<ReasoningStep> chain)
+        FactSet facts, List<CandidateHeading> candidates, ClassificationResult result)
     {
+        var chain = result.ReasoningChain;
         // Task 10.1: 3(a) — the heading whose description covers the most facts is the most specific;
         // structural specificity (residual "other", parts) only breaks ties. Without this, 3(c) ended up
         // choosing between weak matches purely by number (Req 13.3: no padding with weak candidates).
@@ -198,24 +199,28 @@ public class RulesEngine
             return winner;
         }
 
-        // Task 10.2: 3(b) — essential character (simplified weight-based)
-        var partFact = facts.GetValue("part_accessory") ?? "";
-        var materialFact = facts.GetValue("material") ?? "";
-
-        foreach (var (c, _) in mostSpecific)
+        // Task 10.2: 3(b) — essential character, only for mixtures and retail sets (master prompt trigger).
+        // Any other tie goes straight to 3(c).
+        if (EssentialCharacter.IsComposite(facts))
         {
-            var desc = c.Description.ToLowerInvariant();
-            if (!string.IsNullOrWhiteSpace(materialFact) && desc.Contains(materialFact.ToLowerInvariant()))
+            var tied = mostSpecific.Select(x => x.c).ToList();
+            var ec = EssentialCharacter.Evaluate(facts, tied, _essential, c => $"{c.Code} — {Clean(c.Description)}");
+            if (ec.Questions.Count > 0)
             {
+                result.Status = ResultStatus.NeedClarification;
+                result.PendingQuestions.AddRange(ec.Questions);
+                result.MissingFacts.AddRange(ec.Questions.Select(q => q.FactType));
                 chain.Add(new ReasoningStep
                 {
-                    Rule = "KUM_HS_3B", CandidateCode = c.Code,
-                    Decision = CandidateDecision.Retained,
-                    Reason = $"Essential character: material '{materialFact}' matches heading description.",
-                    SourceIds = [c.SourceId ?? c.Code]
+                    Rule = "KUM_HS_3B", Decision = CandidateDecision.Unresolved,
+                    Reason = $"Pos {string.Join(", ", tied.Select(t => t.Code))} sama spesifik (KUM HS 3(a)). Karakter pokok (3(b)) butuh " +
+                             $"penilaian pengguna untuk faktor: {string.Join(", ", ec.Questions.Select(q => q.FactType))}.",
+                    SourceIds = tied.Select(t => t.SourceId ?? t.Code).ToList(),
                 });
-                return c;
+                return null;
             }
+            chain.Add(ec.Step!);
+            if (ec.Winner is not null) return ec.Winner;
         }
 
         // Task 10.3: 3(c) — last in numerical order
@@ -460,6 +465,46 @@ public class RulesEngine
             SourceIds = [sourceId]
         });
         return result;
+    }
+
+    // ─── KUM HS 4 evidence ────────────────────────────────────────────────────
+
+    // Attributes the master prompt names for "most akin" (material, form, function, operating principle, use,
+    // technical characteristics, commercial identity) and the fact that carries each.
+    private static readonly (string Label, string[] Facts)[] AkinAttributes =
+    [
+        ("material", ["material"]), ("bentuk", ["form"]), ("fungsi", ["primary_function"]),
+        ("prinsip kerja", ["operating_principle"]), ("penggunaan", ["primary_use"]),
+        ("karakteristik teknis", ["dimensions", "power_rating", "capacity", "voltage"]),
+        ("identitas komersial", ["generic_name", "commercial_name"]),
+    ];
+
+    /// <summary>
+    /// No heading fits the goods (KUM HS 1 found nothing), which is where KUM HS 4 applies. The engine does not
+    /// decide "most akin" itself; it records up to three headings sharing the most attributes with the goods so
+    /// the expert sees the comparison. Recorded as KUM_HS_4_COMPARE, not KUM_HS_4, so it is not counted as GRI 4 applied.
+    /// </summary>
+    private static void AddMostAkinEvidence(FactSet facts, List<CandidateHeading> candidates, List<ReasoningStep> chain)
+    {
+        var ranked = candidates.Select(c =>
+            {
+                var text = Terms(WithoutExclusions($"{c.Description} {string.Join(' ', c.ChildDescriptions.Values)}"));
+                var shared = AkinAttributes
+                    .Where(a => a.Facts.Any(f => Terms(facts.GetValue(f)).Overlaps(text))).Select(a => a.Label).ToList();
+                return (c, shared);
+            })
+            .Where(x => x.shared.Count > 0)
+            .OrderByDescending(x => x.shared.Count).ThenBy(x => x.c.Code)
+            .Take(3).ToList();
+        if (ranked.Count == 0) return;
+
+        chain.Add(new ReasoningStep
+        {
+            Rule = "KUM_HS_4_COMPARE", CandidateCode = ranked[0].c.Code, Decision = CandidateDecision.Unresolved,
+            Reason = "Tidak ada pos yang cocok menurut KUM HS 1. Pos yang paling mirip dengan barang, untuk dinilai ahli (KUM HS 4): " +
+                     string.Join("; ", ranked.Select(x => $"{x.c.Code} (kesamaan: {string.Join(", ", x.shared)})")) + ".",
+            SourceIds = ranked.Select(x => x.c.SourceId ?? x.c.Code).ToList(),
+        });
     }
 
     // ─── Helpers ───────────────────────────────────────────────────────────────

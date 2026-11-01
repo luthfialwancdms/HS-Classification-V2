@@ -26,6 +26,8 @@ public class FactExtractionService
         // Answer to a KUM HS 6 question: code prefix of the official subheading text the user confirmed
         SubheadingChoice,
         // Goods-condition evidence (ConditionGate): KUM HS 2(a), retail set, mixture, parts
+        // Answers to KUM HS 3(b) questions: code of the tied heading whose component dominates, or EQUAL
+        "ec_function","ec_material","ec_bulk","ec_value","ec_necessity","ec_perception",
         "essential_character_present","all_components_together",
         "set_single_purpose","set_retail_ready","set_essential_item",
         "mixture_major_component","mixture_major_percentage",
