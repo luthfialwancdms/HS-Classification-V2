@@ -4,6 +4,7 @@ using HsClassifier.Application.Services;
 using HsClassifier.Domain.Entities;
 using HsClassifier.Domain.Enums;
 using HsClassifier.Infrastructure.Persistence;
+using HsClassifier.Infrastructure.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -95,6 +96,19 @@ public class VersionsController(IVersionManager versionManager, HsClassifierDbCo
         return Ok(new { id, message = "Versi dibuat." });
     }
 
+    /// <summary>
+    /// Salin versi ini (baris tarif, tarif, catatan, EN) menjadi draft baru berstatus Indexed dan tidak aktif.
+    /// EN dan Catatan dimuat ke draft itu, dibandingkan dengan versi aktif, lalu diaktifkan oleh Admin.
+    /// </summary>
+    [HttpPost("{id:guid}/clone")]
+    public async Task<IActionResult> Clone(Guid id, [FromBody] CloneVersionRequest? req, [FromServices] VersionCloneService cloner)
+    {
+        var by = User.FindFirstValue(ClaimTypes.Email) ?? "admin";
+        var (clone, error) = await cloner.CloneAsync(id, req?.Name, by);
+        return clone is null ? BadRequest(new { message = error })
+            : Ok(new { id = clone.Id, name = clone.Name, message = "Draft dibuat. Muat EN dan Catatan ke draft ini." });
+    }
+
     [HttpGet("active")]
     public async Task<IActionResult> GetActive([FromQuery] DateTime? date)
     {
@@ -146,5 +160,6 @@ public class VersionsController(IVersionManager versionManager, HsClassifierDbCo
 }
 
 public record TransitionRequest(string NewState);
+public record CloneVersionRequest(string? Name);
 public record CreateVersionRequest(string Name, string? BtkiEdition, string? RegulationNumber,
     DateTime EffectiveFrom, DateTime? EffectiveTo);
