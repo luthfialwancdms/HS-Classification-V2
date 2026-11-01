@@ -59,9 +59,10 @@ public class ExportServiceTests
         Assert.Equal(Code, m.FinalCode);
         Assert.Equal("Telepon pintar (smartphone)", m.FinalDescription);
         Assert.Equal("BTKI 2022", m.VersionName);
-        Assert.Equal(5, m.Tariff!.Mfn!.Value);
+        Assert.NotNull(m.Tariff);
+        Assert.Equal(5, m.Tariff.Mfn!.Value);
         Assert.Equal(11, m.Tariff.Ppn!.Value);
-        Assert.Contains("Rules of Origin", m.Tariff.FtaDisclaimer);
+        Assert.Contains("Rules of Origin", m.Tariff!.FtaDisclaimer);
         Assert.Equal("telepon pintar", m.Facts["generic_name"]);
         Assert.DoesNotContain("ai_suggestion", m.Facts.Keys);   // internal cache, not a goods fact
         Assert.DoesNotContain("material", m.Facts.Keys);        // empty facts are left out
@@ -130,6 +131,7 @@ public class ExportServiceTests
     public async Task Unknown_format_is_rejected()
     {
         var (svc, c) = await Setup();
-        Assert.Throws<ArgumentException>(() => svc.Render(svc.BuildAsync(c).Result, "xlsx"));
+        var model = await svc.BuildAsync(c);
+        Assert.Throws<ArgumentException>(() => svc.Render(model, "xlsx"));
     }
 }
