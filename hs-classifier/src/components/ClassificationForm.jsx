@@ -137,7 +137,7 @@ export default function ClassificationForm({ onSubmit, isLoading }) {
           <h2>Data Barang</h2>
           <p>Lengkapi karakteristik barang untuk analisis akurat.</p>
         </div>
-        <button type="button" onClick={handleReset} disabled={isLoading} className="ghost-button">
+        <button type="button" onClick={handleReset} disabled={isLoading} className="reset-button">
           <RefreshCw size={15} aria-hidden="true" /> Reset
         </button>
       </div>
