@@ -173,7 +173,7 @@ Catatan P4 (perilaku lama, bukan regresi): notice "Case disetujui." praktis tida
 
 | ID | Perilaku | Status P5 |
 |---|---|---|
-| A1 | 5 tab (`role="tab"` + `aria-selected`): Versi Nomenklatur, Upload Dokumen, Laporan Validasi, Antrian Ambiguitas, Template CSV/Excel | ✅ 5 tab, `role=tablist`, `aria-orientation="vertical"`, `aria-selected`, roving `tabIndex` (0/-1), tiap tab `aria-label`; panah ↓/↑/←/→ + Home/End memindah fokus & mengaktifkan tab; `admin-content` = `role=tabpanel` + `aria-labelledby` |
+| A1 | 6 tab sejak fitur ai-status (`role="tab"` + `aria-selected`): Versi Nomenklatur, Upload Dokumen, Laporan Validasi, Antrian Ambiguitas, Template CSV/Excel, **Status AI** (lihat bagian AI di bawah) | ✅ (P5: 5 tab; sekarang 6, keyboard Home/End/wrap diuji ulang di fitur ai-status) `role=tablist`, `aria-orientation="vertical"`, `aria-selected`, roving `tabIndex` (0/-1), tiap tab `aria-label`; panah ↓/↑/←/→ + Home/End memindah fokus & mengaktifkan tab; `admin-content` = `role=tabpanel` + `aria-labelledby` |
 | A2 | Daftar versi dimuat saat mount; error load tampil `role="alert"` | ✅ (stub) GET `/api/admin/versions` saat mount; jalur error memakai `.notice.danger` + `role=alert` |
 | A3 | Versi: tabel nama/edisi/berlaku/status import/aksi; badge status; `Aktifkan` hanya untuk state `Indexed` (dengan tooltip alasan); versi aktif punya `Nonaktifkan / Rollback` | ✅ (stub) 5 baris; state badge `aktif/info/info/danger`; `Aktifkan` disabled untuk ReadyToCommit/Committed/DryRunFailed, aktif untuk Indexed; versi aktif → Nonaktifkan |
 | A4 | `Bandingkan` (Indexed/Committed) → diff: 6 angka ringkasan, catatan beda-OCR, filter per bab, 4 grup diff dengan tabel dan penanda truncated | ✅ (stub) 6 metric, select bab, 4 `<details>` + 4 tabel, "Uraian berubah: 3 (menampilkan 0)", tombol Tutup |
@@ -186,6 +186,31 @@ Catatan P4 (perilaku lama, bukan regresi): notice "Case disetujui." praktis tida
 | A11 | `Commit ke Database` hanya aktif saat versi `ReadyToCommit`; pesan blokir berbeda untuk error struktur vs ambiguitas pending; tombol "Buka laporan validasi" memindah ke tab Laporan dengan batch terpilih | ✅ (stub) saat DryRunFailed: commit disabled + "Commit diblokir: masih ada error struktur…"; setelah versi jadi ReadyToCommit: commit aktif, peringatan blokir hilang, klik → `POST /api/admin/btki/commit/{versionId}` + reload; "Buka laporan…" → tab `reports` + detail termuat |
 | A12 | Template: unduh CSV/XLSX (blob), validasi file → ringkasan valid/error/warning + tabel per baris, pilih versi → preview diff (INSERT/UPDATE/SKIP, tabel perubahan, daftar kode baru), `Commit` hanya aktif setelah checkbox konfirmasi | ✅ (stub) 2 tombol unduh; validasi → "9/10 baris valid · 1 error · 1 warning" + 2 baris masalah; preview → badge INSERT 2 / UPDATE 1 / SKIP 7, baris lama dicoret & baru hijau; commit disabled → aktif setelah checkbox → `POST /api/admin/template/commit/{versionId}` + notice |
 
+
+---
+
+### AI — Status AI (fitur `feature/ai-status`, tab ke-6 Admin Data Center)
+
+Sumber verifikasi: **DOM + stub `fetch` di Chrome headless (CDP)**, event tombol/mouse sungguhan. Tidak ada panggilan ke backend asli dan tidak ada `POST check` ke AI sungguhan. Tes backend (xUnit) tercatat di laporan fitur, bukan di sini.
+
+| ID | Perilaku | Status |
+|---|---|---|
+| AI1 | Tab "Status AI" memakai pola ARIA yang sama: 6 tab, `aria-selected`, roving `tabIndex`, `aria-controls` = id tabpanel; Home/End/panah (termasuk wrap) memindah dan mengaktifkan tab | ✅ (DOM/stub) |
+| AI2 | Keadaan awal: badge netral "Belum dicek", tombol "Cek koneksi" aktif; hanya `GET /api/admin/ai/status` (tidak memanggil AI), 0 `POST`; Latensi/Cek terakhir "—"; API key ditampilkan sebagai Terkonfigurasi / Belum dikonfigurasi (boolean, tidak pernah nilainya) | ✅ (DOM/stub). Di dev `StrictMode` memanggil efek dua kali sehingga `GET status` terlihat 2× |
+| AI3 | Ringkasan: kelompok "Hari ini" dan "30 hari terakhir" (total request, sukses, gagal, token masuk/keluar/total, "Dipakai klasifikasi", "Dari cek koneksi"), tabel rincian 7 hari, keterangan zona waktu `UTC+7`, dan catatan jumlah request sukses tanpa data token. Semua angka dari API, format `id-ID` | ✅ (DOM/stub) |
+| AI4 | Riwayat request: tabel terbaru dulu, 20 per halaman, `.pager` hanya bila >1 halaman, tombol di ujung disabled; token "—" bila tidak ada | ✅ (DOM/stub): 45 request = 3 halaman (20/20/5) |
+| AI5 | Filter Status / Jenis / Dari / Sampai: parameter `status`, `kind`, `from`, `to` terkirim, setiap perubahan mereset `page=1` | ✅ (DOM/stub) |
+| AI6 | `Cek koneksi`: tombol disabled + label "Memeriksa..." selama request; hasil memperbarui badge (Terhubung hijau), latensi, waktu cek; ringkasan dan riwayat dimuat ulang | ✅ (DOM/stub) |
+| AI7 | Batas frekuensi (`dariCache: true`): hasil terakhir tetap tampil + pesan jelas "Coba lagi dalam N detik"; tidak memuat ulang ringkasan/riwayat | ✅ (DOM/stub) |
+| AI8 | Gagal terhubung: badge merah "Tidak terhubung" + pesan dari API (tanpa isi respons mentah) | ✅ (DOM/stub) |
+| AI9 | Error API pada cek (mis. 403): `role="alert"`, tombol aktif lagi | ✅ (DOM/stub) |
+| AI10 | Fokus keyboard terlihat pada "Cek koneksi" (outline 2px solid) | ✅ (DOM/stub, fokus diemulasi) |
+| AI11 | Daftar kosong: "Belum ada request ke AI"; dengan filter aktif: "Tidak ada request yang cocok dengan filter." | ✅ (DOM/stub) |
+| AI12 | Error memuat riwayat: `role="alert"` berisi pesan API apa adanya | ✅ (DOM/stub) |
+| AI13 | Responsif 1280/1050/720/390: tanpa overflow horizontal halaman, empat kontrol filter setinggi 46px, tabel menggulir di dalam `.table-scroll` | ✅ (DOM/stub) |
+| AI14 | Hanya Admin: Classifier/ExpertReviewer/Viewer tidak melihat menu "Admin Data Center", `/admin` tidak membuka tab, dan 0 panggilan ke `/api/admin/*` | ✅ (DOM/stub). Penolakan sungguhan 401/403 oleh backend diuji di xUnit |
+
+Perubahan perilaku pada bagian Admin: A1 kini **6 tab** (ditambah "Status AI"); aturan roving/keyboard sama.
 
 ---
 
@@ -211,6 +236,9 @@ GET  /api/admin/import-batches[/{id}]
 POST /api/admin/ambiguity/{id}/decide
 POST /api/admin/btki/upload?versionId=   POST /api/admin/btki/commit/{versionId}
 POST /api/admin/{kind}/upload
+GET  /api/admin/ai/status          (hasil cek terakhir dari memori; tidak memanggil AI)
+POST /api/admin/ai/check           (satu permintaan kecil ke AI; dibatasi ±10 detik)
+GET  /api/admin/ai/usage?days=     GET /api/admin/ai/requests?status&kind&from&to&page&pageSize
 GET  /api/admin/template/download/{fmt}
 POST /api/admin/template/validate | preview/{versionId} | commit/{versionId}
 ```

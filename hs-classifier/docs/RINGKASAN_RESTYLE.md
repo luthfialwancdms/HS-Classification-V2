@@ -159,3 +159,21 @@ Di luar lingkup dan tidak disentuh: `hs-classifier/.env.example` (perubahan port
 `src/App.jsx`, `src/components/*` (7 file), `src/styles/design-system.css`, `src/index.css`, `src/App.css` (dihapus), `index.html`, `package.json` + `package-lock.json` (hanya `@fontsource/lexend` dan `lucide-react`), `docs/CHECKLIST_FUNGSI.md`, `docs/DESIGN.md`, `docs/TEMUAN.md`, `docs/RINGKASAN_RESTYLE.md`.
 
 Tidak ada perubahan di `src/services/`, `src/data/`, `src/main.jsx`, `vite.config.js`, `eslint.config.js`.
+
+---
+
+## 9. Fitur `feature/ai-status`: tab "Status AI" (bukan restyle)
+
+Tab ke-6 di Admin Data Center (hanya Admin). Aturan "hanya lapisan tampilan" dari restyle **tidak berlaku** untuk fitur ini; yang dijaga: perilaku lama tidak berubah, `package.json` tidak berubah, tanpa library grafik.
+
+**File frontend:** `src/components/AiStatusPanel.jsx` (baru), `src/components/AdminDashboard.jsx` (import, satu entri `TABS`, satu baris render), `src/services/apiClient.js` (empat fungsi **ditambahkan** di akhir file: `getAiStatus`, `checkAiConnection`, `getAiUsage`, `listAiRequests`; tidak ada fungsi lama yang diubah), `src/styles/design-system.css` (blok kecil di akhir file).
+
+**Isi tab:** kartu koneksi (badge Terhubung / Tidak terhubung / Belum dicek, penyedia, model, latensi, waktu cek, status API key sebagai boolean, tombol "Cek koneksi"); ringkasan (`.metric-grid`) untuk Hari ini dan 30 hari terakhir, dengan baris terpisah "Dipakai klasifikasi" dan "Dari cek koneksi" serta tabel rincian 7 hari; riwayat request (`.data-table`, paginasi `.pager`, filter Status / Jenis / tanggal). Semua angka dari API; tidak ada angka bawaan.
+
+**Keputusan desain:**
+- Membuka tab hanya membaca `GET status` (hasil cek terakhir di memori server). Panggilan ke AI hanya terjadi saat tombol ditekan (`POST check`), jadi refresh atau prefetch tidak memicu request berbayar.
+- Batas frekuensi ditangani server; UI menampilkan hasil terakhir dengan pesan "Coba lagi dalam N detik" dan tidak memuat ulang angka.
+- Cek koneksi sungguhan dicatat sebagai satu request (Jenis "Cek koneksi") dan ikut dihitung di total; ringkasan memisahkannya dari klasifikasi.
+- Hari mengikuti offset konfigurasi server (default UTC+7); UI menampilkan zonanya.
+
+**Sumber verifikasi:** lint + build; DOM + stub `fetch` (22 pemeriksaan, lihat bagian AI di `CHECKLIST_FUNGSI.md`). **Tidak** terverifikasi: respons nyata backend/AI (format `usage` proxy, `max_tokens` kecil pada model tertentu), penilaian visual, dan perangkat/peramban selain Chrome.
