@@ -1,4 +1,4 @@
-﻿namespace HsClassifier.Domain.Enums;
+namespace HsClassifier.Domain.Enums;
 
 public enum ImportState
 {
@@ -16,6 +16,9 @@ public enum ConfidenceLevel { High, Medium, Low }
 public enum CaseStatus { Determined, NeedClarification, NeedExpertReview, Rejected }
 public enum UserRole { Admin, Classifier, Viewer, ExpertReviewer }
 public enum AmbiguityDecision { Pending, Approved, Rejected }
+
+/// <summary>What an import batch loaded. Only Btki batches gate BTKI commit and activation.</summary>
+public enum ImportKind { Btki, En, Notes }
 
 /// <summary>Why the AI was called: a classification fallback, or an admin's connection test.</summary>
 public enum AiCallKind { TermSuggest, HealthCheck }

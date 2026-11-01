@@ -1,6 +1,7 @@
-﻿using System.Security.Claims;
+using System.Security.Claims;
 using System.Text.Json;
 using HsClassifier.Application.Interfaces;
+using HsClassifier.Domain.Entities;
 using HsClassifier.Infrastructure.Persistence;
 using HsClassifier.Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
@@ -14,7 +15,7 @@ namespace HsClassifier.API.Controllers;
 [Authorize(Roles = nameof(UserRole.Admin))]
 [Route("api/admin")]
 public class AdminImportController(IDocxParser parser, IBtkiPdfParser pdfParser, BtkiImportService importService,
-    IVersionManager versionManager, HsClassifierDbContext db) : ControllerBase
+    EnImportService enImport, IVersionManager versionManager, HsClassifierDbContext db) : ControllerBase
 {
     // ─── BTKI ─────────────────────────────────────────────────────────────────
 
@@ -114,7 +115,7 @@ public class AdminImportController(IDocxParser parser, IBtkiPdfParser pdfParser,
         var rows = await q.OrderByDescending(b => b.CreatedAt).ThenByDescending(b => b.Id).Take(100)
             .Select(b => new
             {
-                b.Id, b.VersionId, b.FileName, b.Checksum, b.TotalNodes, b.ErrorCount, b.WarningCount, b.CreatedBy, b.CreatedAt,
+                b.Id, b.VersionId, Kind = b.Kind.ToString(), b.FileName, b.Checksum, b.TotalNodes, b.ErrorCount, b.WarningCount, b.CreatedBy, b.CreatedAt,
                 Ambiguous = b.Items.Count(),
                 Pending = b.Items.Count(i => i.Decision == AmbiguityDecision.Pending),
             }).ToListAsync();
@@ -127,10 +128,13 @@ public class AdminImportController(IDocxParser parser, IBtkiPdfParser pdfParser,
     {
         var b = await db.ImportBatches.Include(x => x.Items).FirstOrDefaultAsync(x => x.Id == id);
         if (b is null) return NotFound(new { message = "Batch tidak ditemukan." });
-        var latest = await importService.LatestBatchAsync(b.VersionId);
+        // "Latest" is judged among batches of the same kind: an EN upload never replaces a BTKI upload
+        var latest = b.Kind == ImportKind.Btki ? await importService.LatestBatchAsync(b.VersionId)
+            : await db.ImportBatches.Where(x => x.VersionId == b.VersionId && x.Kind == b.Kind)
+                .OrderByDescending(x => x.CreatedAt).ThenByDescending(x => x.Id).FirstOrDefaultAsync();
         return Ok(new
         {
-            b.Id, b.VersionId, b.FileName, b.Checksum, b.TotalNodes, b.ErrorCount, b.WarningCount, b.CreatedBy, b.CreatedAt,
+            b.Id, b.VersionId, Kind = b.Kind.ToString(), b.FileName, b.Checksum, b.TotalNodes, b.ErrorCount, b.WarningCount, b.CreatedBy, b.CreatedAt,
             IsLatest = latest?.Id == b.Id,
             Report = JsonDocument.Parse(b.ReportJson).RootElement,
             Items = b.Items.OrderBy(i => i.RowNumber).Select(i => new
@@ -153,10 +157,14 @@ public class AdminImportController(IDocxParser parser, IBtkiPdfParser pdfParser,
 
     // ─── Explanatory Notes ────────────────────────────────────────────────────
 
+    /// <summary>
+    /// Upload the Explanatory Notes DOCX. Without <c>versionId</c>: parse report only. With <c>versionId</c> (a draft that is
+    /// not active): dry run against that version's BTKI headings, stored as an EN import batch.
+    /// </summary>
     [HttpPost("en/upload")]
     [Consumes("multipart/form-data")]
     [RequestSizeLimit(50_000_000)]
-    public async Task<IActionResult> UploadEN(IFormFile file)
+    public async Task<IActionResult> UploadEN(IFormFile file, [FromQuery] Guid? versionId)
     {
         if (file is null || file.Length == 0) return BadRequest(new { message = "No file uploaded." });
         if (!file.FileName.EndsWith(".docx", StringComparison.OrdinalIgnoreCase))
@@ -166,21 +174,51 @@ public class AdminImportController(IDocxParser parser, IBtkiPdfParser pdfParser,
         await using var stream = file.OpenReadStream();
         var result = await parser.ParseENAsync(stream, file.FileName);
 
+        ImportBatch? batch = null;
+        if (versionId is not null)
+        {
+            var (b, error) = await enImport.RecordUploadAsync(versionId.Value, result, Actor);
+            if (b is null) return BadRequest(new { message = error });
+            batch = b;
+        }
+
         return Ok(new
         {
+            batchId = batch?.Id,
+            versionId,
             fileName = result.SourceFileName,
             checksum = result.SourceChecksum,
             totalParagraphs = result.TotalParagraphs,
+            headings = result.Headings.Count,
+            skippedLines = result.SkippedLines,
             byType = result.Paragraphs
                 .GroupBy(p => p.ParagraphType)
                 .Select(g => new { type = g.Key, count = g.Count() })
                 .OrderByDescending(x => x.count),
-            errorCount = result.Issues.Count(i => i.Severity == "ERROR"),
-            issues = result.Issues.Take(20),
+            errorCount = batch?.ErrorCount ?? result.Issues.Count(i => i.Severity == "ERROR"),
+            warningCount = batch?.WarningCount ?? result.Issues.Count(i => i.Severity == "WARNING"),
+            issues = (batch is null ? result.Issues : JsonSerializer.Deserialize<List<ParseIssue>>(
+                JsonDocument.Parse(batch.ReportJson).RootElement.GetProperty("issues").GetRawText()) ?? []).Take(20),
             sample = result.Paragraphs.Take(10),
         });
     }
 
+    /// <summary>Commit the same EN file into a non-active version. <c>replace</c> deletes the EN already stored for it first.</summary>
+    [HttpPost("en/commit/{versionId:guid}")]
+    [Consumes("multipart/form-data")]
+    [RequestSizeLimit(50_000_000)]
+    public async Task<IActionResult> CommitEN(Guid versionId, IFormFile file, [FromQuery] bool replace = false)
+    {
+        if (file is null || file.Length == 0) return BadRequest(new { message = "No file uploaded." });
+        if (!file.FileName.EndsWith(".docx", StringComparison.OrdinalIgnoreCase))
+            return BadRequest(new { message = "Only .docx files are accepted." });
+        if (UploadGuard.Check(file, UploadKind.Docx) is { } bad) return BadRequest(new { message = bad });
+
+        await using var stream = file.OpenReadStream();
+        var result = await parser.ParseENAsync(stream, file.FileName);
+        var (success, message, inserted) = await enImport.CommitAsync(versionId, result, replace);
+        return success ? Ok(new { message, inserted }) : BadRequest(new { message });
+    }
     // ─── Legal Notes ──────────────────────────────────────────────────────────
 
     [HttpPost("notes/upload")]

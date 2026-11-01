@@ -1,4 +1,5 @@
-﻿using HsClassifier.Domain.Entities;
+using HsClassifier.Domain.Entities;
+using HsClassifier.Domain.Enums;
 using Microsoft.EntityFrameworkCore;
 
 namespace HsClassifier.Infrastructure.Persistence;
@@ -219,6 +220,7 @@ public class HsClassifierDbContext : DbContext
             e.Property(x => x.Checksum).HasMaxLength(100);
             e.Property(x => x.ReportJson).HasColumnType("nvarchar(max)");
             e.Property(x => x.CreatedBy).HasMaxLength(200);
+            e.Property(x => x.Kind).HasConversion<string>().HasMaxLength(10).HasDefaultValue(ImportKind.Btki);
             e.HasIndex(x => x.VersionId);
         });
 

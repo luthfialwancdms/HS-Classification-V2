@@ -1,4 +1,4 @@
-﻿using System.Text.Json;
+using System.Text.Json;
 using System.Text.RegularExpressions;
 using HsClassifier.Application.Interfaces;
 using HsClassifier.Application.Services;
@@ -21,7 +21,7 @@ public class BtkiImportService(HsClassifierDbContext db, IVersionManager version
     /// <summary>Latest batch of a version — the one that governs commit and activation.</summary>
     public Task<ImportBatch?> LatestBatchAsync(Guid versionId, CancellationToken ct = default) =>
         db.ImportBatches.Include(b => b.Items)
-            .Where(b => b.VersionId == versionId)
+            .Where(b => b.VersionId == versionId && b.Kind == ImportKind.Btki)
             .OrderByDescending(b => b.CreatedAt).ThenByDescending(b => b.Id)
             .FirstOrDefaultAsync(ct);
 

@@ -1,4 +1,4 @@
-﻿using HsClassifier.Domain.Enums;
+using HsClassifier.Domain.Enums;
 namespace HsClassifier.Domain.Entities;
 
 public class ClassificationCase
@@ -78,6 +78,8 @@ public class ImportBatch
     public int WarningCount { get; set; }
     public string CreatedBy { get; set; } = string.Empty;
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+    /// <summary>Btki (default) for tariff uploads; En / Notes for Explanatory Notes and legal notes. Gates look at Btki only.</summary>
+    public ImportKind Kind { get; set; } = ImportKind.Btki;
 
     public ICollection<AmbiguityItem> Items { get; set; } = new List<AmbiguityItem>();
 }

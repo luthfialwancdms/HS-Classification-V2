@@ -1,4 +1,4 @@
-﻿using HsClassifier.Application.Interfaces;
+using HsClassifier.Application.Interfaces;
 using HsClassifier.Domain.Entities;
 using HsClassifier.Domain.Enums;
 using HsClassifier.Domain.Logic;
@@ -61,7 +61,7 @@ public class VersionManager(HsClassifierDbContext db) : IVersionManager
         if (version is null || version.State != ImportState.Indexed) return false;
 
         // Req 1.11: never activate while the latest import still has undecided ambiguities
-        var latestBatchId = await db.ImportBatches.Where(b => b.VersionId == versionId)
+        var latestBatchId = await db.ImportBatches.Where(b => b.VersionId == versionId && b.Kind == ImportKind.Btki)
             .OrderByDescending(b => b.CreatedAt).ThenByDescending(b => b.Id).Select(b => (long?)b.Id).FirstOrDefaultAsync();
         if (latestBatchId is not null
             && await db.AmbiguityItems.AnyAsync(i => i.BatchId == latestBatchId && i.Decision == AmbiguityDecision.Pending))

@@ -592,6 +592,13 @@ namespace HsClassifier.Infrastructure.Migrations
                         .HasMaxLength(300)
                         .HasColumnType("nvarchar(300)");
 
+                    b.Property<string>("Kind")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)")
+                        .HasDefaultValue("Btki");
+
                     b.Property<string>("ReportJson")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
