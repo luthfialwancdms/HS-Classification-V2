@@ -573,3 +573,11 @@ summary:focus-visible, .reason-details > summary:focus-visible {
 
 
 
+
+/* ── Status AI (fitur ai-status; INTERPRETASI — tidak ada di acuan v0) ─────────── */
+.ai-conn-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.metric-grid.wide { grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); }
+.metric strong { overflow-wrap: anywhere; }
+.metric-group-title { margin: 16px 0 0; font-size: 12px; font-weight: 800; letter-spacing: .6px; text-transform: uppercase; color: var(--muted); }
+.toolbar.toolbar-quad { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); }
+.cell-stack { display: flex; flex-direction: column; align-items: flex-start; gap: 3px; }

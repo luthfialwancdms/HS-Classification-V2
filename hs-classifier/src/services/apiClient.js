@@ -241,3 +241,25 @@ function mapConfidence(c) {
   if (upper === 'MEDIUM') return 'SEDANG'
   return 'RENDAH'
 }
+
+// ─── AI status (Admin) ────────────────────────────────────────────────────────
+// Additive. GET status only reads the last result held by the server; POST check makes one small request to the AI.
+
+/** Last connection check from server memory (does not call the AI). */
+export const getAiStatus = () => apiFetch('/api/admin/ai/status')
+
+/** One small live request to the AI. The server allows at most one real check per ~10 s and otherwise returns the cached result (`dariCache`). */
+export const checkAiConnection = () => apiFetch('/api/admin/ai/check', { method: 'POST' })
+
+/** Totals for today / 7 days / 30 days / all time plus the last `days` days one by one. */
+export const getAiUsage = (days = 7) => apiFetch(`/api/admin/ai/usage?days=${days}`)
+
+/** Newest-first request history. `status`: Success | Failed. `kind`: TermSuggest | HealthCheck. `from`/`to`: yyyy-MM-dd. */
+export function listAiRequests({ status, kind, from, to, page = 1, pageSize = 20 } = {}) {
+  const p = new URLSearchParams({ page, pageSize })
+  if (status) p.set('status', status)
+  if (kind) p.set('kind', kind)
+  if (from) p.set('from', from)
+  if (to) p.set('to', to)
+  return apiFetch(`/api/admin/ai/requests?${p}`)
+}

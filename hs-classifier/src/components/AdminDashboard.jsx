@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
-import { AlertTriangle, BookOpen, Check, ChevronDown, Download, FileCheck2, FileText, UploadCloud } from 'lucide-react'
+import { AlertTriangle, BookOpen, Bot, Check, ChevronDown, Download, FileCheck2, FileText, UploadCloud } from 'lucide-react'
 import { apiFetch } from '../services/apiClient'
+import AiStatusPanel from './AiStatusPanel'
 
 // Admin Data Center (Task 18.2) — thin UI over the existing /api/admin endpoints.
 
@@ -10,6 +11,7 @@ const TABS = [
   ['reports',  'Laporan Validasi', FileCheck2],
   ['ambiguity','Antrian Ambiguitas', AlertTriangle],
   ['template', 'Template CSV/Excel', FileText],
+  ['ai',       'Status AI', Bot],
 ]
 
 const cx = (...parts) => parts.filter(Boolean).join(' ')
@@ -112,6 +114,7 @@ export default function AdminDashboard() {
           {tab === 'reports'  && <BatchesPanel versions={versions} reload={reload} batchId={batchId} setBatchId={setBatchId} />}
           {tab === 'ambiguity'&& <BatchesPanel versions={versions} reload={reload} batchId={batchId} setBatchId={setBatchId} pendingOnly />}
           {tab === 'template' && <TemplatePanel versions={versions} reload={reload} />}
+          {tab === 'ai'       && <AiStatusPanel />}
         </div>
       </div>
     </div>
