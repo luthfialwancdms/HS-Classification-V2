@@ -52,7 +52,7 @@ const WIDE = new Set(['material_utama', 'cara_kerja', 'spesifikasi', 'keterangan
 // Tampilan saja: tiga pertanyaan pilihan singkat ditampilkan sebagai radio (opsi tetap dari dropdown_master.json).
 const RADIO_FIELDS = new Set(['apakah_part', 'apakah_set', 'ada_komponen_tambahan'])
 
-export default function ClassificationForm({ onSubmit, isLoading, onReset }) {
+export default function ClassificationForm({ onSubmit, isLoading, onReset, submitRef, resumeAction }) {
   const [form, setForm] = useState(INITIAL_STATE)
 
   const handleChange = (key, val) => setForm((prev) => ({ ...prev, [key]: val }))
@@ -156,10 +156,11 @@ export default function ClassificationForm({ onSubmit, isLoading, onReset }) {
         </div>
       ))}
 
-      <button type="submit" disabled={isLoading} className="primary-button analyze">
+      <button type="submit" ref={submitRef} disabled={isLoading} className="primary-button analyze">
         <Zap size={17} aria-hidden="true" /> {isLoading ? 'Menganalisis...' : 'Analisis HS Code'}
         <span className="button-arrow" aria-hidden="true">→</span>
       </button>
+      {resumeAction}
       <p className="form-footnote">
         <ShieldCheck size={13} aria-hidden="true" /> Analisis dijalankan di server internal · hasil dapat memakai saran istilah AI.
       </p>

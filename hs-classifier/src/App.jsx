@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
-import { AlertTriangle, ChevronDown, ClipboardCheck, History, LayoutDashboard, LogOut, Menu, Sparkles } from 'lucide-react'
+import { AlertTriangle, ChevronDown, ClipboardCheck, History, LayoutDashboard, LogOut, Menu, MessageCircleQuestion, Sparkles } from 'lucide-react'
 import ClassificationForm from './components/ClassificationForm'
+import Modal from './components/Modal'
 import ResultPanel from './components/ResultPanel'
 import AdminDashboard from './components/AdminDashboard'
 import HistoryPage from './components/HistoryPage'
@@ -59,6 +60,16 @@ export default function App() {
     document.addEventListener('keydown', onKey)
     return () => { document.removeEventListener('mousedown', onDown); document.removeEventListener('keydown', onKey) }
   }, [userMenuOpen])
+
+  // REV2 butir 2 (tampilan saja): modal klarifikasi. Menutup hanya menyembunyikan; pertanyaan dan jawaban
+  // sementara tetap ada. Turunan dari objek state (tanpa setState di effect): respons klarifikasi baru
+  // otomatis terbuka; error API menutup modal agar notice di halaman terlihat, dan dibuka lagi lewat "Lanjutkan menjawab".
+  const [dismissedFor, setDismissedFor] = useState(null)
+  const [seenError, setSeenError] = useState(null)
+  const analyzeRef = useRef(null)
+  const clarifyOpen = !!clarifyState && dismissedFor !== clarifyState && !(result?.error && seenError !== result)
+  const closeClarify = () => setDismissedFor(clarifyState)
+  const resumeClarify = () => { setDismissedFor(null); setSeenError(result) }
 
   const clearResult = () => setResult(null)
   // REV2 butir 1: Reset form mengosongkan hasil, pertanyaan klarifikasi, dan (karena banner
@@ -173,20 +184,27 @@ export default function App() {
               </div>
 
               <div className="classify-grid">
-                <ClassificationForm onSubmit={handleSubmit} isLoading={isLoading} onReset={resetAnalysis} />
+                <ClassificationForm onSubmit={handleSubmit} isLoading={isLoading} onReset={resetAnalysis}
+                  submitRef={analyzeRef}
+                  resumeAction={clarifyState && !clarifyOpen && (
+                    <button type="button" className="outline-button resume-button" onClick={resumeClarify}>
+                      <MessageCircleQuestion size={16} aria-hidden="true" /> Lanjutkan menjawab
+                    </button>
+                  )} />
 
                 {clarifyState && (
-                  <div className="clarify-wrap">
-                    <ClarificationBanner
-                      key={clarifyState.questions.map(q => q.questionText).join('|')}
-                      state={clarifyState}
-                      onSubmit={handleAnswers}
-                      isLoading={isLoading}
-                    />
-                  </div>
+                  <ClarificationBanner
+                    key={clarifyState.questions.map(q => q.questionText).join('|')}
+                    state={clarifyState}
+                    onSubmit={handleAnswers}
+                    isLoading={isLoading}
+                    open={clarifyOpen}
+                    onClose={closeClarify}
+                    returnFocusRef={analyzeRef}
+                  />
                 )}
 
-                {isLoading && (
+                {isLoading && !clarifyOpen && (
                   <div role="status" aria-live="polite" className="panel loading-panel">
                     <div className="spinner" aria-hidden="true" />
                     <p>Menjalankan KUM HS 1–6 terhadap database BTKI...</p>
@@ -219,7 +237,7 @@ export default function App() {
 
 // ─── Clarification Banner (Req 5.5, 6.1, 6.3) ─────────────────────────────────
 
-function ClarificationBanner({ state, onSubmit, isLoading }) {
+function ClarificationBanner({ state, onSubmit, isLoading, open, onClose, returnFocusRef }) {
   const [answers, setAnswers] = useState({})
   const { questions, message, candidateCodes } = state
 
@@ -229,14 +247,15 @@ function ClarificationBanner({ state, onSubmit, isLoading }) {
   const allAnswered = questions.every(q => answers[q.factType]?.trim())
 
   return (
-    <section aria-labelledby="clarify-title" className="panel clarify-panel">
-      <div className="notice">
-        <AlertTriangle size={16} aria-hidden="true" />
-        <span>
-          <strong id="clarify-title">Informasi tambahan diperlukan sebelum kode HS dapat ditentukan.</strong>
-          {message && <> {message}</>}
-        </span>
-      </div>
+    <Modal open={open} onClose={onClose} returnFocusRef={returnFocusRef} titleId="clarify-title"
+      closeLabel="Tutup (jawaban tetap tersimpan)"
+      title={<><AlertTriangle size={18} aria-hidden="true" /> Informasi tambahan diperlukan sebelum kode HS dapat ditentukan.</>}
+      footer={(
+        <button className="primary-button" onClick={() => onSubmit(answers)} disabled={isLoading || !allAnswered}>
+          {isLoading ? 'Memproses...' : 'Kirim Jawaban'}
+        </button>
+      )}>
+      {message && <p className="notice">{message}</p>}
       {candidateCodes?.length > 0 && (
         <p className="hint">Kandidat heading saat ini: <span className="mono">{candidateCodes.join(', ')}</span></p>
       )}
@@ -285,10 +304,7 @@ function ClarificationBanner({ state, onSubmit, isLoading }) {
           )
         })}
       </div>
-      <button className="primary-button" onClick={() => onSubmit(answers)} disabled={isLoading || !allAnswered}>
-        {isLoading ? 'Memproses...' : 'Kirim Jawaban'}
-      </button>
-    </section>
+    </Modal>
   )
 }
 
