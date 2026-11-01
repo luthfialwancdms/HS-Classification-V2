@@ -53,6 +53,8 @@ Prinsip yang dipegang: hanya lapisan presentasi berubah. `services/`, `src/data/
 - **Interpretasi:** error API saat Kirim Jawaban menutup modal otomatis (state turunan, tanpa `setState` di effect) supaya notice error di halaman tidak tertutup overlay; "Lanjutkan menjawab" membukanya kembali dengan jawaban utuh. Error tidak ditampilkan di dalam modal, sesuai permintaan.
 - Panel loading halaman disembunyikan saat modal terbuka (loading tampil di tombol modal).
 
+**Perbaikan REV2 butir 3 (radio tidak simetris), penyebab terukur:** aturan `.field input { width:100%; padding:9px 10px; border; background }` ikut mengenai setiap radio di dalam `.field` (pilihan klarifikasi dan kandidat Review Ahli). Radio melebar jadi 271px (1280), 275px (720), 84px (390), dan 460px di Review; glyph 13px terpusat di kotak itu sehingga teks terdorong ke x≈290. Perbaikan di `design-system.css` tanpa mengubah markup/logika: selektor input teks mengecualikan `[type=radio], [type=checkbox]` lewat `:where(...)` (spesifisitas tetap); `.choice`, `.candidate`, `.check-row` memakai kotak 16×16 `flex:none` di kiri, jarak 10px, teks rata kiri, dan margin atas yang menyejajarkan radio dengan baris pertama teks. `RadioGroupField` dan checkbox Admin tidak terkena bug (bukan di dalam `.field`) tetapi ikut disamakan ukurannya. `.candidate` tetap sejajar tengah karena isinya dua baris (kode + keterangan).
+
 **Interpretasi butir 4 (perlu konfirmasi Anda):** "Hapus hasil → keadaan kosong" diimplementasikan sebagai panel hilang sepenuhnya, bukan kartu kosong.
 
 **Sumber verifikasi butir 4:** lint + build (sesi ini); DOM + stub fetch (agent sebelumnya, tercatat di `LANJUTAN_REV1.md` §4). Backend asli tidak diverifikasi. Penilaian visual: milik Anda.

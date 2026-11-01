@@ -125,8 +125,10 @@ button { cursor: pointer; }
 .field { display: flex; flex-direction: column; gap: 6px; margin-bottom: 12px; }
 .field > span, fieldset legend { font-size: 13px; color: #536070; font-weight: 700; }
 .field em, fieldset em { color: var(--red); font-style: normal; }
-.field input, .field select, .field textarea, .search input, .inline-input input { width: 100%; border: 1px solid #dfe4ea; border-radius: 6px; padding: 9px 10px; outline: 0; color: var(--foreground); background: #fff; font-size: 13px; }
-.field input:focus, .field select:focus, .field textarea:focus, .search:focus-within { border-color: #7fb8ae; box-shadow: 0 0 0 3px #1c7b6f14; }
+/* rev2 butir 3: radio/checkbox dikecualikan (`:where` menjaga spesifisitas) — kalau tidak, width:100%,
+   padding, border, dan background kotak teks ikut mengenai radio di dalam .field dan menggesernya. */
+.field input:where(:not([type=radio], [type=checkbox])), .field select, .field textarea, .search input, .inline-input input { width: 100%; border: 1px solid #dfe4ea; border-radius: 6px; padding: 9px 10px; outline: 0; color: var(--foreground); background: #fff; font-size: 13px; }
+.field input:where(:not([type=radio], [type=checkbox])):focus, .field select:focus, .field textarea:focus, .search:focus-within { border-color: #7fb8ae; box-shadow: 0 0 0 3px #1c7b6f14; }
 .field textarea { resize: vertical; }
 .select-wrap { position: relative; }
 .field select { appearance: none; padding-right: 30px; }
@@ -138,7 +140,8 @@ button { cursor: pointer; }
 .radio-grid fieldset { border: 0; padding: 0; margin: 0; min-width: 0; }
 .radio-grid legend { margin-bottom: 7px; line-height: 1.35; }
 .radio-grid label { font-size: 12px; color: var(--muted); margin-right: 8px; }
-.radio-grid input, .candidate input { accent-color: var(--primary); margin: 0 3px 0 0; }
+.radio-grid input { accent-color: var(--primary); margin: 0 3px 0 0; }
+.candidate input { accent-color: var(--primary); margin: 0; }
 .analyze { width: 100%; margin-top: 7px; padding: 12px; }
 .button-arrow { margin-left: auto; font-size: 18px; font-weight: 400; }
 .form-footnote { display: flex; align-items: center; gap: 5px; justify-content: center; color: var(--muted); font-size: 11px; margin: 12px 0 0; }
@@ -267,7 +270,7 @@ button { cursor: pointer; }
 .expert-panel { padding: 19px; }
 .expert-panel .subheading { padding-bottom: 14px; border-bottom: 1px solid var(--line); }
 .expert-panel .panel-help { color: var(--muted); font-size: 12px; line-height: 1.5; }
-.candidate { display: flex; align-items: center; gap: 9px; border: 1px solid var(--line); border-radius: 7px; padding: 10px; margin: 8px 0; }
+.candidate { display: flex; align-items: center; gap: 10px; border: 1px solid var(--line); border-radius: 7px; padding: 10px; margin: 8px 0; }
 .candidate.selected { border-color: #96c8bf; background: #f8fcfb; }
 .candidate > div { flex: 1; display: flex; flex-direction: column; gap: 4px; }
 .candidate code { font: 700 13px monospace; color: var(--primary); }
@@ -419,10 +422,13 @@ body.modal-open { overflow: hidden; }
 
 /* Pilihan panjang (uraian BTKI): gaya .candidate, teks penuh. */
 .choice-list { display: flex; flex-direction: column; gap: 6px; border: 0; padding: 0; margin: 0; min-width: 0; }
-.choice { display: flex; align-items: flex-start; gap: 8px; border: 1px solid #dfe4ea; border-radius: 6px; padding: 9px 10px; font-size: 13px; color: var(--foreground); background: #fff; cursor: pointer; }
+.choice { display: flex; align-items: flex-start; gap: 10px; text-align: left; line-height: 1.45; border: 1px solid #dfe4ea; border-radius: 6px; padding: 9px 10px; font-size: 13px; color: var(--foreground); background: #fff; cursor: pointer; }
 .choice:hover { border-color: #96c8bf; background: #f8fcfb; }
 .choice:has(input:checked) { border-color: #96c8bf; background: var(--blue-bg); }
-.choice input { margin: 3px 0 0; accent-color: var(--primary); }
+/* rev2 butir 3: kotak radio/checkbox berukuran tetap 16px di kiri; margin atas = (tinggi baris − 16px) / 2
+   agar sejajar dengan baris pertama teks. */
+.choice input, .candidate input, .check-row input { flex: none; width: 16px; height: 16px; }
+.choice input { margin: calc((1.45em - 16px) / 2) 0 0; accent-color: var(--primary); }
 /* rev1 butir 6: pilihan singkat (radio) berjajar dan membungkus; judul kelompok di atasnya. */
 .radio-field { flex-direction: row; flex-wrap: wrap; gap: 8px; }
 .radio-legend { padding: 0; margin-bottom: 8px; line-height: 1.35; }
@@ -530,8 +536,8 @@ body.modal-open { overflow: hidden; }
 .diff-block { border-top: 1px solid #f0f2f5; padding-top: 10px; margin-top: 10px; }
 .diff-block > summary { cursor: pointer; font-size: 13px; font-weight: 700; color: #536070; }
 .code-block { background: #f8fafc; border: 1px solid var(--line); border-radius: 8px; padding: 10px; font-family: monospace; font-size: 12px; line-height: 1.5; overflow: auto; max-height: 260px; margin: 8px 0 0; }
-.check-row { display: flex; align-items: flex-start; gap: 8px; font-size: 13px; color: #536070; margin: 10px 0; }
-.check-row input { margin-top: 2px; accent-color: var(--primary); }
+.check-row { display: flex; align-items: flex-start; gap: 10px; line-height: 1.45; font-size: 13px; color: #536070; margin: 10px 0; }
+.check-row input { margin: calc((1.45em - 16px) / 2) 0 0; accent-color: var(--primary); }
 .file-input { font-size: 12px; color: var(--muted); width: 100%; }
 .text-danger { color: var(--red); }
 .text-success { color: var(--green); }
