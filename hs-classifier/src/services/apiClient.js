@@ -221,6 +221,9 @@ export const requestReview = (caseId, reason)       => post(`/api/classification
 
 // ─── Export ───────────────────────────────────────────────────────────────────
 
+/** Today's classification quota of the signed-in user: `{ limit, used, remaining, resetAt }`; `limit` 0 = unlimited. */
+export const getQuota = () => apiFetch('/api/classification/quota')
+
 /** Report of one case. `format`: json | docx | pdf. Always resolves to a Blob (apiFetch parses JSON bodies itself). */
 export async function exportCase(caseId, format) {
   const r = await apiFetch(`/api/classification/${caseId}/export?format=${encodeURIComponent(format)}`, { method: 'POST' })

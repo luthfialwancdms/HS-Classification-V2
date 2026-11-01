@@ -6,7 +6,8 @@ import ResultPanel from './components/ResultPanel'
 import AdminDashboard from './components/AdminDashboard'
 import HistoryPage from './components/HistoryPage'
 import ReviewPage from './components/ReviewPage'
-import { AUTH_EVENT, classifyWithBackend, clearToken, getRole, getToken, login, submitAnswers } from './services/apiClient'
+import QuotaMeter from './components/QuotaMeter'
+import { AUTH_EVENT, classifyWithBackend, clearToken, getQuota, getRole, getToken, login, submitAnswers } from './services/apiClient'
 
 // view → [path, label, roles allowed (null = everyone)]
 const VIEWS = {
@@ -28,6 +29,9 @@ export default function App() {
   const [clarifyState, setClarifyState] = useState(null) // { facts, questions, message, candidateCodes }
 
   const [authed, setAuthed] = useState(() => !!getToken())
+  // Pemakaian kuota harian pengguna ini (n/10). Dimuat saat login dan dimuat ulang setelah setiap analisis.
+  const [quota, setQuota] = useState(null)
+  const [quotaTick, setQuotaTick] = useState(0)
   const [menuOpen, setMenuOpen] = useState(false) // tampilan saja: drawer navigasi di mobile
   const [userMenuOpen, setUserMenuOpen] = useState(false) // tampilan saja: dropdown user
   const burgerRef = useRef(null)
@@ -36,6 +40,13 @@ export default function App() {
   const role = authed ? getRole() : null
   const allowed = (v) => !VIEWS[v][2] || VIEWS[v][2].includes(role)
   const isAdmin = role === 'Admin'
+
+  useEffect(() => {
+    if (!authed) return
+    let alive = true
+    getQuota().then(q => { if (alive) setQuota(q) }).catch(() => {})   // angka kuota bersifat tambahan: gagal memuat tidak mengganggu
+    return () => { alive = false }
+  }, [authed, quotaTick])
 
   useEffect(() => {
     const onPop = () => setView(viewFromPath())
@@ -76,7 +87,7 @@ export default function App() {
   const resetAnalysis = () => { clearResult(); setClarifyState(null) }
   const hasFinalResult = !!result && !result.error && ['DETERMINED', 'NEED_EXPERT_REVIEW', 'REJECTED'].includes(result.status)
 
-  const logout = () => { clearToken(); setAuthed(false); setResult(null); setClarifyState(null) }
+  const logout = () => { clearToken(); setAuthed(false); setResult(null); setClarifyState(null); setQuota(null) }
 
   const switchView = (v) => {
     history.pushState(null, '', VIEWS[v][0])
@@ -95,6 +106,7 @@ export default function App() {
       setResult({ error: err.message })
     } finally {
       setIsLoading(false)
+      setQuotaTick(t => t + 1)
     }
   }
 
@@ -180,6 +192,7 @@ export default function App() {
                   <h1>Klasifikasi HS Code</h1>
                   <p>Identifikasi kode HS barang impor berdasarkan BTKI 2022 dan KUM HS.</p>
                 </div>
+                <QuotaMeter quota={quota} />
               </div>
 
               <div className="classify-grid">

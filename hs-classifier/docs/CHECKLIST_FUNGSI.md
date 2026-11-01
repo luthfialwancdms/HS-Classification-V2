@@ -321,3 +321,18 @@ Sumber verifikasi: DOM + stub fetch (Chrome headless, `exportcheck.mjs`). Backen
 | X4 | lulus | Error API (contoh 429) tampil sebagai notice `role="alert"` di kotak unduh, tombol aktif lagi, tidak ada unduhan baru. |
 | X5 | lulus | Percobaan berikutnya yang berhasil menghapus pesan error. |
 | X6 | lulus | `Reset` menghapus hasil, kotak unduh ikut hilang. |
+
+---
+
+## 11. Indikator kuota harian (feature/quota-indicator)
+
+Sumber verifikasi: DOM + stub fetch (Chrome headless, `quotacheck.mjs`). Angka kuota dari backend asli tidak diverifikasi di sini; perhitungan kuota diuji di `DailyQuotaTests` (xUnit).
+
+| ID | Hasil | Yang diperiksa |
+|---|---|---|
+| Q1 | lulus | Halaman Klasifikasi menampilkan "Pemakaian hari ini 3/10", "Sisa 7", waktu pembaruan, bar 30%, dan `aria-label` "Pemakaian hari ini 3 dari 10 klasifikasi". |
+| Q2 | lulus | Setelah analisis selesai, kuota dimuat ulang dan angka berubah (3/10 menjadi 4/10). |
+| Q3 | lulus | Sisa 2 atau kurang: nada peringatan. Habis (10/10): nada bahaya, bar 100%, teks "Kuota habis.", dan pesan 429 dari server tampil sebagai notice error. |
+| Q4 | lulus | Batas 0 (Admin, Ahli): meter tidak ditampilkan. |
+| Q5 | lulus | Gagal memuat kuota (500): meter tersembunyi, tidak ada notice error, form tetap bisa dipakai. |
+| Q6 | lulus | Lebar 390: tanpa overflow horizontal, meter selebar kolom. |
