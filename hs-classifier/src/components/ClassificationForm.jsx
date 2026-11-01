@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { RefreshCw, ShieldCheck, Zap } from 'lucide-react'
 import dropdownMaster from '../data/dropdown_master.json'
 import SelectField from './SelectField'
+import RadioGroupField from './RadioGroupField'
 import MultiSelectField from './MultiSelectField'
 import TextField from './TextField'
 
@@ -48,6 +49,9 @@ const SECTIONS = [
 // Field yang butuh lebar penuh di grid 2 kolom (chip & textarea panjang).
 const WIDE = new Set(['material_utama', 'cara_kerja', 'spesifikasi', 'keterangan_tambahan'])
 
+// Tampilan saja: tiga pertanyaan pilihan singkat ditampilkan sebagai radio (opsi tetap dari dropdown_master.json).
+const RADIO_FIELDS = new Set(['apakah_part', 'apakah_set', 'ada_komponen_tambahan'])
+
 export default function ClassificationForm({ onSubmit, isLoading }) {
   const [form, setForm] = useState(INITIAL_STATE)
 
@@ -90,6 +94,18 @@ export default function ClassificationForm({ onSubmit, isLoading }) {
       if (df.multi) {
         return (
           <MultiSelectField
+            key={key}
+            label={df.label}
+            fieldKey={key}
+            options={df.options}
+            value={form[key]}
+            onChange={handleChange}
+          />
+        )
+      }
+      if (RADIO_FIELDS.has(key)) {
+        return (
+          <RadioGroupField
             key={key}
             label={df.label}
             fieldKey={key}

@@ -386,6 +386,9 @@ button { cursor: pointer; }
 .choice:hover { border-color: #96c8bf; background: #f8fcfb; }
 .choice:has(input:checked) { border-color: #96c8bf; background: var(--blue-bg); }
 .choice input { margin: 3px 0 0; accent-color: var(--primary); }
+/* rev1 butir 6: pilihan singkat (radio) berjajar dan membungkus; judul kelompok di atasnya. */
+.radio-field { flex-direction: row; flex-wrap: wrap; gap: 8px; }
+.radio-legend { padding: 0; margin-bottom: 8px; line-height: 1.35; }
 
 /* ── Tambahan P2 (INTERPRETASI — tidak ada di acuan v0) ────────────────────── */
 /* Layout klasifikasi: 2 kolom + hasil sticky di desktop (keputusan pengguna),
