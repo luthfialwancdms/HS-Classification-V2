@@ -393,12 +393,8 @@ button { cursor: pointer; }
 .form-grid .field { margin-bottom: 0; }
 .span-2 { grid-column: 1 / -1; }
 .form-panel .primary-button.analyze { margin-top: 18px; }
-.result-column { scroll-margin-top: 80px; }
-
-@media (min-width: 1051px) {
-  .classify-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 18px; align-items: start; }
-  .classify-grid .result-column { position: sticky; top: 92px; max-height: calc(100vh - 116px); overflow-y: auto; scroll-margin-top: 92px; }
-}
+/* rev1 butir 4: panel hasil pindah ke bawah form (satu kolom); tanpa kolom sticky. */
+.result-panel { scroll-margin-top: 90px; }
 
 /* Overlay drawer mobile (permintaan pengguna): klik menutup + fokus balik ke burger. */
 .sidebar-overlay { position: fixed; inset: 0; z-index: 8; border: 0; padding: 0; background: rgba(15, 28, 45, .42); backdrop-filter: blur(2px); }
@@ -434,6 +430,17 @@ button { cursor: pointer; }
 /* Minta expert review di dalam panel hasil */
 .review-request { display: flex; flex-direction: column; gap: 10px; border-top: 1px solid var(--line); padding-top: 15px; }
 .review-request .result-actions { padding-top: 0; }
+
+/* ── rev1 · butir 4: panel hasil di bawah form ─────────────────────────────── */
+.loading-panel { display: flex; flex-direction: column; align-items: center; gap: 6px; text-align: center; padding: 26px; }
+.loading-panel p { margin: 0; font-size: 14px; }
+.result-panel-actions { display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+.result-clear { color: var(--red); border-color: #ffd0d5; }
+.result-clear:hover { background: var(--red-bg); border-color: #ffb8bf; }
+.result-compact { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; padding: 2px 0 4px; }
+.compact-code { font-family: monospace; font-size: 20px; font-weight: 800; color: var(--navy); }
+.compact-desc { color: var(--muted); font-size: 13px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 62ch; }
+
 
 /* ── Tambahan P3 (INTERPRETASI — tidak ada di acuan v0) ────────────────────── */
 /* Toolbar riwayat: acuan memakai tombol filter dekoratif; di sini kontrol nyata

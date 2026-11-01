@@ -30,7 +30,6 @@ export default function App() {
   const [menuOpen, setMenuOpen] = useState(false) // tampilan saja: drawer navigasi di mobile
   const [userMenuOpen, setUserMenuOpen] = useState(false) // tampilan saja: dropdown user
   const burgerRef = useRef(null)
-  const resultRef = useRef(null)
   const userMenuRef = useRef(null)
   const userMenuItemRef = useRef(null)
   const role = authed ? getRole() : null
@@ -61,12 +60,8 @@ export default function App() {
     return () => { document.removeEventListener('mousedown', onDown); document.removeEventListener('keydown', onKey) }
   }, [userMenuOpen])
 
-  // Di bawah 1050px hasil menumpuk di bawah form → geser tampilan ke hasil setelah analisis selesai.
-  useEffect(() => {
-    if (isLoading || !result) return
-    if (!matchMedia('(max-width: 1050px)').matches) return
-    resultRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
-  }, [isLoading, result])
+  const clearResult = () => setResult(null)
+  const hasFinalResult = !!result && !result.error && ['DETERMINED', 'NEED_EXPERT_REVIEW', 'REJECTED'].includes(result.status)
 
   const logout = () => { clearToken(); setAuthed(false); setResult(null); setClarifyState(null) }
 
@@ -174,22 +169,38 @@ export default function App() {
                 </div>
               </div>
 
-              {clarifyState && (
-                <div className="clarify-wrap">
-                  <ClarificationBanner
-                    key={clarifyState.questions.map(q => q.questionText).join('|')}
-                    state={clarifyState}
-                    onSubmit={handleAnswers}
-                    isLoading={isLoading}
-                  />
-                </div>
-              )}
-
               <div className="classify-grid">
                 <ClassificationForm onSubmit={handleSubmit} isLoading={isLoading} />
-                <div className="result-column" ref={resultRef}>
-                  <ResultPanel result={result} isLoading={isLoading} />
-                </div>
+
+                {clarifyState && (
+                  <div className="clarify-wrap">
+                    <ClarificationBanner
+                      key={clarifyState.questions.map(q => q.questionText).join('|')}
+                      state={clarifyState}
+                      onSubmit={handleAnswers}
+                      isLoading={isLoading}
+                    />
+                  </div>
+                )}
+
+                {isLoading && (
+                  <div role="status" aria-live="polite" className="panel loading-panel">
+                    <div className="spinner" aria-hidden="true" />
+                    <p>Menjalankan KUM HS 1–6 terhadap database BTKI...</p>
+                    <p className="hint">Ekstraksi fakta → kandidat → aturan → validasi → tarif</p>
+                  </div>
+                )}
+
+                {result?.error && (
+                  <p role="alert" className="notice danger">
+                    <AlertTriangle size={16} aria-hidden="true" />
+                    <span><strong>Terjadi Kesalahan.</strong> {result.error}</span>
+                  </p>
+                )}
+
+                {hasFinalResult && (
+                  <ResultPanel result={result} onClear={clearResult} focusOnResult />
+                )}
               </div>
             </div>
           )}

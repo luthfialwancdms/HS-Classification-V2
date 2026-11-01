@@ -1,5 +1,5 @@
-import { useState } from 'react'
-import { AlertTriangle, BarChart3, Check, ChevronDown, ChevronRight, Scale, Search, ShieldCheck, Wallet } from 'lucide-react'
+import { useEffect, useRef, useState } from 'react'
+import { AlertTriangle, BarChart3, Check, ChevronDown, ChevronRight, ChevronUp, Scale, Search, ShieldCheck, Wallet, X } from 'lucide-react'
 import { getRole, requestReview } from '../services/apiClient'
 
 const CONFIDENCE_CLASS = {
@@ -78,7 +78,22 @@ function RequestReviewBox({ caseId, onChanged }) {
   )
 }
 
-export default function ResultPanel({ result, isLoading, onChanged }) {
+export default function ResultPanel({ result, isLoading, onChanged, onClear, focusOnResult = false }) {
+  // Hasil baru (objek baru dari API) otomatis kembali terbuka penuh: status kecil
+  // hanya terikat pada objek hasil tertentu, tanpa setState di dalam effect.
+  const [collapsedFor, setCollapsedFor] = useState(null)
+  const collapsed = collapsedFor === result
+  const toggleCollapsed = () => setCollapsedFor(collapsed ? null : result)
+  const titleRef = useRef(null)
+  const sectionRef = useRef(null)
+
+  useEffect(() => {
+    if (!focusOnResult || !result || result.error || isLoading) return
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches
+    sectionRef.current?.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' })
+    titleRef.current?.focus({ preventScroll: true })
+  }, [result, isLoading, focusOnResult])
+
   let body
   if (isLoading) {
     body = (
@@ -111,16 +126,44 @@ export default function ResultPanel({ result, isLoading, onChanged }) {
   }
 
   return (
-    <section className="panel result-panel">
+    <section className="panel result-panel" ref={sectionRef} aria-live="polite">
       <div className="panel-heading">
         <div>
           <div className="eyebrow">AI ANALYSIS</div>
-          <h2>Hasil Analisis</h2>
+          <h2 id="result-title" tabIndex={-1} ref={titleRef}>Hasil Analisis</h2>
           <p>Rekomendasi kode HS berdasarkan BTKI 2022 dan KUM HS.</p>
         </div>
+        {onClear && (
+          <div className="result-panel-actions">
+            <button type="button" className="outline-button" aria-expanded={!collapsed} aria-controls="result-body"
+              onClick={toggleCollapsed}>
+              {collapsed ? <ChevronDown size={15} aria-hidden="true" /> : <ChevronUp size={15} aria-hidden="true" />}
+              {collapsed ? 'Perbesar' : 'Perkecil'}
+            </button>
+            <button type="button" className="outline-button result-clear" onClick={onClear}>
+              <X size={15} aria-hidden="true" /> Hapus hasil
+            </button>
+          </div>
+        )}
       </div>
-      {body}
+
+      {collapsed && result && !result.error && <CompactSummary result={result} />}
+
+      <div id="result-body" hidden={collapsed}>{body}</div>
     </section>
+  )
+}
+
+// Satu baris ringkas saat panel diperkecil: kode HS, badge confidence, deskripsi singkat.
+function CompactSummary({ result }) {
+  const tone = CONFIDENCE_CLASS[result.confidence] || 'warning'
+  const desc = result.hs_code ? result.uraian : (result.alasan_expert_review || (result.status === 'REJECTED' ? 'Ditolak oleh ahli kepabeanan' : 'Belum dapat ditentukan otomatis'))
+  return (
+    <div className="result-compact">
+      <span className="compact-code">{result.hs_code || (STATUS_LABEL[result.status] || result.status)}</span>
+      {result.hs_code && <Badge tone={tone}>Confidence: {result.confidence}</Badge>}
+      {desc && <span className="compact-desc">{desc}</span>}
+    </div>
   )
 }
 
