@@ -129,9 +129,19 @@ public static class ConditionGate
                 $"Diklasifikasikan menurut barang yang memberi karakter utama: \"{item}\"."));
             return;
         }
+        // A set must pass all three tests, so one definite "no" settles it: not a set. The goods are then
+        // classified as themselves (name searched as given, AI term help included); anything else in the
+        // package is a separate classification. Nothing here needs an expert.
+        if (single == No || retail == No)
+        {
+            steps.Add(Step("KUM_HS_3B", CandidateDecision.Retained,
+                "Tidak memenuhi syarat set untuk penjualan eceran → bukan set; setiap barang diklasifikasikan tersendiri. " +
+                "Klasifikasi ini untuk barang yang disebut pada nama barang; barang lain dalam kemasan perlu diklasifikasikan terpisah."));
+            return;
+        }
         steps.Add(Step("KUM_HS_3B", CandidateDecision.Unresolved,
-            "Tidak memenuhi syarat set untuk penjualan eceran → setiap barang diklasifikasikan tersendiri."));
-        expert.Add("KUM HS 3(b): bukan set untuk penjualan eceran, sehingga setiap barang perlu diklasifikasikan terpisah.");
+            "Syarat set untuk penjualan eceran belum dapat dipastikan (jawaban \"tidak yakin\")."));
+        expert.Add("KUM HS 3(b): belum dapat dipastikan apakah barang ini set untuk penjualan eceran.");
     }
 
     // ─── KUM HS 2(b) → 3(b): mixture / composite ──────────────────────────────

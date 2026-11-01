@@ -126,3 +126,22 @@ public class RegressionCasesTests
         Assert.Equal("NEED_CLARIFICATION", r.Status);
     }
 }
+
+/// <summary>Case 254: a pen flagged as a retail set whose set tests answer "no" must still be classified, not parked for an expert.</summary>
+public class NotARetailSetTests
+{
+    [Fact]
+    public async Task Pen_that_fails_the_set_tests_is_classified_and_the_ai_term_helper_is_tried()
+    {
+        var ai = new FakeSuggester(new TermSuggestion(["pena"], ["8471"]));
+        var m = await MiniBtki.CreateAsync(ai);
+        var r = await m.ClassifyAsync(("commercial_name", "Pulpen Pilot"), ("generic_name", "Pulpen"),
+            ("set_kit", "retail_set"), ("set_single_purpose", "no"), ("set_retail_ready", "yes"), ("set_essential_item", "pulpen"));
+
+        var chain = await m.ChainAsync(r.CaseId);
+        Assert.Contains(chain, l => l.StartsWith("KUM_HS_3B|Retained") && l.Contains("bukan set"));
+        Assert.Equal(1, ai.Calls);                                   // the database found nothing, so the AI was asked
+        Assert.Contains(chain, l => l.StartsWith("AI_SUGGESTION"));
+        Assert.DoesNotContain("KUM HS 3(b): bukan set untuk penjualan eceran", r.Message ?? "");
+    }
+}

@@ -80,11 +80,26 @@ public class ConditionGateTests
         Assert.Contains(o.Steps, s => s.Rule == "KUM_HS_3B");
     }
 
+    [Theory]
+    [InlineData("no", "yes")]
+    [InlineData("yes", "no")]
+    [InlineData("no", "unsure")]   // one definite "no" is enough: a set needs all three tests
+    public void Not_a_retail_set_goes_on_to_classify_the_named_goods_by_themselves(string single, string retail)
+    {
+        var o = ConditionGate.Evaluate(Facts(("generic_name", "Pulpen"), ("set_kit", "retail_set"),
+            ("set_single_purpose", single), ("set_retail_ready", retail), ("set_essential_item", "pulpen")));
+
+        Assert.Equal(ConditionStatus.Proceed, o.Status);
+        Assert.Null(o.EssentialTerm);                    // the goods name is searched as given, no set component replaces it
+        var step = Assert.Single(o.Steps, s => s.Rule == "KUM_HS_3B");
+        Assert.Contains("bukan set", step.Reason);
+    }
+
     [Fact]
-    public void Not_a_retail_set_goes_to_expert_for_item_by_item()
+    public void Retail_set_tests_answered_unsure_still_go_to_expert()
     {
         var o = ConditionGate.Evaluate(Facts(("generic_name", "paket"), ("set_kit", "retail_set"),
-            ("set_single_purpose", "no"), ("set_retail_ready", "yes"), ("set_essential_item", "x")));
+            ("set_single_purpose", "unsure"), ("set_retail_ready", "yes"), ("set_essential_item", "x")));
         Assert.Equal(ConditionStatus.NeedExpertReview, o.Status);
     }
 
