@@ -39,6 +39,7 @@ public static class DependencyInjection
         services.AddScoped<DailyQuotaService>();
         services.AddScoped<ExportService>();
         services.AddScoped<EnImportService>();
+        services.AddScoped<LegalNotesImportService>();
         services.AddScoped<VersionCloneService>();
         services.AddScoped<ClassificationOrchestrator>();
         services.AddScoped<ExpertReviewService>();

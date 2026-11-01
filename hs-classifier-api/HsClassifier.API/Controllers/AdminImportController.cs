@@ -15,7 +15,7 @@ namespace HsClassifier.API.Controllers;
 [Authorize(Roles = nameof(UserRole.Admin))]
 [Route("api/admin")]
 public class AdminImportController(IDocxParser parser, IBtkiPdfParser pdfParser, BtkiImportService importService,
-    EnImportService enImport, IVersionManager versionManager, HsClassifierDbContext db) : ControllerBase
+    EnImportService enImport, LegalNotesImportService notesImport, IVersionManager versionManager, HsClassifierDbContext db) : ControllerBase
 {
     // ─── BTKI ─────────────────────────────────────────────────────────────────
 
@@ -219,12 +219,17 @@ public class AdminImportController(IDocxParser parser, IBtkiPdfParser pdfParser,
         var (success, message, inserted) = await enImport.CommitAsync(versionId, result, replace);
         return success ? Ok(new { message, inserted }) : BadRequest(new { message });
     }
+
     // ─── Legal Notes ──────────────────────────────────────────────────────────
 
+    /// <summary>
+    /// Upload the Catatan Bagian/Bab/Subpos DOCX. Without <c>versionId</c>: parse report only. With <c>versionId</c>
+    /// (a draft that is not active): dry run stored as a Notes import batch.
+    /// </summary>
     [HttpPost("notes/upload")]
     [Consumes("multipart/form-data")]
     [RequestSizeLimit(50_000_000)]
-    public async Task<IActionResult> UploadNotes(IFormFile file)
+    public async Task<IActionResult> UploadNotes(IFormFile file, [FromQuery] Guid? versionId)
     {
         if (file is null || file.Length == 0) return BadRequest(new { message = "No file uploaded." });
         if (!file.FileName.EndsWith(".docx", StringComparison.OrdinalIgnoreCase))
@@ -234,18 +239,47 @@ public class AdminImportController(IDocxParser parser, IBtkiPdfParser pdfParser,
         await using var stream = file.OpenReadStream();
         var result = await parser.ParseLegalNotesAsync(stream, file.FileName);
 
+        ImportBatch? batch = null;
+        if (versionId is not null)
+        {
+            var (b, error) = await notesImport.RecordUploadAsync(versionId.Value, result, Actor);
+            if (b is null) return BadRequest(new { message = error });
+            batch = b;
+        }
+
         return Ok(new
         {
+            batchId = batch?.Id,
+            versionId,
             fileName = result.SourceFileName,
             checksum = result.SourceChecksum,
             sectionNotes = result.SectionNotes.Count,
             chapterNotes = result.ChapterNotes.Count,
             subheadingNotes = result.SubheadingNotes.Count,
-            errorCount = result.Issues.Count(i => i.Severity == "ERROR"),
-            issues = result.Issues.Take(20),
+            errorCount = batch?.ErrorCount ?? result.Issues.Count(i => i.Severity == "ERROR"),
+            warningCount = batch?.WarningCount ?? result.Issues.Count(i => i.Severity == "WARNING"),
+            issues = (batch is null ? result.Issues : JsonSerializer.Deserialize<List<ParseIssue>>(
+                JsonDocument.Parse(batch.ReportJson).RootElement.GetProperty("issues").GetRawText()) ?? []).Take(20),
             sampleSectionNotes = result.SectionNotes.Take(5),
             sampleChapterNotes = result.ChapterNotes.Take(5),
         });
+    }
+
+    /// <summary>Commit the same notes file into a non-active version. <c>replace</c> deletes the notes already stored for it first.</summary>
+    [HttpPost("notes/commit/{versionId:guid}")]
+    [Consumes("multipart/form-data")]
+    [RequestSizeLimit(50_000_000)]
+    public async Task<IActionResult> CommitNotes(Guid versionId, IFormFile file, [FromQuery] bool replace = false)
+    {
+        if (file is null || file.Length == 0) return BadRequest(new { message = "No file uploaded." });
+        if (!file.FileName.EndsWith(".docx", StringComparison.OrdinalIgnoreCase))
+            return BadRequest(new { message = "Only .docx files are accepted." });
+        if (UploadGuard.Check(file, UploadKind.Docx) is { } bad) return BadRequest(new { message = bad });
+
+        await using var stream = file.OpenReadStream();
+        var result = await parser.ParseLegalNotesAsync(stream, file.FileName);
+        var (success, message, inserted) = await notesImport.CommitAsync(versionId, result, replace);
+        return success ? Ok(new { message, inserted }) : BadRequest(new { message });
     }
 }
 
