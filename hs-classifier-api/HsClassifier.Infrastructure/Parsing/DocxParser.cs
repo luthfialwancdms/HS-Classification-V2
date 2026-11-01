@@ -1,4 +1,4 @@
-﻿using System.Security.Cryptography;
+using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
 using System.Text.RegularExpressions;
@@ -203,54 +203,37 @@ public class DocxParser : IDocxParser
     public async Task<EnParseResult> ParseENAsync(Stream docxStream, string fileName, string edition = "2022")
     {
         var checksum = ComputeChecksum(docxStream);
-        var result = new EnParseResult { SourceFileName = fileName, SourceChecksum = checksum };
-
         using var doc = WordprocessingDocument.Open(docxStream, false);
         var body = doc.MainDocumentPart?.Document?.Body;
-        if (body is null) return result;
-
-        var currentHeading = "0000";
-        var seqInHeading = 0;
-        var paraIndex = 0;
-
-        foreach (var para in body.Descendants<Paragraph>())
+        if (body is null)
         {
-            paraIndex++;
-            var text = para.InnerText.Trim();
-            if (string.IsNullOrWhiteSpace(text)) continue;
-
-            // Detect heading changes — bold paragraphs starting with heading code
-            var headingMatch = Regex.Match(text, @"^(\d{4})\b");
-            var isBold = para.Descendants<Bold>().Any();
-            if (headingMatch.Success && isBold)
-            {
-                currentHeading = headingMatch.Groups[1].Value;
-                seqInHeading = 0;
-                continue;
-            }
-
-            // Skip very short lines unlikely to be EN content
-            if (text.Length < 15) continue;
-
-            seqInHeading++;
-            var paraType = ClassifyParagraphType(text);
-            var referred = ExtractHsCodes(text);
-
-            result.Paragraphs.Add(new ParsedEnParagraph
-            {
-                HeadingCode = currentHeading,
-                ParagraphType = paraType,
-                TextContent = text,
-                ReferredCodesJson = referred.Count > 0 ? JsonSerializer.Serialize(referred) : null,
-                SourceId = $"docx:{checksum}:en:{currentHeading}:para_{paraIndex}",
-                SequenceInHeading = seqInHeading,
-            });
+            var empty = new EnParseResult { SourceFileName = fileName, SourceChecksum = checksum };
+            empty.Issues.Add(new ParseIssue { Severity = "ERROR", Type = "PARSE_FAILED", Message = "Document body is null." });
+            return empty;
         }
-
-        result.TotalParagraphs = result.Paragraphs.Count;
-        return await Task.FromResult(result);
+        return await Task.FromResult(EnTextParser.Parse(ReadLines(body), fileName, checksum));
     }
 
+    /// <summary>
+    /// Non-empty paragraphs in document order. Only <c>w:t</c> text is read, so text inside tracked deletions
+    /// (<c>w:delText</c>) is left out; runs marked hidden (<c>w:vanish</c>) are skipped too.
+    /// </summary>
+    private static IEnumerable<RawLine> ReadLines(Body body)
+    {
+        var index = 0;
+        foreach (var para in body.Descendants<Paragraph>())
+        {
+            index++;
+            var text = string.Concat(para.Descendants<Text>()
+                .Where(t => t.Ancestors<Run>().FirstOrDefault()?.RunProperties?.Vanish is null)
+                .Select(t => t.Text));
+            if (string.IsNullOrWhiteSpace(text)) continue;
+            yield return new RawLine(index, text.Trim(),
+                Bold: para.Descendants<Run>().Any(r => r.RunProperties?.Bold is not null),
+                IsList: para.ParagraphProperties?.NumberingProperties is not null,
+                InTable: para.Ancestors<TableCell>().Any());
+        }
+    }
     // ─── Task 4.1: Legal Notes Parser ────────────────────────────────────────
 
     public async Task<LegalNotesParseResult> ParseLegalNotesAsync(Stream docxStream, string fileName)

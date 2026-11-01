@@ -71,6 +71,10 @@ public class EnParseResult
     public List<ParsedEnParagraph> Paragraphs { get; set; } = new();
     public List<ParseIssue> Issues { get; set; } = new();
     public int TotalParagraphs { get; set; }
+    /// <summary>Distinct 4-digit headings that have at least one paragraph, in document order.</summary>
+    public List<string> Headings { get; set; } = new();
+    /// <summary>Lines dropped as noise (stray brackets, page numbers) or as heading listings and table labels.</summary>
+    public int SkippedLines { get; set; }
 }
 
 // ─── Legal Notes ──────────────────────────────────────────────────────────────
