@@ -45,6 +45,10 @@ Prinsip yang dipegang: hanya lapisan presentasi berubah. `services/`, `src/data/
 
 **Sumber verifikasi butir 5–9:** lint + build (sesi ini); DOM + stub `fetch` lewat Chrome headless CDP (sesi ini, harness di luar repo; tidak ada panggilan ke backend asli). Penilaian visual: tidak dilakukan, milik Anda.
 
+### Revisi REV2 (branch `restyle/v0-rev2`, dari `restyle/v0-rev1` @ `ad7709a`)
+
+**Perubahan PERILAKU disengaja, butir 1 (bukan sekadar tampilan):** tombol `Reset` di kartu Input Data kini juga mengosongkan hasil analisis (`setResult(null)`, lewat `clearResult`), pertanyaan klarifikasi yang menunggu (`setClarifyState(null)`), dan jawaban sementaranya (state `answers` hidup di dalam banner, ikut hilang saat banner dilepas). Notice error API (bagian dari `result`) juga hilang. Tidak ada panggilan API. Implementasi: prop `onReset` pada `ClassificationForm` → `resetAnalysis` di `App.jsx`, hanya memakai setter yang sudah ada. Sumber verifikasi: lint + build; DOM + stub fetch.
+
 **Interpretasi butir 4 (perlu konfirmasi Anda):** "Hapus hasil → keadaan kosong" diimplementasikan sebagai panel hilang sepenuhnya, bukan kartu kosong.
 
 **Sumber verifikasi butir 4:** lint + build (sesi ini); DOM + stub fetch (agent sebelumnya, tercatat di `LANJUTAN_REV1.md` §4). Backend asli tidak diverifikasi. Penilaian visual: milik Anda.

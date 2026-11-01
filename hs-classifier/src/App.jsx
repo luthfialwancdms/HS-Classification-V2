@@ -61,6 +61,9 @@ export default function App() {
   }, [userMenuOpen])
 
   const clearResult = () => setResult(null)
+  // REV2 butir 1: Reset form mengosongkan hasil, pertanyaan klarifikasi, dan (karena banner
+  // ikut hilang) jawaban sementaranya. Hanya setter yang sudah ada; tanpa panggilan API.
+  const resetAnalysis = () => { clearResult(); setClarifyState(null) }
   const hasFinalResult = !!result && !result.error && ['DETERMINED', 'NEED_EXPERT_REVIEW', 'REJECTED'].includes(result.status)
 
   const logout = () => { clearToken(); setAuthed(false); setResult(null); setClarifyState(null) }
@@ -170,7 +173,7 @@ export default function App() {
               </div>
 
               <div className="classify-grid">
-                <ClassificationForm onSubmit={handleSubmit} isLoading={isLoading} />
+                <ClassificationForm onSubmit={handleSubmit} isLoading={isLoading} onReset={resetAnalysis} />
 
                 {clarifyState && (
                   <div className="clarify-wrap">

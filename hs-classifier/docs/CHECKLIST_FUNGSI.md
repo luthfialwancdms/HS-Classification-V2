@@ -105,7 +105,7 @@ Catatan P1 — perubahan yang **bukan** tampilan:
 | K4 | `material_utama` & `cara_kerja` = multi-select chip (toggle, tampil "Dipilih: ...") | ✅ 2 chip terpilih → "Dipilih: Baja/Besi, Tembaga" |
 | K5 | Submit tanpa `nama_generik` → `alert('Nama generik barang wajib diisi.')`, tidak ada request | ✅ alert terkirim, tidak ada hasil |
 | K6 | Submit valid → `classifyWithBackend(form)`; tombol submit jadi `Menganalisis...` dan submit+reset `disabled` | ✅ label `Menganalisis...`, tombol disabled, spinner tampil |
-| K7 | `Reset` mengembalikan seluruh form ke nilai awal, tanpa request | ✅ input/select kosong, chip terpilih 0 · REV1: radio terpilih 3 → 0, 0 request baru (DOM/stub); tombol Reset kini `.reset-button` (butir 7), perilaku sama |
+| K7 | `Reset` mengembalikan seluruh form ke nilai awal, tanpa request. **REV2 butir 1 (perilaku disengaja):** Reset juga mengosongkan hasil analisis, pertanyaan klarifikasi yang menunggu beserta jawaban sementaranya (dan menutup modal klarifikasi bila ada), serta notice error | ✅ input/select kosong, chip terpilih 0 · REV1: radio terpilih 3 → 0, 0 request baru (DOM/stub) · REV2 (DOM/stub): hasil final 8429.52.00 → `.result-panel` hilang; banner klarifikasi dengan 1 jawaban → hilang; notice error → hilang; 0 request saat Reset; analisis ulang memunculkan banner baru tanpa jawaban lama |
 
 
 ### C — Banner klarifikasi (`NEED_CLARIFICATION`)
@@ -124,7 +124,7 @@ Catatan P1 — perubahan yang **bukan** tampilan:
 | ID | Perilaku | Status P2 |
 |---|---|---|
 | R1 | Loading: spinner + "Menjalankan KUM HS 1–6 terhadap database BTKI..." + subteks pipeline, `role="status"` `aria-live="polite"` | ✅ spinner + aria-live=polite + teks pipeline |
-| R2 | Kosong (REV1 butir 4): panel hasil **tidak ditampilkan sama sekali** sebelum ada hasil final dan setelah `Hapus hasil` (bukan lagi kartu "Belum ada analisis"); layar hanya berisi form | ✅ (DOM/stub, REV1) sebelum submit tidak ada `.result-panel`; `Hapus hasil` → `.result-panel` hilang, form utuh |
+| R2 | Kosong (REV1 butir 4): panel hasil **tidak ditampilkan sama sekali** sebelum ada hasil final, setelah `Hapus hasil`, dan (REV2 butir 1) setelah `Reset` form (bukan lagi kartu "Belum ada analisis"); layar hanya berisi form | ✅ (DOM/stub, REV1) sebelum submit tidak ada `.result-panel`; `Hapus hasil` → `.result-panel` hilang, form utuh · (DOM/stub, REV2) `Reset` → `.result-panel` hilang |
 | R3 | Error: kartu `role="alert"`, judul "Terjadi Kesalahan", pesan = `err.message` dari API apa adanya | ✅ role=alert + pesan API apa adanya |
 | R4 | Tanpa kode final: teks berbeda untuk `REJECTED` ("Ditolak oleh ahli kepabeanan" + alasan koreksi terakhir) vs "Belum dapat ditentukan otomatis" + daftar kandidat | ✅ teks + alasan + badge status tampil |
 | R5 | Kode final: kode HS, uraian resmi BTKI, badge confidence TINGGI/SEDANG/RENDAH (+ `score/100` bila ada) | ✅ "8429.52.00" + badge "Confidence: TINGGI · 78/100" |

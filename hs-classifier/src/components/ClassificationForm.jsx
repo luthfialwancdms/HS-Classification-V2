@@ -52,12 +52,13 @@ const WIDE = new Set(['material_utama', 'cara_kerja', 'spesifikasi', 'keterangan
 // Tampilan saja: tiga pertanyaan pilihan singkat ditampilkan sebagai radio (opsi tetap dari dropdown_master.json).
 const RADIO_FIELDS = new Set(['apakah_part', 'apakah_set', 'ada_komponen_tambahan'])
 
-export default function ClassificationForm({ onSubmit, isLoading }) {
+export default function ClassificationForm({ onSubmit, isLoading, onReset }) {
   const [form, setForm] = useState(INITIAL_STATE)
 
   const handleChange = (key, val) => setForm((prev) => ({ ...prev, [key]: val }))
 
-  const handleReset = () => setForm(INITIAL_STATE)
+  // REV2 butir 1: Reset juga memberi tahu induk agar hasil dan klarifikasi dikosongkan.
+  const handleReset = () => { setForm(INITIAL_STATE); onReset?.() }
 
   const handleSubmit = (e) => {
     e.preventDefault()
