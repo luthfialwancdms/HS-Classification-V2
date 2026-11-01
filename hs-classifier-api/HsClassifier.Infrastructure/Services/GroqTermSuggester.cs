@@ -12,7 +12,8 @@ namespace HsClassifier.Infrastructure.Services;
 public record TermSuggestion(List<string> Terms, List<string> Headings);
 
 /// <summary>Suggestion is null when the AI answered but gave nothing usable; Unavailable = no key / error / timeout.</summary>
-public record SuggestionResult(TermSuggestion? Suggestion, bool Unavailable);
+/// <remarks>Call is metadata for the usage log (tokens, HTTP status, short error code); optional so existing callers are unaffected.</remarks>
+public record SuggestionResult(TermSuggestion? Suggestion, bool Unavailable, AiCallInfo? Call = null);
 
 /// <summary>
 /// Fallback when the DB search finds no heading for market/brand names ("handphone samsung").
@@ -77,7 +78,7 @@ public static class TermSuggesterPrompt
 /// Any OpenAI-compatible chat-completions endpoint. Defaults to Groq, but BaseUrl/Model/ApiKey are
 /// config-driven so an OpenAI-compatible proxy (e.g. Dattio) works by changing config only.
 /// </summary>
-public class GroqTermSuggester(IConfiguration config, ILogger<GroqTermSuggester> logger) : ITermSuggester
+public class GroqTermSuggester(IConfiguration config, ILogger<GroqTermSuggester> logger) : IAiProvider
 {
     // ponytail: one static HttpClient instead of IHttpClientFactory (avoids a new package);
     //           upgrade path: services.AddHttpClient<GroqTermSuggester>() for handler rotation/policies.
@@ -89,6 +90,29 @@ public class GroqTermSuggester(IConfiguration config, ILogger<GroqTermSuggester>
     private string Endpoint => $"{BaseUrl}/chat/completions";
 
     public string Model => config["Groq:Model"] ?? "openai/gpt-oss-120b";
+    public string ProviderName => "openai-compatible";
+    public bool IsConfigured => !string.IsNullOrWhiteSpace(config["Groq:ApiKey"]);
+    private string? Host => AiCall.HostOf(BaseUrl);
+
+    /// <summary>Tiny chat request: checks key, model, and endpoint exactly as real use does.</summary>
+    public async Task<AiProbeResult> ProbeAsync(CancellationToken ct = default)
+    {
+        var key = config["Groq:ApiKey"];
+        if (string.IsNullOrWhiteSpace(key))
+            return new(false, 0, new(ProviderName, Host, null, AiCall.NoKey, null, null, null));
+
+        var body = JsonSerializer.Serialize(new
+        {
+            model = Model, temperature = 0, max_tokens = 16,
+            messages = new[] { new { role = "user", content = "ping" } },
+        });
+        using var req = new HttpRequestMessage(HttpMethod.Post, Endpoint)
+        {
+            Content = new StringContent(body, Encoding.UTF8, "application/json"),
+        };
+        req.Headers.Authorization = new AuthenticationHeaderValue("Bearer", key);
+        return await AiCall.ProbeAsync(Http, req, ProviderName, Host, AiCall.OpenAiUsage, ct);
+    }
 
     public async Task<SuggestionResult> SuggestAsync(FactSet facts, CancellationToken ct = default)
     {
@@ -96,7 +120,7 @@ public class GroqTermSuggester(IConfiguration config, ILogger<GroqTermSuggester>
         if (string.IsNullOrWhiteSpace(key))
         {
             logger.LogWarning("Groq:ApiKey not configured — AI term fallback unavailable.");
-            return new(null, Unavailable: true);
+            return new(null, Unavailable: true, Call: new(ProviderName, Host, null, AiCall.NoKey, null, null, null));
         }
 
         var messages = new object[]
@@ -121,18 +145,21 @@ public class GroqTermSuggester(IConfiguration config, ILogger<GroqTermSuggester>
             if (!res.IsSuccessStatusCode)
             {
                 logger.LogWarning("AI call ({BaseUrl}) failed with HTTP {Status}.", BaseUrl, (int)res.StatusCode);
-                return new(null, Unavailable: true);
+                return new(null, Unavailable: true,
+                    Call: new(ProviderName, Host, (int)res.StatusCode, AiCall.HttpError((int)res.StatusCode), null, null, null));
             }
 
             using var doc = JsonDocument.Parse(await res.Content.ReadAsStringAsync(ct));
             var content = doc.RootElement.GetProperty("choices")[0].GetProperty("message").GetProperty("content").GetString();
-            return new(Log(logger, "OpenAI-compatible", TermSuggesterPrompt.Parse(content)), Unavailable: false);
+            var usage = AiCall.OpenAiUsage(doc.RootElement);
+            return new(Log(logger, "OpenAI-compatible", TermSuggesterPrompt.Parse(content)), Unavailable: false,
+                Call: new(ProviderName, Host, (int)res.StatusCode, null, usage.Prompt, usage.Completion, usage.Total));
         }
         catch (Exception ex) when (IsTransient(ex))
         {
             if (ct.IsCancellationRequested) throw;
             logger.LogWarning("AI call ({BaseUrl}) failed: {Error}", BaseUrl, ex.GetType().Name);
-            return new(null, Unavailable: true);
+            return new(null, Unavailable: true, Call: new(ProviderName, Host, null, AiCall.Classify(ex), null, null, null));
         }
     }
 

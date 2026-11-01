@@ -5,6 +5,7 @@ using HsClassifier.Infrastructure.Parsing;
 using HsClassifier.Infrastructure.Seeding;
 using HsClassifier.Infrastructure.Services;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace HsClassifier.Infrastructure;
 
@@ -21,13 +22,20 @@ public static class DependencyInjection
         services.AddScoped<ClassificationValidator>();
         services.AddScoped<TariffLookupService>();
         // AI term-fallback provider is config-selectable: Ai:Provider = groq (default) | gemini
-        services.AddScoped<ITermSuggester>(sp =>
+        services.AddScoped<IAiProvider>(sp =>
         {
             var cfg = sp.GetRequiredService<IConfiguration>();
             return cfg["Ai:Provider"]?.Trim().ToLowerInvariant() == "gemini"
                 ? ActivatorUtilities.CreateInstance<GeminiTermSuggester>(sp)
                 : ActivatorUtilities.CreateInstance<GroqTermSuggester>(sp);
         });
+        // Classification sees the same ITermSuggester as before; the wrapper only adds usage logging.
+        services.AddScoped<ITermSuggester>(sp =>
+            ActivatorUtilities.CreateInstance<LoggingTermSuggester>(sp, sp.GetRequiredService<IAiProvider>()));
+        services.TryAddSingleton(TimeProvider.System);
+        services.AddSingleton<IAiUsageRecorder, AiUsageRecorder>();
+        services.AddSingleton<AiConnectionChecker>();
+        services.AddScoped<AiUsageReportService>();
         services.AddScoped<ClassificationOrchestrator>();
         services.AddScoped<ExpertReviewService>();
         services.AddScoped<BtkiCsvSeeder>();
