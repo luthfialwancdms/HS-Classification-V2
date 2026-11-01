@@ -124,7 +124,7 @@ Catatan P1 — perubahan yang **bukan** tampilan:
 | ID | Perilaku | Status P2 |
 |---|---|---|
 | R1 | Loading: spinner + "Menjalankan KUM HS 1–6 terhadap database BTKI..." + subteks pipeline, `role="status"` `aria-live="polite"` | ✅ spinner + aria-live=polite + teks pipeline |
-| R2 | Kosong: ikon + ajakan isi form | ✅ `.empty-state` + ikon + teks (copy disesuaikan untuk mobile: "Isi form lalu klik Analisis HS Code") |
+| R2 | Kosong (REV1 butir 4): panel hasil **tidak ditampilkan sama sekali** sebelum ada hasil final dan setelah `Hapus hasil` (bukan lagi kartu "Belum ada analisis"); layar hanya berisi form | ✅ (DOM/stub, REV1) sebelum submit tidak ada `.result-panel`; `Hapus hasil` → `.result-panel` hilang, form utuh |
 | R3 | Error: kartu `role="alert"`, judul "Terjadi Kesalahan", pesan = `err.message` dari API apa adanya | ✅ role=alert + pesan API apa adanya |
 | R4 | Tanpa kode final: teks berbeda untuk `REJECTED` ("Ditolak oleh ahli kepabeanan" + alasan koreksi terakhir) vs "Belum dapat ditentukan otomatis" + daftar kandidat | ✅ teks + alasan + badge status tampil |
 | R5 | Kode final: kode HS, uraian resmi BTKI, badge confidence TINGGI/SEDANG/RENDAH (+ `score/100` bila ada) | ✅ "8429.52.00" + badge "Confidence: TINGGI · 78/100" |
@@ -135,7 +135,7 @@ Catatan P1 — perubahan yang **bukan** tampilan:
 | R10 | Tarif: baris MFN / PPN / PPh 22 dengan teks "tidak tersedia" per baris, `taxDisclaimer`, tabel FTA (skema, negara, tarif), disclaimer FTA **selalu** tampil; format `PERCENT` = `x%`, lainnya `x (UNIT)` | ✅ 4 kartu tarif + tabel FTA + notice disclaimer selalu tampil |
 | R11 | Reasoning chain: `<details>` per langkah, nomor `eventOrder`, chip `ruleApplied`, warna `decision` (RETAINED/ELIMINATED/UNRESOLVED), teks reasoning, chip `sourceIds` | ✅ 3 `<details>`, tertutup default, 3 rule chip, badge sesuai decision |
 | R12 | Kotak "Minta Expert Review": hanya role `Admin`/`Classifier`, hanya status `DETERMINED`; tombol kirim disabled sampai alasan ≥ 5 karakter; `Batal` menutup; sukses/error tampil inline | ✅ Admin & Classifier tampil, ExpertReviewer tidak; muncul hanya saat DETERMINED |
-| R13 | Kolom hasil sticky di desktop (`lg`) | ✅ sticky di ≥1051px (keputusan pengguna), `static` di 390px dengan auto-scroll ke hasil |
+| R13 | Panel hasil non-modal **di bawah form** (REV1 butir 4), bukan kolom sticky: muncul terbuka penuh setelah DETERMINED / NEED_EXPERT_REVIEW / REJECTED, halaman scroll ke panel (`prefers-reduced-motion` → tanpa animasi), fokus ke judul `#result-title`; `Perkecil/Perbesar` (`aria-expanded` + `aria-controls="result-body"`) dan `Hapus hasil` (hanya `setResult(null)`); analisis ulang → panel kembali terbuka penuh | ✅ (DOM/stub, REV1 — dicatat agent sebelumnya, belum diulang di sesi ini) lihat `docs/LANJUTAN_REV1.md` §4; lint + build lulus di sesi ini |
 
 Catatan P2 — perubahan perilaku di luar tampilan (semua atas instruksi Anda):
 - `useRef` + satu `useEffect` baru: auto-scroll ke panel hasil hanya di ≤1050px setelah analisis selesai.

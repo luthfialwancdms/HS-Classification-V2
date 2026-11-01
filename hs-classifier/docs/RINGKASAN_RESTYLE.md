@@ -20,6 +20,21 @@ Prinsip yang dipegang: hanya lapisan presentasi berubah. `services/`, `src/data/
 | P5 | `921b68d` | `restyle: layar admin data center` — `.admin-nav` vertikal + 5 panel, `docs/TEMUAN.md` |
 | P6 | _lihat commit terakhir_ | responsif + polish: `aria-orientation` dinamis, kontras `.btki-check`, fokus keyboard, dokumen ini |
 
+### Revisi REV1 (branch `restyle/v0-rev1`, dari `restyle/v0` @ `a0cda38`)
+
+| Butir | Commit | Isi utama |
+|---|---|---|
+| 1 | `93c787d` | semua ukuran font +2px |
+| 2 | `21ebb3d` | rapatkan jarak atas menu sidebar |
+| 3 | `9e25104` | dropdown user + logout |
+| 4 | `0a3a63a` | `restyle: panel hasil di bawah form (non-modal)` |
+
+**Perubahan UI disengaja, butir 4:** panel hasil pindah dari kolom kanan (sticky) ke bawah form selebar penuh. Panel hanya ada setelah hasil final (DETERMINED / NEED_EXPERT_REVIEW / REJECTED); kartu "Belum ada analisis" tidak ditampilkan lagi. Loading dan error API tampil sebagai elemen halaman (`.loading-panel`, notice `role="alert"`), bukan di dalam panel. Header panel punya `Perkecil/Perbesar` dan `Hapus hasil` (`setResult(null)`, setter yang sudah ada). Halaman scroll ke panel dan fokus ke judulnya. Banner klarifikasi tetap inline, kini di antara form dan panel. Riwayat memakai `ResultPanel` tanpa prop baru, jadi perilakunya tidak berubah.
+
+**Interpretasi butir 4 (perlu konfirmasi Anda):** "Hapus hasil → keadaan kosong" diimplementasikan sebagai panel hilang sepenuhnya, bukan kartu kosong.
+
+**Sumber verifikasi butir 4:** lint + build (sesi ini); DOM + stub fetch (agent sebelumnya, tercatat di `LANJUTAN_REV1.md` §4). Backend asli tidak diverifikasi. Penilaian visual: milik Anda.
+
 ---
 
 ## 2. Deviasi dari acuan v0 (disetujui)
