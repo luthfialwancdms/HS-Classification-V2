@@ -76,24 +76,21 @@ public class RulesEngine(EssentialCharacterOptions? essentialCharacter = null)
         foreach (var c in candidates)
         {
 
-            // Check EN EXCLUSION paragraphs (either name excluded counts)
-            bool Mentions(string text) => names.Any(n => ContainsKeyword(text, n));
-            var excluded = c.EnParagraphs.Any(p => p.StartsWith("[Exclusion]", StringComparison.OrdinalIgnoreCase)
-                && Mentions(p));
+            // Legal notes and EN: an exclusion counts only when a clause names the goods as the excluded item and
+            // sends them to a heading/chapter that does not cover this candidate (NoteExclusions)
+            var hit = c.ExclusionNotes
+                .Select(n => (Note: n, Clause: NoteExclusions.Find(names, n, c)))
+                .FirstOrDefault(x => x.Clause is not null);
 
-            // Check Chapter Notes EXCLUSION
-            var noteExcluded = c.ChapterNotesText.Any(n => n.StartsWith("[Exclusion]", StringComparison.OrdinalIgnoreCase)
-                && Mentions(n));
-
-            if (excluded || noteExcluded)
+            if (hit.Clause is not null)
             {
                 eliminated.Add(c);
                 chain.Add(new ReasoningStep
                 {
                     Rule = "KUM_HS_1", CandidateCode = c.Code,
                     Decision = CandidateDecision.Eliminated,
-                    Reason = $"Excluded by {'E' + (excluded ? "N" : "chapter note")}",
-                    SourceIds = [c.SourceId ?? c.Code]
+                    Reason = $"Dikecualikan oleh {hit.Note.Origin}: \"{hit.Clause}\"",
+                    SourceIds = [hit.Note.SourceId]
                 });
                 continue;
             }
@@ -554,10 +551,6 @@ public class RulesEngine(EssentialCharacterOptions? essentialCharacter = null)
         var own = Terms(WithoutExclusions(c.Description.Split(" / ")[0]));
         return own.Count == 0 ? 0 : (double)own.Count(name.Contains) / own.Count;
     }
-
-    private static bool ContainsKeyword(string text, string keyword)
-        => !string.IsNullOrWhiteSpace(keyword)
-        && text.Contains(keyword, StringComparison.OrdinalIgnoreCase);
 
     private static readonly HashSet<string> StopWords =
     [

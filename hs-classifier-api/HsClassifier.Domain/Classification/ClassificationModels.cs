@@ -80,6 +80,24 @@ public class ClassificationQuestion
     public CandidateImpact Impact { get; set; } = new();
 }
 
+/// <summary>One legal note or Explanatory Note paragraph that excludes goods, with where it came from (shown in the reasoning).</summary>
+public record ExclusionNote(string Origin, string Text, string SourceId);
+
+/// <summary>The 21 Sections of the Harmonized System and the chapters they hold.</summary>
+public static class HsSections
+{
+    private static readonly (string Roman, int First, int Last)[] Table =
+    [
+        ("I", 1, 5), ("II", 6, 14), ("III", 15, 15), ("IV", 16, 24), ("V", 25, 27), ("VI", 28, 38), ("VII", 39, 40),
+        ("VIII", 41, 43), ("IX", 44, 46), ("X", 47, 49), ("XI", 50, 63), ("XII", 64, 67), ("XIII", 68, 70), ("XIV", 71, 71),
+        ("XV", 72, 83), ("XVI", 84, 85), ("XVII", 86, 89), ("XVIII", 90, 92), ("XIX", 93, 93), ("XX", 94, 96), ("XXI", 97, 99),
+    ];
+
+    /// <summary>"84" gives "XVI"; null for anything that is not a chapter number.</summary>
+    public static string? ForChapter(string? chapter) =>
+        int.TryParse(chapter, out var n) ? Table.Where(t => n >= t.First && n <= t.Last).Select(t => t.Roman).FirstOrDefault() : null;
+}
+
 public class CandidateHeading
 {
     public string Code { get; set; } = string.Empty;       // "8471"
@@ -93,6 +111,8 @@ public class CandidateHeading
     public List<string> SectionNotesText { get; set; } = new();
     public List<string> ChapterNotesText { get; set; } = new();
     public List<string> EnParagraphs { get; set; } = new();
+    /// <summary>Exclusion/referral clauses from the chapter and section notes and the heading's EN, in full (KUM HS 1 reads them).</summary>
+    public List<ExclusionNote> ExclusionNotes { get; set; } = new();
     public List<string> RequiredDiscriminators { get; set; } = new();
     public List<string> ChildSubheadings { get; set; } = new();
     /// <summary>Official text of intermediate levels, keyed by code prefix: "8429.5" (one-dash group), "8471.30" (subheading).</summary>

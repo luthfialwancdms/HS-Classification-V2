@@ -2,6 +2,7 @@
 using HsClassifier.Application.Interfaces;
 using HsClassifier.Application.Classification;
 using HsClassifier.Domain.Classification;
+using HsClassifier.Domain.Enums;
 using HsClassifier.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 
@@ -322,21 +323,44 @@ public class CandidateGeneratorService(HsClassifierDbContext db, IVersionManager
 
     private async Task EnrichAsync(CandidateHeading c, Guid versionId, CancellationToken ct)
     {
-        if (c.ChapterCode is not null)
-            c.ChapterNotesText = await db.ChapterNotes
-                .Where(n => n.VersionId == versionId && n.ChapterNumber == c.ChapterCode)
-                .Select(n => "[" + n.EffectType + "] " + n.TextId)
-                .Take(5).ToListAsync(ct);
+        c.ExclusionNotes = [];
+        c.SectionCode ??= HsSections.ForChapter(c.ChapterCode);
 
-        var enRaw = await db.ExplanatoryNotes
+        if (c.ChapterCode is not null)
+        {
+            var chapterNotes = await db.ChapterNotes.AsNoTracking()
+                .Where(n => n.VersionId == versionId && n.ChapterNumber == c.ChapterCode)
+                .OrderBy(n => n.Id).Take(100).ToListAsync(ct);
+            c.ChapterNotesText = chapterNotes.Take(5).Select(n => $"[{n.EffectType}] {n.TextId}").ToList();
+            c.ExclusionNotes.AddRange(chapterNotes.Where(n => n.EffectType is EffectType.Exclusion or EffectType.Referral)
+                .Select(n => new ExclusionNote($"Catatan Bab {n.ChapterNumber} no. {n.NoteNumber}", n.TextId,
+                    n.SourceId ?? $"catatan-bab:{n.ChapterNumber}:{n.NoteNumber}")));
+        }
+
+        if (c.SectionCode is not null)
+        {
+            var sectionNotes = await db.SectionNotes.AsNoTracking()
+                .Where(n => n.VersionId == versionId && n.SectionNumber == c.SectionCode)
+                .OrderBy(n => n.Id).Take(100).ToListAsync(ct);
+            c.SectionNotesText = sectionNotes.Take(5).Select(n => $"[{n.EffectType}] {n.TextId}").ToList();
+            c.ExclusionNotes.AddRange(sectionNotes.Where(n => n.EffectType is EffectType.Exclusion or EffectType.Referral)
+                .Select(n => new ExclusionNote($"Catatan Bagian {n.SectionNumber} no. {n.NoteNumber}", n.TextId,
+                    n.SourceId ?? $"catatan-bagian:{n.SectionNumber}:{n.NoteNumber}")));
+        }
+
+        // EN: full text stays in memory for the exclusion check; only a 200-character excerpt is kept as a list.
+        var enRaw = await db.ExplanatoryNotes.AsNoTracking()
             .Where(n => n.VersionId == versionId && n.HeadingCode == c.Code)
             .OrderBy(n => n.Id)
-            .Select(n => new { n.ParagraphType, n.TextContent })
-            .Take(10).ToListAsync(ct);
+            .Select(n => new { n.ParagraphType, n.ParagraphNumber, n.TextContent, n.SourceId })
+            .Take(60).ToListAsync(ct);
 
-        c.EnParagraphs = enRaw
+        c.EnParagraphs = enRaw.Take(10)
             .Select(n => "[" + n.ParagraphType + "] " + n.TextContent.Substring(0, Math.Min(200, n.TextContent.Length)))
             .ToList();
+        c.ExclusionNotes.AddRange(enRaw.Where(n => n.ParagraphType == ParagraphType.Exclusion)
+            .Select(n => new ExclusionNote($"EN pos {c.Code}" + (n.ParagraphNumber is null ? "" : $" no. {n.ParagraphNumber}"), n.TextContent,
+                n.SourceId ?? $"en:{c.Code}")));
 
         // Whole hierarchy of the heading: 4-digit heading text, 6-digit subheadings, 8-digit lines.
         // ponytail: capped at 150 rows per heading; raise if a heading has more nodes.
