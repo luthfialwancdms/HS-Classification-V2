@@ -24,6 +24,8 @@
   <ItemGroup>
     <ProjectReference Include="..\HsClassifier.Application\HsClassifier.Application.csproj" />
     <ProjectReference Include="..\HsClassifier.Infrastructure\HsClassifier.Infrastructure.csproj" />
+    <!-- Test the Admin guard on AdminAiController (project reference only; no new package) -->
+    <ProjectReference Include="..\HsClassifier.API\HsClassifier.API.csproj" />
   </ItemGroup>
 
 </Project>
