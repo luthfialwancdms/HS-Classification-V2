@@ -63,13 +63,12 @@ export default function App() {
 
   // REV2 butir 2 (tampilan saja): modal klarifikasi. Menutup hanya menyembunyikan; pertanyaan dan jawaban
   // sementara tetap ada. Turunan dari objek state (tanpa setState di effect): respons klarifikasi baru
-  // otomatis terbuka; error API menutup modal agar notice di halaman terlihat, dan dibuka lagi lewat "Lanjutkan menjawab".
+  // otomatis terbuka. Error API saat Kirim Jawaban tampil di dalam modal (modal tetap terbuka).
   const [dismissedFor, setDismissedFor] = useState(null)
-  const [seenError, setSeenError] = useState(null)
   const analyzeRef = useRef(null)
-  const clarifyOpen = !!clarifyState && dismissedFor !== clarifyState && !(result?.error && seenError !== result)
+  const clarifyOpen = !!clarifyState && dismissedFor !== clarifyState
   const closeClarify = () => setDismissedFor(clarifyState)
-  const resumeClarify = () => { setDismissedFor(null); setSeenError(result) }
+  const resumeClarify = () => setDismissedFor(null)
 
   const clearResult = () => setResult(null)
   // REV2 butir 1: Reset form mengosongkan hasil, pertanyaan klarifikasi, dan (karena banner
@@ -201,6 +200,7 @@ export default function App() {
                     open={clarifyOpen}
                     onClose={closeClarify}
                     returnFocusRef={analyzeRef}
+                    errorResult={result?.error ? result : null}
                   />
                 )}
 
@@ -212,7 +212,7 @@ export default function App() {
                   </div>
                 )}
 
-                {result?.error && (
+                {result?.error && !clarifyOpen && (
                   <p role="alert" className="notice danger">
                     <AlertTriangle size={16} aria-hidden="true" />
                     <span><strong>Terjadi Kesalahan.</strong> {result.error}</span>
@@ -237,12 +237,18 @@ export default function App() {
 
 // ─── Clarification Banner (Req 5.5, 6.1, 6.3) ─────────────────────────────────
 
-function ClarificationBanner({ state, onSubmit, isLoading, open, onClose, returnFocusRef }) {
+function ClarificationBanner({ state, onSubmit, isLoading, open, onClose, returnFocusRef, errorResult }) {
   const [answers, setAnswers] = useState({})
+  // Tampilan saja: pesan error milik hasil `errorResult` disembunyikan begitu pengguna mengubah jawaban;
+  // mengirim ulang mengosongkan hasil di induk, dan error baru adalah objek baru sehingga tampil lagi.
+  const [ackedError, setAckedError] = useState(null)
+  const shownError = errorResult && ackedError !== errorResult ? errorResult.error : null
   const { questions, message, candidateCodes } = state
 
-  const handleChange = (factType, value) =>
+  const handleChange = (factType, value) => {
+    setAckedError(errorResult)
     setAnswers(prev => ({ ...prev, [factType]: value }))
+  }
 
   const allAnswered = questions.every(q => answers[q.factType]?.trim())
 
@@ -251,9 +257,17 @@ function ClarificationBanner({ state, onSubmit, isLoading, open, onClose, return
       closeLabel="Tutup (jawaban tetap tersimpan)"
       title={<><AlertTriangle size={18} aria-hidden="true" /> Informasi tambahan diperlukan sebelum kode HS dapat ditentukan.</>}
       footer={(
-        <button className="primary-button" onClick={() => onSubmit(answers)} disabled={isLoading || !allAnswered}>
-          {isLoading ? 'Memproses...' : 'Kirim Jawaban'}
-        </button>
+        <>
+          {shownError && (
+            <p role="alert" className="notice danger">
+              <AlertTriangle size={16} aria-hidden="true" />
+              <span><strong>Terjadi Kesalahan.</strong> {shownError}</span>
+            </p>
+          )}
+          <button className="primary-button" onClick={() => onSubmit(answers)} disabled={isLoading || !allAnswered}>
+            {isLoading ? 'Memproses...' : 'Kirim Jawaban'}
+          </button>
+        </>
       )}>
       {message && <p className="notice">{message}</p>}
       {candidateCodes?.length > 0 && (
