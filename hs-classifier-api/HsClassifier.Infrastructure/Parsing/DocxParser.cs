@@ -239,62 +239,13 @@ public class DocxParser : IDocxParser
     public async Task<LegalNotesParseResult> ParseLegalNotesAsync(Stream docxStream, string fileName)
     {
         var checksum = ComputeChecksum(docxStream);
-        var result = new LegalNotesParseResult { SourceFileName = fileName, SourceChecksum = checksum };
-
         using var doc = WordprocessingDocument.Open(docxStream, false);
         var body = doc.MainDocumentPart?.Document?.Body;
-        if (body is null) return result;
-
-        var currentType = "CHAPTER";
-        var currentScope = "00";
-        var noteNumber = 0;
-        var paraIndex = 0;
-
-        foreach (var para in body.Descendants<Paragraph>())
+        if (body is null)
         {
-            paraIndex++;
-            var text = para.InnerText.Trim();
-            if (string.IsNullOrWhiteSpace(text)) continue;
-
-            var upper = text.ToUpperInvariant();
-
-            // Detect note section type
-            if (upper.Contains("CATATAN BAGIAN") || upper.Contains("SECTION NOTE"))
-            { currentType = "SECTION"; noteNumber = 0; continue; }
-            if (upper.Contains("CATATAN BAB") || upper.Contains("CHAPTER NOTE"))
-            { currentType = "CHAPTER"; noteNumber = 0; continue; }
-            if (upper.Contains("CATATAN SUBPOS") || upper.Contains("SUBHEADING NOTE"))
-            { currentType = "SUBHEADING"; noteNumber = 0; continue; }
-
-            // Detect scope code (roman numeral section or chapter number)
-            var romanMatch = Regex.Match(text, @"^(I{1,3}|IV|VI{0,3}|IX|XI{0,3}|XIV|XV|XVI|XVII|XVIII|XIX|XX{0,3}|XXI)\b");
-            if (romanMatch.Success && text.Length < 30) { currentScope = romanMatch.Value; noteNumber = 0; continue; }
-            var chapMatch = Regex.Match(text, @"^BAB\s+(\d+)|^CHAPTER\s+(\d+)", RegexOptions.IgnoreCase);
-            if (chapMatch.Success) { currentScope = (chapMatch.Groups[1].Value + chapMatch.Groups[2].Value).Trim(); noteNumber = 0; continue; }
-
-            // Skip very short or header-like lines
-            if (text.Length < 20) continue;
-
-            noteNumber++;
-            var effectType = ClassifyEffectType(text);
-            var referred = ExtractHsCodes(text);
-
-            var note = new ParsedNote
-            {
-                ScopeCode = currentScope,
-                NoteType = currentType,
-                NoteNumber = noteNumber.ToString(),
-                TextId = text,
-                EffectType = effectType,
-                ReferredCodesJson = referred.Count > 0 ? JsonSerializer.Serialize(referred) : null,
-                SourceId = $"docx:{checksum}:notes:{currentType.ToLower()}:{currentScope}:para_{paraIndex}",
-            };
-
-            if (currentType == "SECTION") result.SectionNotes.Add(note);
-            else if (currentType == "SUBHEADING") result.SubheadingNotes.Add(note);
-            else result.ChapterNotes.Add(note);
+            var empty = new LegalNotesParseResult { SourceFileName = fileName, SourceChecksum = checksum };
+            empty.Issues.Add(new ParseIssue { Severity = "ERROR", Type = "PARSE_FAILED", Message = "Document body is null." });
+            return empty;
         }
-
-        return await Task.FromResult(result);
-    }
-}
+        return await Task.FromResult(LegalNotesTextParser.Parse(ReadLines(body), fileName, checksum));
+    }}
