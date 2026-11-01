@@ -198,9 +198,24 @@ button { cursor: pointer; }
 .stat-icon.blue { background: var(--blue-bg); color: var(--primary); }
 .stat-value { font-size: 22px; font-weight: 800; letter-spacing: -.6px; }
 .stat-label { color: var(--muted); font-size: 12px; margin-top: 2px; }
-.toolbar { display: flex; gap: 8px; margin-bottom: 14px; }
-.search { height: 35px; flex: 1; max-width: 460px; background: #fff; border: 1px solid var(--line); border-radius: 7px; display: flex; align-items: center; gap: 8px; padding: 0 10px; color: var(--muted); }
-.search input { border: 0; padding: 0; box-shadow: none; }
+/* rev1 butir 8–9: toolbar filter Riwayat dan Review Ahli (satu komponen, HistoryPage).
+   Kartu .panel; semua kontrol setinggi --control-h dan rata bawah; kotak cari paling lebar,
+   dengan font dan ikon terbesar. */
+.toolbar { --control-h: 46px; display: grid; grid-template-columns: minmax(0, 2fr) repeat(3, minmax(0, 1fr)); gap: 14px; align-items: end; margin-bottom: 14px; }
+.toolbar .field { margin-bottom: 0; min-width: 0; }
+.toolbar select, .toolbar input[type=date], .toolbar .search { height: var(--control-h); border: 1px solid #dfe4ea; border-radius: 8px; background: #fff; color: var(--foreground); font-size: 14px; }
+.toolbar select, .toolbar input[type=date] { width: 100%; padding: 0 12px; }
+.toolbar select { padding-right: 36px; }
+.toolbar .select-wrap svg { top: 50%; right: 12px; transform: translateY(-50%); }
+.search { display: flex; align-items: center; gap: 10px; padding: 0 14px; color: var(--muted); }
+.toolbar .search input, .toolbar .search input:focus { height: 100%; border: 0; padding: 0; box-shadow: none; font-size: 16px; }
+@media (max-width: 1180px) {
+  .toolbar { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .toolbar .toolbar-search { grid-column: 1 / -1; }
+}
+@media (max-width: 860px) {
+  .toolbar { grid-template-columns: minmax(0, 1fr); }
+}
 .filter-button { height: 35px; }
 
 /* ── Riwayat: master-detail ──────────────────────────────────────────────── */
@@ -350,8 +365,6 @@ button { cursor: pointer; }
   .stats-grid { grid-template-columns: 1fr 1fr; }
   .stat-card { padding: 11px; }
   .stat-value { font-size: 20px; }
-  .toolbar { flex-wrap: wrap; }
-  .search { max-width: none; flex-basis: 100%; }
   .master-detail { display: flex; flex-direction: column; }
   .case-list { width: 100%; }
   .detail-card { width: 100%; padding: 15px; }
@@ -450,13 +463,7 @@ button { cursor: pointer; }
 
 /* ── Tambahan P3 (INTERPRETASI — tidak ada di acuan v0) ────────────────────── */
 /* Toolbar riwayat: acuan memakai tombol filter dekoratif; di sini kontrol nyata
-   (cari, status, rentang tanggal) memakai gaya yang sama. */
-.toolbar { align-items: flex-end; flex-wrap: wrap; }
-.toolbar .field { margin-bottom: 0; }
-.toolbar .search { min-width: 210px; max-width: none; }
-.toolbar .select-wrap select { width: auto; height: 35px; padding: 0 30px 0 10px; }
-.toolbar .select-wrap svg { top: 10px; }
-.toolbar input[type=date] { width: auto; height: 35px; padding: 0 10px; font-size: 13px; border: 1px solid var(--line); border-radius: 7px; background: #fff; color: var(--foreground); }
+   (cari, status, rentang tanggal). Gaya toolbar ada di blok "Statistik & toolbar". */
 .case-date { color: var(--muted); font-size: 11px; }
 /* v0: `.case-card-top span:first-child` juga mengenai titik badge; kembalikan warnanya. */
 .case-card-top .badge span { color: inherit; font-size: inherit; }

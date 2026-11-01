@@ -66,11 +66,11 @@ export default function HistoryPage({ showUser = false, initialStatus = '', titl
         </div>
       </div>
 
-      <div className="toolbar">
+      <div className="panel toolbar">
         <label className="field toolbar-search">
           <span>Cari nama barang / kode HS</span>
           <div className="search">
-            <Search size={15} aria-hidden="true" />
+            <Search size={18} aria-hidden="true" />
             <input id="hist-q" type="search" value={filters.q} onChange={e => setFilter('q', e.target.value)}
               placeholder="mis. Laptop atau 8471" />
           </div>
