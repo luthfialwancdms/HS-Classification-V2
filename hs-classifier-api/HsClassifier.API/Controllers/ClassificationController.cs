@@ -193,6 +193,26 @@ public class ClassificationController(
         if (c?.FinalCode is null) return NotFound(new { message = "No final code yet." });
         return Ok(await tariffLookup.GetRatesAsync(c.FinalCode));
     }
+
+    /// <summary>
+    /// Laporan satu case sebagai berkas: <c>format</c> = json | docx | pdf. Case yang belum final tetap bisa
+    /// diekspor dan diberi penanda "Bukan keputusan final". POST karena setiap ekspor dicatat di log.
+    /// </summary>
+    [EnableRateLimiting("classify")]
+    [HttpPost("{caseId:long}/export")]
+    public async Task<IActionResult> Export(long caseId, [FromQuery] string? format,
+        [FromServices] ExportService export, [FromServices] ILogger<ClassificationController> log)
+    {
+        var f = format?.Trim().ToLowerInvariant();
+        if (f is not ("json" or "docx" or "pdf"))
+            return BadRequest(new { message = "Format harus json, docx, atau pdf." });
+        var c = await FindOwnCaseAsync(caseId);
+        if (c is null) return NotFound(new { message = "Case not found." });
+
+        var file = export.Render(await export.BuildAsync(c), f);
+        log.LogInformation("Export case {CaseId} as {Format} by user {UserId}", caseId, f, UserId);
+        return File(file.Bytes, file.ContentType, $"hs-case-{caseId}.{file.Extension}");
+    }
 }
 
 public class ClassificationStartRequest

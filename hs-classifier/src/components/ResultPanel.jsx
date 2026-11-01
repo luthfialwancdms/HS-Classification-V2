@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
-import { AlertTriangle, BarChart3, Check, ChevronDown, ChevronRight, ChevronUp, Scale, Search, ShieldCheck, Wallet, X } from 'lucide-react'
-import { getRole, requestReview } from '../services/apiClient'
+import { AlertTriangle, BarChart3, Check, ChevronDown, ChevronRight, ChevronUp, Download, Scale, Search, ShieldCheck, Wallet, X } from 'lucide-react'
+import { exportCase, getRole, requestReview } from '../services/apiClient'
 
 const CONFIDENCE_CLASS = {
   TINGGI: 'success',
@@ -74,6 +74,39 @@ function RequestReviewBox({ caseId, onChanged }) {
           {busy ? 'Mengirim…' : 'Kirim ke ahli'}
         </button>
       </div>
+    </div>
+  )
+}
+
+const EXPORT_FORMATS = [['pdf', 'PDF'], ['docx', 'DOCX'], ['json', 'JSON']]
+
+/** "Unduh Laporan": the backend builds the file; this only triggers the download and shows errors. */
+function ExportBox({ caseId }) {
+  const [busy, setBusy] = useState(null)
+  const [error, setError] = useState(null)
+
+  const download = async (format) => {
+    setBusy(format); setError(null)
+    try {
+      const blob = await exportCase(caseId, format)
+      const a = Object.assign(document.createElement('a'), { href: URL.createObjectURL(blob), download: `hs-case-${caseId}.${format}` })
+      document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(a.href)
+    } catch (e) { setError(e.message) }
+    finally { setBusy(null) }
+  }
+
+  return (
+    <div className="result-section">
+      <div className="subheading"><div><Download size={16} aria-hidden="true" /> Unduh Laporan</div></div>
+      <div className="export-actions">
+        {EXPORT_FORMATS.map(([fmt, label]) => (
+          <button key={fmt} type="button" className="outline-button" disabled={busy !== null}
+            aria-label={`Unduh laporan ${label}`} onClick={() => download(fmt)}>
+            {busy === fmt ? 'Menyiapkan…' : label}
+          </button>
+        ))}
+      </div>
+      {error && <p role="alert" className="notice danger"><AlertTriangle size={16} aria-hidden="true" /><span>{error}</span></p>}
     </div>
   )
 }
@@ -264,6 +297,8 @@ function ResultBody({ result, onChanged }) {
           </ol>
         </div>
       )}
+
+      {result.caseId && <ExportBox key={`export-${result.caseId}`} caseId={result.caseId} />}
 
       {result.status === 'DETERMINED' && result.caseId && (
         <RequestReviewBox key={result.caseId} caseId={result.caseId} onChanged={onChanged} />

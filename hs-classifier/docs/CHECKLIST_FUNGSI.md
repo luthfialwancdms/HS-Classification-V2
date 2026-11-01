@@ -306,3 +306,18 @@ Semua diukur lewat iframe berukuran tepat (DOM + computed style), bukan penilaia
 Konsistensi terukur: `.panel`/`.result-panel` radius **16px**, tombol **7px**, input & chip **6px**, topbar **68px**, sidebar **240px**; 18 ikon semua punya atribut `width/height` eksplisit (13–26px). Fokus keyboard terlihat pada tombol (outline 2px), input (ring teal), chip, kartu riwayat.
 
 
+
+---
+
+## 10. Unduh Laporan (feature/export)
+
+Sumber verifikasi: DOM + stub fetch (Chrome headless, `exportcheck.mjs`). Backend asli dan isi berkas PDF/DOCX tidak dinilai di sini; isi berkas diuji di `ExportServiceTests` (xUnit).
+
+| ID | Hasil | Yang diperiksa |
+|---|---|---|
+| X1 | lulus | Kotak "Unduh Laporan" muncul di panel hasil dengan tiga tombol PDF, DOCX, JSON, masing-masing ber-`aria-label`. |
+| X2 | lulus | Klik PDF mengirim `POST /api/classification/8/export?format=pdf`. Selama menunggu, semua tombol nonaktif dan tombol yang diklik berlabel "Menyiapkan…". Unduhan bernama `hs-case-8.pdf` dari blob. |
+| X3 | lulus | DOCX dan JSON juga terunduh (`hs-case-8.docx`, `hs-case-8.json`). Respons JSON diubah menjadi blob di klien karena `apiFetch` mem-parse body JSON. |
+| X4 | lulus | Error API (contoh 429) tampil sebagai notice `role="alert"` di kotak unduh, tombol aktif lagi, tidak ada unduhan baru. |
+| X5 | lulus | Percobaan berikutnya yang berhasil menghapus pesan error. |
+| X6 | lulus | `Reset` menghapus hasil, kotak unduh ikut hilang. |

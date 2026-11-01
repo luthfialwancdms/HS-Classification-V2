@@ -37,6 +37,7 @@ public static class DependencyInjection
         services.AddSingleton<AiConnectionChecker>();
         services.AddScoped<AiUsageReportService>();
         services.AddScoped<DailyQuotaService>();
+        services.AddScoped<ExportService>();
         services.AddScoped<ClassificationOrchestrator>();
         services.AddScoped<ExpertReviewService>();
         services.AddScoped<BtkiCsvSeeder>();

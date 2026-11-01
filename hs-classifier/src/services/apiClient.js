@@ -219,6 +219,14 @@ export const approveCase   = (caseId, code, reason) => post(`/api/review/${caseI
 export const rejectCase    = (caseId, reason)       => post(`/api/review/${caseId}/reject`, { reason })
 export const requestReview = (caseId, reason)       => post(`/api/classification/${caseId}/request-review`, { reason })
 
+// ─── Export ───────────────────────────────────────────────────────────────────
+
+/** Report of one case. `format`: json | docx | pdf. Always resolves to a Blob (apiFetch parses JSON bodies itself). */
+export async function exportCase(caseId, format) {
+  const r = await apiFetch(`/api/classification/${caseId}/export?format=${encodeURIComponent(format)}`, { method: 'POST' })
+  return r instanceof Blob ? r : new Blob([JSON.stringify(r, null, 2)], { type: 'application/json' })
+}
+
 /** Official BTKI line for a code, or null when it does not exist in the active version. */
 export const lookupCode = (code) =>
   apiFetch(`/api/btki/${encodeURIComponent(code)}`).catch(() => null)

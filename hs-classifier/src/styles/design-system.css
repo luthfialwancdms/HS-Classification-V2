@@ -581,3 +581,4 @@ summary:focus-visible, .reason-details > summary:focus-visible {
 .metric-group-title { margin: 16px 0 0; font-size: 12px; font-weight: 800; letter-spacing: .6px; text-transform: uppercase; color: var(--muted); }
 .toolbar.toolbar-quad { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); }
 .cell-stack { display: flex; flex-direction: column; align-items: flex-start; gap: 3px; }
+.export-actions { display: flex; flex-wrap: wrap; gap: 8px; }
