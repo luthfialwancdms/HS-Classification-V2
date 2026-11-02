@@ -158,8 +158,15 @@ public class ClassificationOrchestrator(
                 });
                 var (status, message, question) = DecideNoCandidate(facts.IsKnown("generic_name"));
                 dead.Status = status;
+                // The rules already weighed the database candidates (KUM HS 1 to 6). Their best guess goes to the expert as
+                // a hint; it is never the final code because KUM HS 1 found no heading that matches the goods.
+                // KUM HS 1 clears FinalCode on a no-match fallback, so the guess is read from the KUM HS 6 step.
+                var guess = result?.ReasoningChain
+                    .LastOrDefault(s => s.Rule == "KUM_HS_6" && s.Decision == CandidateDecision.Retained && s.CandidateCode.Length == 10)?.CandidateCode;
+                var hint = guess is null ? "" : $" Saran sementara untuk ahli (belum pasti): {guess}.";
                 return await PersistAsync(dead, input, null, userId, existingCase, ct,
-                    message: notice + message, questions: question is null ? null : [question]);
+                    message: notice + message + hint, questions: question is null ? null : [question],
+                    candidateCodes: hint.Length > 0 ? candidates.Select(c => c.Code).ToList() : null);
             }
         }
 
