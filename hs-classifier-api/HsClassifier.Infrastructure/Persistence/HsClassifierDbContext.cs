@@ -161,9 +161,9 @@ public class HsClassifierDbContext : DbContext
         modelBuilder.Entity<ClassificationCase>(e =>
         {
             e.HasKey(x => x.Id);
-            e.Property(x => x.FactsJson).HasColumnType("nvarchar(max)");
-            e.Property(x => x.CandidateCodesJson).HasColumnType("nvarchar(max)");
-            e.Property(x => x.ConfidenceJson).HasColumnType("nvarchar(max)");
+            e.Property(x => x.FactsJson);
+            e.Property(x => x.CandidateCodesJson);
+            e.Property(x => x.ConfidenceJson);
             e.Property(x => x.FinalCode).HasMaxLength(15);
             e.Property(x => x.Confidence).HasConversion<string>();
             e.Property(x => x.Status).HasConversion<string>();
@@ -177,11 +177,11 @@ public class HsClassifierDbContext : DbContext
             e.HasKey(x => x.Id);
             e.Property(x => x.RuleApplied).HasMaxLength(50);
             e.Property(x => x.Decision).HasMaxLength(50);
-            e.Property(x => x.FactsUsedJson).HasColumnType("nvarchar(max)");
-            e.Property(x => x.CandidatesBeforeJson).HasColumnType("nvarchar(max)");
-            e.Property(x => x.CandidatesAfterJson).HasColumnType("nvarchar(max)");
-            e.Property(x => x.Reasoning).HasColumnType("nvarchar(max)");
-            e.Property(x => x.SourceIdsJson).HasColumnType("nvarchar(max)");
+            e.Property(x => x.FactsUsedJson);
+            e.Property(x => x.CandidatesBeforeJson);
+            e.Property(x => x.CandidatesAfterJson);
+            e.Property(x => x.Reasoning);
+            e.Property(x => x.SourceIdsJson);
             e.HasIndex(x => new { x.CaseId, x.EventOrder });
             e.HasOne(x => x.Case)
              .WithMany(c => c.ReasoningEvents)
@@ -218,7 +218,7 @@ public class HsClassifierDbContext : DbContext
             e.HasKey(x => x.Id);
             e.Property(x => x.FileName).HasMaxLength(300);
             e.Property(x => x.Checksum).HasMaxLength(100);
-            e.Property(x => x.ReportJson).HasColumnType("nvarchar(max)");
+            e.Property(x => x.ReportJson);
             e.Property(x => x.CreatedBy).HasMaxLength(200);
             e.Property(x => x.Kind).HasConversion<string>().HasMaxLength(10).HasDefaultValue(ImportKind.Btki);
             e.HasIndex(x => x.VersionId);
@@ -244,7 +244,7 @@ public class HsClassifierDbContext : DbContext
         modelBuilder.Entity<AiUsageLog>(e =>
         {
             e.HasKey(x => x.Id);
-            e.Property(x => x.CreatedAt).HasColumnType("datetime2(3)");
+            e.Property(x => x.CreatedAt).HasPrecision(3);
             e.Property(x => x.Kind).HasConversion<string>().HasMaxLength(20).IsRequired();
             e.Property(x => x.Provider).HasMaxLength(30).IsRequired();
             e.Property(x => x.Host).HasMaxLength(100);

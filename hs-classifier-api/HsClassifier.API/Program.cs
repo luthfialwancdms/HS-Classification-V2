@@ -53,7 +53,7 @@ builder.Services.AddSwaggerGen(c =>
 
 // Database
 builder.Services.AddDbContext<HsClassifierDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseHsClassifierDatabase(builder.Configuration));
 
 // Infrastructure services
 builder.Services.AddInfrastructure();
