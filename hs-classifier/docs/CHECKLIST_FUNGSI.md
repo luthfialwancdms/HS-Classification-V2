@@ -336,3 +336,21 @@ Sumber verifikasi: DOM + stub fetch (Chrome headless, `quotacheck.mjs`). Angka k
 | Q4 | lulus | Batas 0 (Admin, Ahli): meter tidak ditampilkan. |
 | Q5 | lulus | Gagal memuat kuota (500): meter tersembunyi, tidak ada notice error, form tetap bisa dipakai. |
 | Q6 | lulus | Lebar 390: tanpa overflow horizontal, meter selebar kolom. |
+
+## 12. Muat EN dan Catatan ke draft, klon versi, shadow run (feature/en-notes-import)
+
+Sumber verifikasi: DOM + stub fetch (Chrome headless, `encheck.mjs`, 31 pemeriksaan, semua lulus). Respons backend di-stub; logika backend diuji di xUnit (`EnImportServiceTests`, `LegalNotesImportServiceTests`, `VersionCloneTests`, `ShadowRunTests`, `NoteExclusionTests`, `NoteEnrichmentTests`).
+
+| ID | Hasil | Yang diperiksa |
+|---|---|---|
+| N1 | lulus | Untuk EN dan Catatan, pilihan "Draft target" hanya berisi versi non-aktif berstatus Indexed atau Committed (versi aktif dan versi Uploaded tidak muncul). Tombol Parse mati sampai berkas dan versi dipilih. |
+| N2 | lulus | Parse memanggil `POST /api/admin/{en\|notes}/upload?versionId=...`. Laporan tampil dengan isu, dan tombol "Muat ke Draft" aktif bila tidak ada error. |
+| N3 | lulus | Dry run dengan error: "Muat ke Draft" mati dan pesan "Muat diblokir: dry run masih berisi error" tampil. |
+| N4 | lulus | "Muat ke Draft" memanggil `POST /api/admin/{en\|notes}/commit/{versionId}`; centang "Ganti data ... yang sudah ada" menambah `?replace=true`. Notice sukses menyebut shadow run. |
+| N5 | lulus | Tanpa draft, halaman memberi petunjuk memakai "Klon jadi draft". |
+| N6 | lulus | Tombol "Klon jadi draft" ada di baris versi aktif dan Indexed (memanggil `POST /api/admin/versions/{id}/clone`); "Shadow run" hanya di baris non-aktif Indexed atau Committed; baris Uploaded tidak punya keduanya. |
+| N7 | lulus | Shadow run: penjelasan "tidak ada yang disimpan, AI tidak dipanggil", tanpa kasus sendiri mengirim daftar bawaan, tabel menampilkan hasil aktif vs draft, kolom Berubah, dan catatan yang berperan di draft. Ringkasan "1 dari 2 kasus berubah". |
+| N8 | lulus | JSON kasus sendiri yang rusak menampilkan error tanpa request; JSON valid dikirim sebagai `cases`. |
+| N9 | lulus | Lebar 390: halaman tidak melebar karena tabel shadow run. |
+
+Tidak diverifikasi di sini: tampilan dengan data backend asli dan akun Admin sungguhan.

@@ -310,6 +310,18 @@ Untuk koreksi data atau penambahan baris tanpa DOCX:
 
 ---
 
+### 7.3 Memuat EN dan Catatan ke draft, lalu membandingkan sebelum aktif
+
+Versi yang sedang aktif tidak pernah diubah. EN dan Catatan dimuat ke draft, dibandingkan, dan baru diaktifkan oleh Admin.
+
+| # | Admin melakukan | Sistem melakukan |
+|---|---|---|
+| 1 | Tab **Versi** → **Klon jadi draft** pada versi aktif | Menyalin baris tarif, tarif, dan catatan ke draft baru berstatus Indexed, tidak aktif |
+| 2 | Tab **Upload Dokumen** → jenis **Explanatory Notes** atau **Catatan Bagian/Bab**, pilih draft, **Parse & Dry Run** | Membaca berkas, mencocokkan pos dengan BTKI draft, menyimpan laporan (pos yang tidak dikenal dan pos tanpa EN dicatat) |
+| 3 | **Muat ke Draft** dengan berkas yang sama (centang "Ganti data..." untuk memuat ulang) | Menolak bila checksum berbeda atau dry run masih berisi error; menyimpan paragraf dan catatan ke draft |
+| 4 | Tab **Versi** → **Shadow run** pada draft | Menjalankan kasus yang sama di versi aktif dan draft tanpa menyimpan apa pun, tanpa kuota, tanpa AI; menampilkan kasus yang berubah dan catatan yang berperan |
+| 5 | Bila hasilnya dapat diterima: **Aktifkan** draft. Bila tidak: **Nonaktifkan / Rollback** | Versi lama kembali ke Indexed sehingga bisa diaktifkan lagi |
+
 ## 8. Flow Sistem (Versi Sederhana)
 
 Yang terjadi di balik layar saat pengguna menekan **Analisis HS Code**:
@@ -359,9 +371,9 @@ flowchart TD
 
 - Pembeda berupa angka (mis. "berat tidak melebihi 20 t") belum dibaca otomatis; ditampilkan sebagai pilihan teks untuk dinilai pengguna.
 - Pembacaan BTKI dari file Word (DOCX) belum menangkap seluruh pos tarif. Data yang dipakai saat ini berasal dari dataset CSV BTKI yang lengkap.
-- Commit Explanatory Notes dan Catatan Bagian/Bab dari DOCX belum tersedia (baru tahap parsing).
+- Explanatory Notes (EN) dan Catatan Bagian/Bab/Subpos dimuat dari berkas DOCX milik tim ke sebuah draft (bagian 7.3). EN berbahasa Inggris dan hasil OCR, sehingga sebagian pos tidak terbaca; nama barang berbahasa Indonesia jarang cocok dengan teks EN, jadi EN terutama menjadi bukti dan komponen kepercayaan. Catatan Bab dan Bagian dipakai untuk mengeliminasi pos hanya bila satu klausa menyebut barang itu sebagai butir yang dikecualikan tanpa syarat.
 - Tarif FTA hanya referensi ketersediaan; pemeriksaan ketentuan asal barang (Rules of Origin) belum termasuk.
-- Belum tersedia: Golden Cases, Knowledge Base, halaman Audit Log, pengelolaan User & Role dari UI, dan ekspor PDF/DOCX.
+- Belum tersedia: Golden Cases, Knowledge Base, halaman Audit Log, dan pengelolaan User & Role dari UI. Ekspor JSON, DOCX, dan PDF tersedia di cabang `feature/export`.
 
 ---
 
