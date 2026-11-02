@@ -129,12 +129,14 @@ public class ClassificationOrchestrator(
 
         // AI fallback only when the DB search failed: no candidate, or KUM HS 1 matched nothing
         string? notice = null;
+        var aiConsulted = false;
         var noMatch = result is null || result.ReasoningChain.Any(s => s.Rule == RulesEngine.FallbackRule);
         // Candidates found only by weak searches (head noun, shorter phrase, function, material) are a guess, so the AI is
         // consulted too. If it has nothing, the database result stays as it was.
         var weak = !noMatch && candidates.Count > 0 && candidates.All(c => WeakSources.Contains(c.GenerationSource));
         if (!routed && (noMatch || weak))
         {
+            aiConsulted = true;
             var ai = await TryAiSuggestionAsync(input, facts, ct);
             if (ai.Unavailable) notice = AiUnavailableNotice;
 
@@ -171,6 +173,41 @@ public class ClassificationOrchestrator(
                 return await PersistAsync(dead, input, null, userId, existingCase, ct,
                     message: notice + message + hint, questions: question is null ? null : [question],
                     candidateCodes: hint.Length > 0 ? candidates.Select(c => c.Code).ToList() : null);
+            }
+        }
+
+        // Second opinion: a decided result below High confidence may rest on a word that means something else in the tariff
+        // ("mentega" is cocoa butter in 1804). The AI is asked for tariff terms once; headings the database confirms join
+        // the candidates and the rules run again. The AI never sets the code, and a High result is trusted as it is.
+        if (!routed && !aiConsulted && result is { FinalCode: not null }
+            && ConfidenceCalculator.Level(Score(result, candidates).Score) != DomainConf.High)
+        {
+            var opinion = await TryAiSuggestionAsync(input, facts, ct, secondOpinion: true);
+            if (opinion.Candidates.Count > 0)
+            {
+                var known = candidates.Select(c => c.Code).ToHashSet();
+                var added = opinion.Candidates.Where(c => !known.Contains(c.Code)).ToList();
+                var step = opinion.Step!;
+                if (added.Count == 0)
+                    step.Reason += opinion.Candidates.Any(c => c.Code == result.LockedHeading)
+                        ? " AI mengusulkan pos yang sama dengan hasil database."
+                        : " Pos usulan AI sudah termasuk kandidat database.";
+                else
+                {
+                    candidates = candidates.Concat(added).ToList();
+                    result = _rules.ApplyKumHs(facts, candidates);
+                    // Decided on a heading only the AI proposed: that is AI-derived, so it is flagged and capped like the fallback
+                    var fromAi = result.LockedHeading is not null && added.Any(c => c.Code == result.LockedHeading);
+                    step.Reason += fromAi ? $" Pos {result.LockedHeading} berasal dari usulan AI dan dinilai aturan."
+                                          : $" Pos tambahan dari AI ditimbang aturan: {string.Join(", ", added.Select(c => c.Code))}.";
+                    if (fromAi)
+                    {
+                        step.Decision = CandidateDecision.Unresolved;
+                        if (result.Confidence == DomainConf.High && facts.GetValue(FactExtractionService.SubheadingChoice) is null)
+                            result.Confidence = DomainConf.Medium;
+                    }
+                }
+                result.ReasoningChain.Insert(0, step);
             }
         }
 
@@ -243,7 +280,8 @@ public class ClassificationOrchestrator(
             CandidateAmbiguityUnresolved: false,
             Gri4Used: chain.Any(s => s.Rule == "KUM_HS_4"),
             Gri3cUsed: chain.Any(s => s.Rule == "KUM_HS_3C"),
-            AiTermSuggestion: chain.Any(s => s.Rule == "AI_SUGGESTION")));
+            AiTermSuggestion: chain.Any(s => s.Rule == "AI_SUGGESTION"
+                || (s.Rule == "AI_SECOND_OPINION" && s.Decision == CandidateDecision.Unresolved))));
     }
 
     // ─── Parts (Section XVI Note 2b) ──────────────────────────────────────────
@@ -325,7 +363,7 @@ public class ClassificationOrchestrator(
                });
 
     private async Task<(List<CandidateHeading> Candidates, ReasoningStep? Step, bool Unavailable)> TryAiSuggestionAsync(
-        Dictionary<string, string?> input, FactSet facts, CancellationToken ct)
+        Dictionary<string, string?> input, FactSet facts, CancellationToken ct, bool secondOpinion = false)
     {
         // Reuse the suggestion cached in the case so follow-up rounds don't call Groq again
         var suggestion = GroqTermSuggester.Parse(input.GetValueOrDefault(AiSuggestionKey));
@@ -345,9 +383,11 @@ public class ClassificationOrchestrator(
 
         var step = new ReasoningStep
         {
-            Rule = "AI_SUGGESTION",
+            Rule = secondOpinion ? "AI_SECOND_OPINION" : "AI_SUGGESTION",
             Decision = candidates.Count > 0 ? CandidateDecision.Retained : CandidateDecision.Unresolved,
-            Reason = $"Pencarian database tidak menemukan heading. Istilah usulan AI: {string.Join(", ", suggestion.Terms)}; " +
+            Reason = (secondOpinion ? "Kepercayaan hasil database di bawah Tinggi, jadi AI diminta istilah tarif. "
+                                    : "Pencarian database tidak menemukan heading. ") +
+                     $"Istilah usulan AI: {string.Join(", ", suggestion.Terms)}; " +
                      $"heading tervalidasi database: {(accepted.Count > 0 ? string.Join(", ", accepted) : "-")}" +
                      (rejected.Count > 0 ? $"; ditolak (tidak ada di BTKI aktif): {string.Join(", ", rejected)}" : "") +
                      ". Kode final tetap ditentukan KUM HS dari database.",
