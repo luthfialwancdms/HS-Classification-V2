@@ -358,6 +358,7 @@ public class CandidateGeneratorService(HsClassifierDbContext db, IVersionManager
         c.EnParagraphs = enRaw.Take(10)
             .Select(n => "[" + n.ParagraphType + "] " + n.TextContent.Substring(0, Math.Min(200, n.TextContent.Length)))
             .ToList();
+        c.EnInclusions = enRaw.Where(n => n.ParagraphType == ParagraphType.Inclusion).Select(n => n.TextContent).ToList();
         c.ExclusionNotes.AddRange(enRaw.Where(n => n.ParagraphType == ParagraphType.Exclusion)
             .Select(n => new ExclusionNote($"EN pos {c.Code}" + (n.ParagraphNumber is null ? "" : $" no. {n.ParagraphNumber}"), n.TextContent,
                 n.SourceId ?? $"en:{c.Code}")));

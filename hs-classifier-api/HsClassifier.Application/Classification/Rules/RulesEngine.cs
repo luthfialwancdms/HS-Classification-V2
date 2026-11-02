@@ -97,7 +97,11 @@ public class RulesEngine(EssentialCharacterOptions? essentialCharacter = null)
 
             // GRI 1: retain only if the heading's own terms cover the facts
             var score = HeadingScore(facts, c);
-            if (score > 0 || c.EnParagraphs.Any(p => p.StartsWith("[Inclusion]", StringComparison.OrdinalIgnoreCase)))
+            // An EN "includes ..." paragraph keeps the heading only when it names the goods (whole word); most headings have
+            // such a paragraph, so keeping on its mere existence let unrelated headings through
+            if (score > 0 || names.Any(n => n.Length >= 3 && c.EnInclusions.Any(t =>
+                    System.Text.RegularExpressions.Regex.IsMatch(t, $@"\b{System.Text.RegularExpressions.Regex.Escape(n)}\b",
+                        System.Text.RegularExpressions.RegexOptions.IgnoreCase))))
             {
                 retained.Add(c);
                 chain.Add(new ReasoningStep
