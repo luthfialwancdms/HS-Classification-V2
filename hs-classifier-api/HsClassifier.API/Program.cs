@@ -133,8 +133,11 @@ app.MapHealthChecks("/health").AllowAnonymous();
 using (var scope = app.Services.CreateScope())
 {
     var seeder = scope.ServiceProvider.GetRequiredService<HsClassifier.Infrastructure.Seeding.BtkiCsvSeeder>();
-    // Auto-seed BTKI data in development
-    if (app.Environment.IsDevelopment())
+    // Auto-seed BTKI data in development. Never implicitly against MySQL (a shared UAT database): set Seed:AutoSeed=true to force it.
+    var autoSeed = builder.Configuration.GetValue<bool?>("Seed:AutoSeed")
+        ?? (app.Environment.IsDevelopment()
+            && !string.Equals(builder.Configuration["Database:Provider"], "MySql", StringComparison.OrdinalIgnoreCase));
+    if (autoSeed)
     {
         var csvPath = Path.Combine(Directory.GetCurrentDirectory(), "..", "..", "Hscode.csv");
         if (File.Exists(csvPath))
