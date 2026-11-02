@@ -63,3 +63,26 @@ Penyebab yang terlihat:
 - Pencocokan satu kata ("mur", "paku", "handuk") menemukan pos tetangga.
 
 Langkah berikutnya yang saya sarankan: kurangi bobot bahan dan fungsi dibanding nama barang saat menilai pos, dan minta AI memberi sinonim istilah tarif untuk kasus yang ditetapkan dengan kepercayaan di bawah High.
+## Pendapat kedua AI dan penentu seri (putaran lanjutan)
+
+Perubahan:
+- **Pendapat kedua.** Hasil yang sudah ditetapkan dengan kepercayaan di bawah High kini meminta AI istilah tarif satu kali. Pos hasil AI yang dikonfirmasi database ikut ditimbang aturan KUM HS 1 sampai 6. AI tidak menentukan kode. Hasil High tidak bertanya ke AI. Bila AI kosong atau tidak tersedia, hasil database tetap dipakai. Langkahnya tercatat sebagai `AI_SECOND_OPINION` di reasoning.
+- **Penentu seri.** Pos yang disebut AI dan dikonfirmasi database mendapat bonus 1,0 di KUM HS 3(a) (kira-kira sepersepuluh bobot kecocokan teks pos). Bonus ini hanya menyelesaikan seri yang nyaris sama dan tidak mengalahkan pos yang jelas lebih cocok. Pilihan yang berubah karena usulan AI ditandai sebagai turunan AI dan kepercayaannya dibatasi Medium.
+
+| Hasil | Sebelum | + pendapat kedua | + penentu seri |
+|---|---:|---:|---:|
+| OK_FINAL | 13 | 13 | 14 |
+| ASKS_RIGHT_HEADING | 59 | 63 | 65 |
+| ASKS_WRONG_HEADING | 20 | 18 | 17 |
+| WRONG_FINAL | 8 | 6 | 4 |
+| EXPERT_NO_HINT | 0 | 0 | 0 |
+
+Jalur benar 72 → 79 dari 100; ditetapkan salah 8 → 4.
+
+**Catatan penting: hasil yang melibatkan AI tidak persis sama antar putaran.** Di putaran terakhir "Lem kayu", "Tas kulit", dan "Celana jeans" bergeser ke pos salah, sementara "Batu bara", "Kulkas", dan "Televisi" membaik. Jawaban AI untuk kalimat yang sama bisa berbeda. Angka di atas menggambarkan arah, bukan jaminan per barang.
+
+Ditetapkan salah yang tersisa: mentega → 1804 (mentega kakao; AI tidak selalu menyebut 0405), air mineral → 2202 (kepercayaan High 80 sehingga tidak diperiksa AI), kain katun → 5211, transformator → 8546.
+
+Bertanya pada pos salah (17): sepeda motor, rokok kretek, bensin, LPG, lem kayu, kantong dan botol plastik, tas kulit, koper, kaos katun, celana jeans, kemeja pria, benang katun, handuk, besi beton, paku, monitor.
+
+Saran berikutnya: periksa kasus yang ditetapkan dengan High (air mineral) dengan aturan yang sama, kurangi bobot bahan dan fungsi dalam kecocokan teks pos (penyebab "Sepeda motor" ke rantai besi), dan perluas pendapat kedua ke hasil yang masih bertanya.
