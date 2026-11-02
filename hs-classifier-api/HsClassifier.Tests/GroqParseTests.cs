@@ -21,6 +21,41 @@ public class GroqParseTests
     [InlineData("""{"terms":[],"headings":[]}""")]
     public void Broken_or_empty_output_returns_null(string content) => Assert.Null(GroqTermSuggester.Parse(content));
 
+    [Theory]
+    [InlineData("Your quota is exhausted.\n\nAPI key status: exceeded\nQuota: 0/5000000 tokens (0.0%)")]
+    [InlineData("Maaf, saya tidak bisa membantu.")]
+    [InlineData("{bukan json")]
+    public void Text_that_is_not_the_requested_json_is_unreadable_not_just_empty(string content)
+    {
+        // A proxy can answer HTTP 200 with a notice (quota, rate limit). That is a failed AI call, not "the AI had no idea".
+        var (s, unreadable) = TermSuggesterPrompt.Interpret(content);
+
+        Assert.Null(s);
+        Assert.True(unreadable);
+    }
+
+    [Theory]
+    [InlineData("")]
+    [InlineData("   ")]
+    [InlineData("""{"terms":[],"headings":[]}""")]
+    public void An_empty_answer_is_nothing_usable_but_not_a_failure(string content)
+    {
+        var (s, unreadable) = TermSuggesterPrompt.Interpret(content);
+
+        Assert.Null(s);
+        Assert.False(unreadable);
+    }
+
+    [Fact]
+    public void Json_inside_a_code_fence_or_after_a_sentence_is_still_read()
+    {
+        var (s, unreadable) = TermSuggesterPrompt.Interpret("Berikut hasilnya:\n```json\n{\"terms\":[\"pengeras suara\"],\"headings\":[\"8518\"]}\n```");
+
+        Assert.False(unreadable);
+        Assert.Equal(["pengeras suara"], s!.Terms);
+        Assert.Equal(["8518"], s.Headings);
+    }
+
     [Fact]
     public void Six_and_eight_digit_codes_are_rejected()
     {

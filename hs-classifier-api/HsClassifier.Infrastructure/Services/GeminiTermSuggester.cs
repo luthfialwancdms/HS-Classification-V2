@@ -77,8 +77,10 @@ public class GeminiTermSuggester(IConfiguration config, ILogger<GeminiTermSugges
             var content = doc.RootElement.GetProperty("candidates")[0]
                 .GetProperty("content").GetProperty("parts")[0].GetProperty("text").GetString();
             var usage = AiCall.GeminiUsage(doc.RootElement);
-            return new(GroqTermSuggester.Log(logger, "Gemini", TermSuggesterPrompt.Parse(content)), Unavailable: false,
-                Call: new(ProviderName, Host, (int)res.StatusCode, null, usage.Prompt, usage.Completion, usage.Total));
+            var (suggestion, unreadable) = TermSuggesterPrompt.Interpret(content);
+            if (unreadable) logger.LogWarning("Gemini answered HTTP 200 with text that is not the requested JSON: {Preview}", GroqTermSuggester.Preview(content));
+            return new(GroqTermSuggester.Log(logger, "Gemini", suggestion), Unavailable: unreadable,
+                Call: new(ProviderName, Host, (int)res.StatusCode, unreadable ? AiCall.Parse : null, usage.Prompt, usage.Completion, usage.Total));
         }
         catch (Exception ex) when (GroqTermSuggester.IsTransient(ex))
         {

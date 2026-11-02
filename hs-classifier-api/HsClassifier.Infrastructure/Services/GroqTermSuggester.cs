@@ -48,12 +48,22 @@ public static class TermSuggesterPrompt
     private static readonly Regex HeadingFormat = new(@"^(\d{2})\.?(\d{2})$");
 
     /// <summary>Tolerant parse of model output; anything that is not a 4-digit heading is rejected.</summary>
-    public static TermSuggestion? Parse(string? content)
+    public static TermSuggestion? Parse(string? content) => Interpret(content).Suggestion;
+
+    /// <summary>
+    /// Reads the model text. <c>Unreadable</c> means the text holds no JSON object at all (for example a proxy's
+    /// "quota exhausted" notice returned with HTTP 200), which is a failed call. A blank or empty answer is not.
+    /// The JSON may sit inside a code fence or after a sentence.
+    /// </summary>
+    public static (TermSuggestion? Suggestion, bool Unreadable) Interpret(string? content)
     {
-        if (string.IsNullOrWhiteSpace(content)) return null;
+        if (string.IsNullOrWhiteSpace(content)) return (null, false);
+        var start = content.IndexOf('{');
+        var end = content.LastIndexOf('}');
+        if (start < 0 || end < start) return (null, true);
         try
         {
-            using var doc = JsonDocument.Parse(content);
+            using var doc = JsonDocument.Parse(content[start..(end + 1)]);
             List<string> Strings(string name) =>
                 doc.RootElement.ValueKind == JsonValueKind.Object
                 && doc.RootElement.TryGetProperty(name, out var arr) && arr.ValueKind == JsonValueKind.Array
@@ -68,9 +78,9 @@ public static class TermSuggesterPrompt
                 .Select(m => m.Groups[1].Value + m.Groups[2].Value)
                 .Distinct().Take(3).ToList();
 
-            return terms.Count == 0 && headings.Count == 0 ? null : new TermSuggestion(terms, headings);
+            return (terms.Count == 0 && headings.Count == 0 ? null : new TermSuggestion(terms, headings), false);
         }
-        catch (JsonException) { return null; }
+        catch (JsonException) { return (null, true); }
     }
 }
 
@@ -152,8 +162,10 @@ public class GroqTermSuggester(IConfiguration config, ILogger<GroqTermSuggester>
             using var doc = JsonDocument.Parse(await res.Content.ReadAsStringAsync(ct));
             var content = doc.RootElement.GetProperty("choices")[0].GetProperty("message").GetProperty("content").GetString();
             var usage = AiCall.OpenAiUsage(doc.RootElement);
-            return new(Log(logger, "OpenAI-compatible", TermSuggesterPrompt.Parse(content)), Unavailable: false,
-                Call: new(ProviderName, Host, (int)res.StatusCode, null, usage.Prompt, usage.Completion, usage.Total));
+            var (suggestion, unreadable) = TermSuggesterPrompt.Interpret(content);
+            if (unreadable) logger.LogWarning("AI call ({BaseUrl}) answered HTTP 200 with text that is not the requested JSON: {Preview}", BaseUrl, Preview(content));
+            return new(Log(logger, "OpenAI-compatible", suggestion), Unavailable: unreadable,
+                Call: new(ProviderName, Host, (int)res.StatusCode, unreadable ? AiCall.Parse : null, usage.Prompt, usage.Completion, usage.Total));
         }
         catch (Exception ex) when (IsTransient(ex))
         {
@@ -172,6 +184,13 @@ public class GroqTermSuggester(IConfiguration config, ILogger<GroqTermSuggester>
         logger.LogInformation("{Provider} term suggestion: {Terms} / {Headings}", provider,
             s is null ? "-" : string.Join(", ", s.Terms), s is null ? "-" : string.Join(", ", s.Headings));
         return s;
+    }
+
+    /// <summary>First 120 characters on one line, for the server log only (never sent to the client).</summary>
+    internal static string Preview(string? content)
+    {
+        var t = Regex.Replace(content ?? "", @"\s+", " ").Trim();
+        return t.Length > 120 ? t[..120] + "…" : t;
     }
 
     /// <summary>Kept for the existing test; delegates to the shared parser.</summary>
