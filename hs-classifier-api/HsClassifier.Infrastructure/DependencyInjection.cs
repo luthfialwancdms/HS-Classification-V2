@@ -41,6 +41,7 @@ public static class DependencyInjection
         services.AddScoped<EnImportService>();
         services.AddScoped<LegalNotesImportService>();
         services.AddScoped<VersionCloneService>();
+        services.AddScoped<ShadowRunService>();
         services.AddScoped<ClassificationOrchestrator>();
         services.AddScoped<ExpertReviewService>();
         services.AddScoped<BtkiCsvSeeder>();

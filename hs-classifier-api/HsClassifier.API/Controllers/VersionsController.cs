@@ -109,6 +109,27 @@ public class VersionsController(IVersionManager versionManager, HsClassifierDbCo
             : Ok(new { id = clone.Id, name = clone.Name, message = "Draft dibuat. Muat EN dan Catatan ke draft ini." });
     }
 
+    /// <summary>
+    /// Classify the same cases on the active version and on this draft and list where the answers differ. Saves nothing,
+    /// uses no quota and does not call the AI. Without <c>cases</c> the built-in list (the regression cases) is used.
+    /// </summary>
+    [HttpPost("{id:guid}/shadow-run")]
+    public async Task<IActionResult> ShadowRun(Guid id, [FromBody] ShadowRunRequest? req, [FromServices] ShadowRunService shadow, CancellationToken ct)
+    {
+        var cases = req?.Cases is { Count: > 0 } c
+            ? c.Select((x, i) => new ShadowCase(string.IsNullOrWhiteSpace(x.Name) ? $"Kasus {i + 1}" : x.Name.Trim(), x.Facts ?? [])).ToList()
+            : ShadowCases.Default.ToList();
+        if (cases.Count > 200) return BadRequest(new { message = "Maksimal 200 kasus per shadow run." });
+        var (report, error) = await shadow.RunAsync(id, cases, ct);
+        return report is null ? BadRequest(new { message = error }) : Ok(new
+        {
+            active = new { id = report.ActiveId, name = report.ActiveName },
+            draft = new { id = report.DraftId, name = report.DraftName },
+            total = report.Rows.Count, changed = report.Changed,
+            rows = report.Rows.Select(r => new { r.Name, r.Changed, active = r.Active, draft = r.Draft }),
+        });
+    }
+
     [HttpGet("active")]
     public async Task<IActionResult> GetActive([FromQuery] DateTime? date)
     {
@@ -161,5 +182,7 @@ public class VersionsController(IVersionManager versionManager, HsClassifierDbCo
 
 public record TransitionRequest(string NewState);
 public record CloneVersionRequest(string? Name);
+public record ShadowRunCase(string? Name, Dictionary<string, string?>? Facts);
+public record ShadowRunRequest(List<ShadowRunCase>? Cases);
 public record CreateVersionRequest(string Name, string? BtkiEdition, string? RegulationNumber,
     DateTime EffectiveFrom, DateTime? EffectiveTo);

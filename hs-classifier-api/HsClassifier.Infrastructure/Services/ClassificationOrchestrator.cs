@@ -30,6 +30,9 @@ public class ClassificationOrchestrator(
     private readonly QuestionGeneratorService _questions = new();
     private readonly RulesEngine _rules = new(ReadEssentialCharacter(config));
 
+    /// <summary>Shadow runs only: nothing is saved and <see cref="ClassificationSessionResult.Trace"/> carries the reasoning.</summary>
+    public bool DryRun { get; init; }
+
     /// <summary>
     /// KUM HS 3(b) settings from <c>Rules:EssentialCharacter</c> (<c>Weights:Function</c>, <c>Weights:Material</c>, …,
     /// <c>MinMargin</c>, <c>MinFactorWins</c>); anything missing or unparseable keeps the documented default.
@@ -145,6 +148,8 @@ public class ClassificationOrchestrator(
                 // Fallback 3c: ask the generic name once, then expert review
                 var dead = new ClassificationResult();
                 dead.ReasoningChain.AddRange(condition.Steps);
+                // What the rules did with the candidates (including notes that removed them) stays in the audit trail
+                if (result is not null) dead.ReasoningChain.AddRange(result.ReasoningChain);
                 if (ai.Step is not null) dead.ReasoningChain.Add(ai.Step);
                 dead.ReasoningChain.Add(new ReasoningStep
                 {
@@ -371,6 +376,36 @@ public class ClassificationOrchestrator(
             _                 => EntityConf.Low
         };
 
+        ClassificationSessionResult Build(long? caseId) => new()
+        {
+            CaseId           = caseId,
+            Status           = status switch
+            {
+                EntityStatus.Determined       => "DETERMINED",
+                EntityStatus.NeedExpertReview => "NEED_EXPERT_REVIEW",
+                _                             => "NEED_CLARIFICATION"
+            },
+            Message          = message,
+            FinalCode        = result.FinalCode,
+            FinalDescription = result.FinalDescription,
+            Confidence       = result.FinalCode is null ? null : result.Confidence.ToString(),
+            ReasoningSteps   = result.ReasoningChain.Count,
+            EliminatedCount  = result.EliminatedCandidates.Count,
+            Tariffs          = tariffs,
+            Questions        = questions,
+            CandidateCodes   = candidateCodes,
+            ConfidenceScore  = report?.Score,
+            ConfidenceDetail = report is null ? null : ToDto(report),
+        };
+
+        // Shadow run: answer exactly as the live path would, but write nothing and keep the reasoning for the comparison
+        if (DryRun)
+        {
+            var dry = Build(null);
+            dry.Trace = result.ReasoningChain.Select(Format).ToList();
+            return dry;
+        }
+
         var caseEntity = existing;
         if (caseEntity is null)
         {
@@ -417,27 +452,7 @@ public class ClassificationOrchestrator(
         }
         await db.SaveChangesAsync(ct);
 
-        return new ClassificationSessionResult
-        {
-            CaseId           = caseEntity.Id,
-            Status           = status switch
-            {
-                EntityStatus.Determined       => "DETERMINED",
-                EntityStatus.NeedExpertReview => "NEED_EXPERT_REVIEW",
-                _                             => "NEED_CLARIFICATION"
-            },
-            Message          = message,
-            FinalCode        = result.FinalCode,
-            FinalDescription = result.FinalDescription,
-            Confidence       = result.FinalCode is null ? null : result.Confidence.ToString(),
-            ReasoningSteps   = result.ReasoningChain.Count,
-            EliminatedCount  = result.EliminatedCandidates.Count,
-            Tariffs          = tariffs,
-            Questions        = questions,
-            CandidateCodes   = candidateCodes,
-            ConfidenceScore  = report?.Score,
-            ConfidenceDetail = report is null ? null : ToDto(report),
-        };
+        return Build(caseEntity.Id);
     }
 
     private static string Format(ReasoningStep s) =>
@@ -473,4 +488,7 @@ public class ClassificationSessionResult
     public List<string>? CandidateCodes { get; set; }
     public int? ConfidenceScore { get; set; }
     public ConfidenceDetailDto? ConfidenceDetail { get; set; }
+    /// <summary>Reasoning lines; set only by a shadow (dry) run.</summary>
+    [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]
+    public List<string>? Trace { get; set; }
 }
