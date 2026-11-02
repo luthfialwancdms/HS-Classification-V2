@@ -30,7 +30,7 @@ Tanggal: 2 Nov 2026. Berkas kasus: `hs-classifier-api/docs/golden/export_import_
 | WRONG_FINAL | 8 | 19 | 8 | 10 | 8 |
 | EXPERT_NO_HINT | 36 | 12 | 36 | 15 | 0 |
 
-Jalur benar (OK_FINAL + ASKS_RIGHT_HEADING) naik dari 38 menjadi 72 dari 100. Salah pos turun dari 26 menjadi 28 hanya karena kasus yang dulu masuk review ahli kini diproses, tetapi ditetapkan salah turun ke 8 dan tanpa kandidat jadi 0.
+Jalur benar (OK_FINAL + ASKS_RIGHT_HEADING) naik dari 38 menjadi 72 dari 100. Total yang salah pos hampir sama dengan sebelum EN dimuat (26 dan 28), karena kasus yang dulu berhenti di review ahli tanpa kandidat (36) kini diproses (0). Dibanding setelah EN dimuat (49 salah pos, 19 di antaranya ditetapkan), hasilnya jauh lebih baik: 28 salah pos, 8 di antaranya ditetapkan.
 
 ## Yang ditemukan dan sudah diperbaiki
 
@@ -40,7 +40,7 @@ Jalur benar (OK_FINAL + ASKS_RIGHT_HEADING) naik dari 38 menjadi 72 dari 100. Sa
 4. **AI hanya dipanggil bila tidak ada kandidat.** Sekarang AI juga dipanggil bila semua kandidat hanya berasal dari pencarian lemah. Bila AI kosong atau tidak tersedia, hasil dari database tetap dipakai.
 5. **Cara kerja tidak membedakan pos bermotor dan tidak bermotor.** Sepeda fixie dengan cara kerja "Manual / Tanpa tenaga" sekarang masuk 8712 (tidak bermotor) dan bertanya subpos sepeda biasa, bukan pertanyaan kapasitas mesin (cc) di 8711.
 
-Perbaikan ini memakai 26 tes baru. Total tes backend 426 lulus, 2 dilewati.
+Tes backend: 426 lulus, 2 dilewati (celah lama yang memang ditandai).
 
 ## Yang masih salah
 
