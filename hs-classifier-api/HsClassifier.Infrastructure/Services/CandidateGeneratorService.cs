@@ -72,17 +72,10 @@ public class CandidateGeneratorService(HsClassifierDbContext db, IVersionManager
                 foreach (var term in synonymTerms)
                     await SearchByText(term, version.Id, candidates, "SYNONYM", score: 0.9, ct);
 
-        // Strategy 3: function search (only if still low candidates)
-        if (candidates.Count < 3 && !string.IsNullOrWhiteSpace(function))
-            await SearchByText(function, version.Id, candidates, "FUNCTION", score: 0.6, ct);
-
-        // Strategy 4: material search — ONLY if generic_name found nothing,
-        // AND scoped to the correct finished-goods chapter (not raw material chapters)
-        if (candidates.Count == 0 && !string.IsNullOrWhiteSpace(material))
-        {
-            var chapters = GetMaterialChapters(material);
-            await SearchByMaterialInChapters(material, chapters, version.Id, candidates, ct);
-        }
+        // The goods' own name comes first. Fallbacks run only while nothing was found, and the weaker signals (the
+        // "Fungsi utama" text, the material) only after every name-based search failed: a function like "Penggunaan
+        // rumah tangga" or a material like "Baja/Besi" matches unrelated headings, and when they ran first they filled the
+        // list and hid the name-based fallbacks (soap became a vacuum cleaner, a bicycle became spoke wire).
 
         // Fallback 1: shorter contiguous phrases of each name, longest first ("alat cukur listrik" → "alat cukur").
         // A phrase hit is much stronger evidence than scattered single words.
@@ -93,11 +86,30 @@ public class CandidateGeneratorService(HsClassifierDbContext db, IVersionManager
                 if (candidates.Count > 0) break;
             }
 
-        // Fallback 2: rank headings by how many distinct name words they contain.
+        // Fallback 2: the head noun. In Indonesian it comes first ("Beras putih", "Sabun mandi", "Sepeda fixie"), and the
+        // tariff names the goods by it ("Beras.", "Sabun; ...", "Sepeda roda dua ..."). Headings only, whole word.
+        if (candidates.Count == 0)
+            foreach (var name in names)
+            {
+                await SearchByHeadNoun(name, version.Id, candidates, ct);
+                if (candidates.Count > 0) break;
+            }
+
+        // Fallback 3: rank headings by how many distinct name words they contain.
         // (Previously each word added its first 20 hits, so one common word like "data" pulled in random headings.)
         if (candidates.Count == 0 && !string.IsNullOrWhiteSpace(genericName))
             await SearchByWordOverlap(genericName, version.Id, candidates, ct);
 
+        // Last resorts, only when the name found nothing. A dropdown category label is not a description of the goods.
+        if (candidates.Count == 0 && !string.IsNullOrWhiteSpace(function) && !FunctionLabels.Contains(function))
+            await SearchByText(function, version.Id, candidates, "FUNCTION", score: 0.6, ct);
+
+        // Material search, scoped to the finished-goods chapters (not raw material chapters)
+        if (candidates.Count == 0 && !string.IsNullOrWhiteSpace(material))
+        {
+            var chapters = GetMaterialChapters(material);
+            await SearchByMaterialInChapters(material, chapters, version.Id, candidates, ct);
+        }
         // KUM HS 1 scores every candidate against its official text, so a longer list costs only queries.
         // At 10, the lexical hits of "motor listrik" (8467, 8509, 8702...) filled the list once the PDF version added
         // the missing headings, and the synonym hit 8501 (score 0.9, the right heading) was cut.
@@ -240,6 +252,42 @@ public class CandidateGeneratorService(HsClassifierDbContext db, IVersionManager
                     SourceId = m.SourceId,
                 };
         }
+    }
+
+    /// <summary>
+    /// The "Fungsi utama" dropdown options of the form (hs-classifier/src/data/dropdown_master.json). They are categories,
+    /// so searching them as text finds unrelated lines ("lainnya", "rumah tangga"). Keep in step with that list.
+    /// </summary>
+    private static readonly HashSet<string> FunctionLabels = new(StringComparer.OrdinalIgnoreCase)
+    {
+        "Mengangkut barang (transportasi darat)", "Mengangkut orang (transportasi darat)", "Mengangkut barang/orang (transportasi laut)",
+        "Mengangkat/Lifting (crane, hoist, forklift)", "Menggali/Earthmoving (excavator, bulldozer)", "Mengolah data / Komputasi",
+        "Komunikasi (telepon, radio, jaringan)", "Menghasilkan/Mengkonversi energi listrik", "Menggerakkan mekanik (motor, pompa, kompresor)",
+        "Pertanian (membajak, menanam, memanen)", "Manufaktur/Pengolahan industri", "Pengeboran/Pertambangan", "Mengukur/Instrumen",
+        "Kesehatan/Medis", "Hiburan/Audio-visual", "Penyimpanan/Pendinginan", "Konstruksi bangunan",
+        "Konsumsi langsung (makanan, minuman)", "Penggunaan rumah tangga", "Lainnya",
+    };
+
+    /// <summary>First word (4+ letters) of the name, as a whole word in the text of 4-digit headings. At most 10 headings.</summary>
+    private async Task SearchByHeadNoun(string name, Guid versionId,
+        Dictionary<string, CandidateHeading> dict, CancellationToken ct)
+    {
+        var word = name.Split([' ', ',', '/', '-', '(', ')'], StringSplitOptions.RemoveEmptyEntries).FirstOrDefault();
+        if (word is null || word.Length < 4) return;
+
+        var rows = await db.BtkiTariffLines
+            .Where(t => t.VersionId == versionId && t.IsActive && t.Code.Length == 4 && t.DescriptionId.Contains(word))
+            .Select(t => new { t.Code, t.DescriptionId, t.ChapterCode, t.SourceId })
+            .OrderBy(t => t.Code).Take(200).ToListAsync(ct);
+
+        var whole = new Regex($@"\b{Regex.Escape(word)}\b", RegexOptions.IgnoreCase);
+        foreach (var r in rows.DistinctBy(r => r.Code).Where(r => whole.IsMatch(r.DescriptionId)).Take(10))
+            if (!dict.ContainsKey(r.Code))
+                dict[r.Code] = new CandidateHeading
+                {
+                    Code = r.Code, Description = r.DescriptionId, ChapterCode = r.ChapterCode,
+                    GenerationSource = "HEADNOUN", RelevanceScore = 0.6, SourceId = r.SourceId,
+                };
     }
 
     /// <summary>
@@ -399,3 +447,4 @@ public class CandidateGeneratorService(HsClassifierDbContext db, IVersionManager
         c.RequiredDiscriminators = [];
     }
 }
+

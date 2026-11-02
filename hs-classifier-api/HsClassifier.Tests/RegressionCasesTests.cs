@@ -1,4 +1,4 @@
-using HsClassifier.Application.Classification.Rules;
+﻿using HsClassifier.Application.Classification.Rules;
 using HsClassifier.Infrastructure.Services;
 
 namespace HsClassifier.Tests;
@@ -19,7 +19,10 @@ public class RegressionCasesTests
         var r = await m.ClassifyAsync(("generic_name", "pompa industri"));
 
         Assert.Null(r.FinalCode);
-        Assert.Equal("NEED_EXPERT_REVIEW", r.Status);
+        // Since the head noun "pompa" is searched against headings, the pump headings are found and the user is asked,
+        // instead of going straight to an expert as before
+        Assert.Equal("NEED_CLARIFICATION", r.Status);
+        Assert.NotEmpty(r.Questions!);
     }
 
     [Fact]
@@ -145,3 +148,4 @@ public class NotARetailSetTests
         Assert.DoesNotContain("KUM HS 3(b): bukan set untuk penjualan eceran", r.Message ?? "");
     }
 }
+
