@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
-import { AlertTriangle, ChevronDown, ClipboardCheck, History, LayoutDashboard, LogOut, Menu, MessageCircleQuestion, Sparkles } from 'lucide-react'
+import { AlertTriangle, ArrowRight, Check, ChevronDown, ClipboardCheck, History, LayoutDashboard, LockKeyhole, LogOut, Mail, Menu, MessageCircleQuestion, ShieldCheck, Sparkles } from 'lucide-react'
+import loginIllustration from './assets/login/login-illustration.png'
 import ClassificationForm from './components/ClassificationForm'
 import Modal from './components/Modal'
 import ResultPanel from './components/ResultPanel'
@@ -342,10 +343,11 @@ function LoginScreen({ onLoggedIn }) {
   const [password, setPassword] = useState('')
   const [error, setError] = useState(null)
   const [busy, setBusy] = useState(false)
+  const [info, setInfo] = useState(null)
 
   const submit = async (e) => {
     e.preventDefault()
-    setBusy(true); setError(null)
+    setBusy(true); setError(null); setInfo(null)
     try { await login(email, password); onLoggedIn() }
     catch (err) { setError(err.message) }
     finally { setBusy(false) }
@@ -353,32 +355,65 @@ function LoginScreen({ onLoggedIn }) {
 
   return (
     <main className="login-page">
-      <form onSubmit={submit} className="panel login-card">
-        <div className="brand login-brand">
-          <div className="brand-mark"><span>HS</span></div>
-          <div>
-            <h1 className="brand-name">HS Intelligence <span className="beta">V2 · DATABASE MODE</span></h1>
-            <div className="brand-sub">BTKI 2022 · PMK 26/2022</div>
+      <section className="login-visual" aria-label="HS Intelligence overview">
+        <div className="login-visual-top">
+          <div className="brand-mark login-brand-mark"><span>HS</span></div>
+          <span className="login-brand-name">HS Intelligence</span>
+        </div>
+        <div className="login-visual-copy">
+          <span className="eyebrow light-eyebrow">CUSTOMS INTELLIGENCE PLATFORM</span>
+          <h1>Make every import decision with confidence.</h1>
+          <p>Classify goods faster, keep your team aligned, and move through customs with clarity.</p>
+          <div className="login-proof-list">
+            <span><Check size={14} aria-hidden="true" /> BTKI 2022 ready</span>
+            <span><Check size={14} aria-hidden="true" /> AI-assisted classification</span>
+            <span><Check size={14} aria-hidden="true" /> Built for import teams</span>
           </div>
         </div>
-        <p className="login-sub">Masuk untuk melanjutkan</p>
-        <label className="field">
-          <span>Email</span>
-          <input id="login-email" type="email" autoComplete="username" required value={email}
-            onChange={e => setEmail(e.target.value)} />
-        </label>
-        <label className="field">
-          <span>Password</span>
-          <input id="login-password" type="password" autoComplete="current-password" required value={password}
-            onChange={e => setPassword(e.target.value)} />
-        </label>
-        {error && (
-          <p role="alert" className="notice danger"><AlertTriangle size={16} aria-hidden="true" /><span>{error}</span></p>
-        )}
-        <button type="submit" className="primary-button full" disabled={busy}>
-          {busy ? 'Memproses...' : 'Masuk'}
-        </button>
-      </form>
+        <img className="login-illustration" src={loginIllustration} width="900" height="502"
+          alt="Illustration of cargo and customs documents" />
+        <div className="login-visual-footer"><ShieldCheck size={15} aria-hidden="true" /> Trusted workspace for PT Solusi Manufaktur Teknologi</div>
+      </section>
+
+      <section className="login-form-side">
+        <div className="login-form-wrap">
+          <div className="login-mobile-brand"><div className="brand-mark login-brand-mark"><span>HS</span></div><span>HS Intelligence</span></div>
+          <div className="login-heading">
+            <span className="eyebrow">WELCOME BACK</span>
+            <h2>Sign in to your workspace</h2>
+            <p>Continue to your customs intelligence dashboard.</p>
+          </div>
+          <div className="login-sso-actions">
+            <button type="button" className="login-provider-button" onClick={() => setInfo('Masuk dengan SSO belum tersedia.')}><span className="sso-glyph" aria-hidden="true">S</span> Continue with SSO <ArrowRight size={16} aria-hidden="true" /></button>
+            <button type="button" className="login-provider-button" onClick={() => setInfo('Masuk dengan Google belum tersedia.')}><span className="google-glyph" aria-hidden="true">G</span> Continue with Google <ArrowRight size={16} aria-hidden="true" /></button>
+          </div>
+          {info && <p role="status" className="login-notice">{info}</p>}
+          <div className="login-divider"><span>or sign in with email</span></div>
+          <form onSubmit={submit} className="login-form">
+            <label className="login-field">
+              <span>Email address</span>
+              <div className="login-input-wrap"><Mail size={17} aria-hidden="true" />
+                <input id="login-email" type="email" autoComplete="username" placeholder="you@company.com" required value={email}
+                  onChange={e => { setEmail(e.target.value); setInfo(null) }} />
+              </div>
+            </label>
+            <label className="login-field">
+              <span>Password</span>
+              <div className="login-input-wrap"><LockKeyhole size={17} aria-hidden="true" />
+                <input id="login-password" type="password" autoComplete="current-password" placeholder="Enter your password" required value={password}
+                  onChange={e => { setPassword(e.target.value); setInfo(null) }} />
+              </div>
+            </label>
+            {error && (
+              <p role="alert" className="notice danger"><AlertTriangle size={16} aria-hidden="true" /><span>{error}</span></p>
+            )}
+            <button type="submit" className="login-submit" disabled={busy}>
+              {busy ? 'Memproses...' : <>Sign in <ArrowRight size={17} aria-hidden="true" /></>}
+            </button>
+          </form>
+          <p className="login-disclaimer">Output merupakan rekomendasi, bukan penetapan resmi DJBC. Selalu verifikasi dengan ahli kepabeanan.</p>
+        </div>
+      </section>
     </main>
   )
 }

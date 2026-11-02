@@ -4,7 +4,7 @@
    Nilai disalin apa adanya, kecuali:
    - impor Google Fonts  → diganti @fontsource/lexend (lihat src/index.css)
    - impor shadcn/tw-animate + @custom-variant dark → dibuang (tidak dipakai)
-   - sisa palet indigo → dinormalisasi ke teal (DESIGN.md §2.1)
+   - tema ungu v0 dipakai penuh (bukan teal); tepi/tint turunan ungu — sebelumnya: sisa palet indigo → dinormalisasi ke teal (DESIGN.md §2.1)
    - kontras teks → disesuaikan (DESIGN.md §2.2), hue tetap
    - tambahan ditandai "INTERPRETASI" / "TAMBAHAN"
    Jangan menaruh warna/font di luar berkas ini.
@@ -16,8 +16,8 @@
   --card: #ffffff;
   --muted: #637572;        /* acuan #6d817d — digelapkan untuk kontras teks (4.55:1) */
   --line: #dce8e4;
-  --primary: #1c7b6f;      /* acuan #1d8175 — digelapkan agar teks di --blue-bg lolos AA */
-  --primary-dark: #14665e;
+  --primary: #6600cc;      /* acuan v0 rgb(102,0,204); tema ungu diterapkan ke seluruh aplikasi (keputusan Nov 2026) */
+  --primary-dark: #4b0096;
   --navy: #183d3a;
   --green: #1b7e58;        /* acuan #1e8a61 */
   --green-bg: #e8f7ef;
@@ -25,7 +25,7 @@
   --amber-bg: #fff4dc;
   --red: #c1434a;          /* acuan #c9464d */
   --red-bg: #fff0f1;
-  --blue-bg: #e9f4f3;
+  --blue-bg: #f4edff;
   --coral: #e9775c;
   --radius: 16px;
 }
@@ -43,7 +43,7 @@ button { cursor: pointer; }
 .brand-mark { width: 33px; height: 33px; display: grid; place-items: center; background: var(--navy); color: #fff; border-radius: 9px; font-size: 13px; font-weight: 800; letter-spacing: -.5px; }
 .brand-name { font-size: 17px; font-weight: 800; letter-spacing: -.2px; } /* acuan 750 — statis hanya kelipatan 100 */
 .brand-sub { color: var(--muted); font-size: 12px; margin-top: 3px; }
-.beta { margin-left: 7px; font-size: 11px; border: 1px solid #c6e2dc; color: var(--primary); background: var(--blue-bg); border-radius: 4px; padding: 3px 5px; letter-spacing: .5px; vertical-align: 2px; }
+.beta { margin-left: 7px; font-size: 11px; border: 1px solid #dec8fa; color: var(--primary); background: var(--blue-bg); border-radius: 4px; padding: 3px 5px; letter-spacing: .5px; vertical-align: 2px; }
 .top-actions { gap: 23px; }
 .icon-button { position: relative; border: 0; background: transparent; color: #667085; display: grid; place-items: center; padding: 7px; border-radius: 8px; }
 .icon-button:hover { background: #f2f4f7; }
@@ -90,12 +90,12 @@ button { cursor: pointer; }
 .outline-button, .ghost-button, .filter-button { background: #fff; border: 1px solid var(--line); border-radius: 7px; padding: 9px 12px; color: #536070; display: inline-flex; gap: 7px; align-items: center; font-weight: 700; font-size: 13px; }
 .ghost-button { border: 0; background: transparent; padding: 7px 0; }
 .outline-button:hover, .filter-button:hover { border-color: #bec8d5; background: #f9fafb; }
-.primary-button { border: 0; border-radius: 7px; padding: 10px 14px; background: var(--primary); color: #fff; display: inline-flex; align-items: center; justify-content: center; gap: 7px; font-weight: 700; font-size: 13px; box-shadow: 0 2px 4px #1c7b6f26; }
+.primary-button { border: 0; border-radius: 7px; padding: 10px 14px; background: var(--primary); color: #fff; display: inline-flex; align-items: center; justify-content: center; gap: 7px; font-weight: 700; font-size: 13px; box-shadow: 0 2px 4px #6600cc26; }
 .primary-button:hover { background: var(--primary-dark); }
 .danger-button { background: var(--red-bg); color: var(--red); border: 1px solid #ffd0d5; border-radius: 7px; padding: 10px; font-weight: 700; }
 /* rev1 butir 7: tombol Reset ber-isi (tonal teal) — bukan teks polos. */
 .reset-button { background: var(--blue-bg); border: 1px solid var(--primary); border-radius: 7px; padding: 9px 14px; color: var(--primary-dark); display: inline-flex; gap: 7px; align-items: center; font-weight: 700; font-size: 13px; }
-.reset-button:hover:not(:disabled) { background: #d6eae6; border-color: var(--primary-dark); }
+.reset-button:hover:not(:disabled) { background: #e6d8fa; border-color: var(--primary-dark); }
 .link-button { border: 0; background: transparent; color: var(--primary); font-weight: 700; font-size: 13px; display: inline-flex; align-items: center; gap: 3px; }
 
 /* TAMBAHAN: acuan tidak punya state disabled — wajib terlihat karena kondisi
@@ -128,14 +128,14 @@ button { cursor: pointer; }
 /* rev2 butir 3: radio/checkbox dikecualikan (`:where` menjaga spesifisitas) — kalau tidak, width:100%,
    padding, border, dan background kotak teks ikut mengenai radio di dalam .field dan menggesernya. */
 .field input:where(:not([type=radio], [type=checkbox])), .field select, .field textarea, .search input, .inline-input input { width: 100%; border: 1px solid #dfe4ea; border-radius: 6px; padding: 9px 10px; outline: 0; color: var(--foreground); background: #fff; font-size: 13px; }
-.field input:where(:not([type=radio], [type=checkbox])):focus, .field select:focus, .field textarea:focus, .search:focus-within { border-color: #7fb8ae; box-shadow: 0 0 0 3px #1c7b6f14; }
+.field input:where(:not([type=radio], [type=checkbox])):focus, .field select:focus, .field textarea:focus, .search:focus-within { border-color: #b58be6; box-shadow: 0 0 0 3px #6600cc14; }
 .field textarea { resize: vertical; }
 .select-wrap { position: relative; }
 .field select { appearance: none; padding-right: 30px; }
 .select-wrap svg { position: absolute; right: 10px; top: 10px; color: var(--muted); pointer-events: none; }
 .chips { display: flex; flex-wrap: wrap; gap: 6px; }
 .chip { background: #fff; border: 1px solid #dfe4ea; color: #667085; border-radius: 6px; padding: 7px 9px; font-size: 12px; display: inline-flex; align-items: center; gap: 4px; }
-.chip.selected { background: var(--blue-bg); border-color: #96c8bf; color: var(--primary); font-weight: 700; }
+.chip.selected { background: var(--blue-bg); border-color: #c9a8f0; color: var(--primary); font-weight: 700; }
 .radio-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 13px; }
 .radio-grid fieldset { border: 0; padding: 0; margin: 0; min-width: 0; }
 .radio-grid legend { margin-bottom: 7px; line-height: 1.35; }
@@ -156,8 +156,8 @@ button { cursor: pointer; }
 
 /* ── Hasil analisis ──────────────────────────────────────────────────────── */
 .result-content { display: flex; flex-direction: column; gap: 15px; }
-.result-hero { padding: 18px; border-radius: 9px; background: linear-gradient(135deg, #f1f8f6, #f8fcfb); border: 1px solid #d3e9e4; display: flex; justify-content: space-between; align-items: flex-start; }
-.result-label { color: #3f7d73; font-size: 11px; font-weight: 800; letter-spacing: 1px; }
+.result-hero { padding: 18px; border-radius: 9px; background: linear-gradient(135deg, #f6f0ff, #faf6ff); border: 1px solid #e4d5f7; display: flex; justify-content: space-between; align-items: flex-start; }
+.result-label { color: #6a3fa6; font-size: 11px; font-weight: 800; letter-spacing: 1px; }
 .hs-code { color: var(--navy); font-family: monospace; font-size: 33px; font-weight: 800; letter-spacing: -1px; margin: 7px 0 5px; }
 .result-hero p { margin: 0; color: #4d5f5b; font-size: 13px; }
 .badge { display: inline-flex; align-items: center; gap: 5px; border-radius: 100px; padding: 5px 8px; font-size: 11px; font-weight: 800; white-space: nowrap; }
@@ -184,7 +184,7 @@ button { cursor: pointer; }
 .reasoning { border-top: 1px solid var(--line); padding-top: 15px; }
 .reason-step { display: flex; align-items: flex-start; gap: 10px; padding: 13px 0; border-bottom: 1px solid #f0f2f5; }
 .reason-step.highlight { background: #fffaf0; margin: 0 -8px; padding-left: 8px; padding-right: 8px; border-radius: 6px; border-bottom: 0; }
-.step-number { flex-shrink: 0; width: 24px; height: 24px; border: 1px solid #d3e6e1; color: var(--primary); background: #f2f9f7; border-radius: 6px; font-family: monospace; font-size: 11px; font-weight: 700; }
+.step-number { flex-shrink: 0; width: 24px; height: 24px; border: 1px solid #dcc9f5; color: var(--primary); background: #f6f0ff; border-radius: 6px; font-family: monospace; font-size: 11px; font-weight: 700; }
 .reason-step > div { flex: 1; }
 .reason-step strong { font-size: 13px; }
 .reason-step p { margin: 5px 0; color: var(--muted); font-size: 12px; line-height: 1.5; }
@@ -225,7 +225,7 @@ button { cursor: pointer; }
 .master-detail { display: grid; grid-template-columns: 330px 1fr; gap: 14px; align-items: start; }
 .case-list { display: flex; flex-direction: column; gap: 7px; }
 .case-card { text-align: left; background: #fff; border: 1px solid var(--line); border-radius: 8px; padding: 13px; border-left: 3px solid transparent; }
-.case-card:hover, .case-card.selected { border-color: #a9d3cb; border-left-color: var(--primary); background: #f8fcfb; }
+.case-card:hover, .case-card.selected { border-color: #cdb2f2; border-left-color: var(--primary); background: #faf6ff; }
 .case-card-top, .case-card-bottom { display: flex; align-items: center; justify-content: space-between; }
 .case-card-top span:first-child, .case-card-bottom span { color: var(--muted); font-size: 11px; }
 .case-card strong { display: block; font-size: 13px; margin: 10px 0; }
@@ -238,7 +238,7 @@ button { cursor: pointer; }
 .detail-header p { color: var(--muted); margin: 0; font-size: 12px; }
 .success-text { color: var(--green); font-weight: 700; }
 .detail-result { display: grid; grid-template-columns: 210px 1fr; gap: 24px; border-bottom: 1px solid var(--line); padding-bottom: 20px; }
-.detail-code { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; padding: 16px; background: #f8fcfb; border-radius: 8px; }
+.detail-code { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; padding: 16px; background: #faf6ff; border-radius: 8px; }
 .detail-code span { font-size: 11px; color: var(--muted); font-weight: 800; letter-spacing: .8px; }
 .detail-code code { font-size: 23px; font-weight: 800; color: var(--navy); }
 .detail-copy h3 { font-size: 16px; margin: 5px 0 9px; }
@@ -259,7 +259,7 @@ button { cursor: pointer; }
 .queue-header h3 span { color: var(--muted); font-size: 12px; font-weight: 400; margin-left: 4px; }
 .small-search { max-width: 170px; height: 30px; }
 .review-card { border: 1px solid var(--line); border-radius: 8px; padding: 13px; margin-bottom: 8px; }
-.review-card:hover { border-color: #a9d3cb; }
+.review-card:hover { border-color: #cdb2f2; }
 .review-card-top { display: flex; justify-content: space-between; color: var(--muted); font-size: 11px; margin-bottom: 9px; }
 .urgent { color: var(--red); font-weight: 800; display: flex; align-items: center; gap: 4px; }
 .review-card strong { font-size: 13px; }
@@ -271,7 +271,7 @@ button { cursor: pointer; }
 .expert-panel .subheading { padding-bottom: 14px; border-bottom: 1px solid var(--line); }
 .expert-panel .panel-help { color: var(--muted); font-size: 12px; line-height: 1.5; }
 .candidate { display: flex; align-items: center; gap: 10px; border: 1px solid var(--line); border-radius: 7px; padding: 10px; margin: 8px 0; }
-.candidate.selected { border-color: #96c8bf; background: #f8fcfb; }
+.candidate.selected { border-color: #c9a8f0; background: #faf6ff; }
 .candidate > div { flex: 1; display: flex; flex-direction: column; gap: 4px; }
 .candidate code { font: 700 13px monospace; color: var(--primary); }
 .candidate span { color: var(--muted); font-size: 11px; }
@@ -381,11 +381,67 @@ button { cursor: pointer; }
 }
 
 /* ── Tambahan P1 (INTERPRETASI — tidak ada di acuan v0) ────────────────────── */
-/* Login: acuan v0 tidak punya layar login; kartu panel di tengah. */
-.login-page { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 24px; }
-.login-card { width: 100%; max-width: 390px; display: flex; flex-direction: column; gap: 4px; }
-.login-brand { gap: 11px; margin-bottom: 6px; }
-.login-sub { margin: 0 0 14px; color: var(--muted); font-size: 13px; }
+/* Login: disalin dari acuan v0 (app/login/page.tsx + globals.css .login-*).
+   Ukuran font = acuan +2px (skala yang sama dengan halaman lain). Perbedaan lain
+   ditandai INTERPRETASI. */
+.login-page { min-height: 100vh; display: grid; grid-template-columns: minmax(320px, 1fr) minmax(520px, 2fr); background: #fbfafc; }
+.login-visual { position: relative; overflow: hidden; min-height: 100vh; padding: 38px 46px 32px; display: flex; flex-direction: column; background: var(--primary); color: #fff; }
+.login-visual::after { content: ''; position: absolute; width: 260px; height: 260px; border: 1px solid #ffffff2b; border-radius: 50%; right: -100px; top: 15%; box-shadow: 0 0 0 28px #ffffff0d, 0 0 0 56px #ffffff08; }
+.login-visual-top, .login-visual-footer { position: relative; z-index: 1; display: flex; align-items: center; gap: 10px; }
+.login-brand-mark { background: #fff; color: var(--primary); }
+.login-brand-name { font-size: 17px; font-weight: 700; letter-spacing: -.2px; }
+.login-visual-copy { position: relative; z-index: 1; margin-top: auto; max-width: 430px; }
+.light-eyebrow { color: #eadcff; }
+.login-visual-copy h1 { margin: 13px 0 14px; max-width: 420px; font-size: clamp(30px, 3vw, 47px); line-height: 1.08; letter-spacing: -1.8px; }
+.login-visual-copy p { max-width: 390px; margin: 0; color: #efe5ff; font-size: 16px; line-height: 1.75; }
+.login-proof-list { display: flex; flex-wrap: wrap; gap: 9px 15px; margin-top: 25px; color: #fff; font-size: 13px; }
+.login-proof-list span { display: inline-flex; align-items: center; gap: 6px; }
+.login-proof-list svg { color: #d1ffbf; }
+.login-illustration { position: relative; z-index: 1; display: block; width: min(100%, 450px); height: auto; margin: 32px auto; mix-blend-mode: screen; border-radius: 24px; opacity: .96; }
+.login-visual-footer { color: #eadcff; font-size: 12px; }
+.login-form-side { display: grid; place-items: center; padding: 42px 60px; background: #fbfafc; }
+.login-form-wrap { width: min(100%, 430px); }
+.login-mobile-brand { display: none; }
+.login-heading { margin-bottom: 27px; }
+.login-heading h2 { margin: 10px 0 9px; color: #281d36; font-size: clamp(24px, 2.4vw, 32px); letter-spacing: -1.2px; }
+.login-heading p { margin: 0; color: #756b7e; font-size: 15px; line-height: 1.6; }
+.login-sso-actions { display: flex; flex-direction: column; gap: 10px; }
+.login-provider-button, .login-submit { min-height: 47px; width: 100%; display: flex; align-items: center; justify-content: center; gap: 10px; border-radius: 11px; font-weight: 600; font-size: 15px; transition: transform .15s, box-shadow .15s; }
+.login-provider-button { position: relative; border: 1px solid #e4dfea; background: #fff; color: #352a3d; box-shadow: 0 2px 8px #34214308; }
+.login-provider-button svg { position: absolute; right: 15px; color: #8a7f93; }
+.login-provider-button:hover, .login-submit:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 7px 18px #34214314; }
+.sso-glyph, .google-glyph { width: 21px; height: 21px; display: grid; place-items: center; border-radius: 6px; font-size: 13px; font-weight: 800; }
+.sso-glyph { background: #f0e8ff; color: var(--primary); }
+.google-glyph { color: #4285f4; border: 1px solid #e2e6ef; font-family: Arial, sans-serif; }
+.login-divider { display: flex; align-items: center; gap: 13px; margin: 25px 0 21px; color: #756b7e; font-size: 12px; }
+.login-divider::before, .login-divider::after { content: ''; height: 1px; flex: 1; background: #e8e0ea; }
+.login-form { display: flex; flex-direction: column; gap: 16px; }
+.login-field { display: flex; flex-direction: column; gap: 8px; color: #4a3d52; font-size: 13px; font-weight: 600; }
+.login-input-wrap { position: relative; display: flex; align-items: center; }
+.login-input-wrap > svg { position: absolute; left: 14px; color: #8a7f93; pointer-events: none; }
+.login-input-wrap input { width: 100%; height: 46px; padding: 0 14px 0 42px; border: 1px solid #e4dfea; border-radius: 10px; outline: none; background: #fff; color: #281d36; font-size: 14px; }
+.login-input-wrap input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px #6600cc14; }
+.login-submit { margin-top: 3px; border: 0; background: var(--primary); color: #fff; }
+.login-submit:hover:not(:disabled) { background: var(--primary-dark); }
+.login-submit:disabled { opacity: .5; cursor: not-allowed; }
+.login-notice { padding: 11px 13px; margin: 16px 0 0; border: 1px solid #dec8fa; border-radius: 9px; background: #f4edff; color: #5b3190; font-size: 13px; line-height: 1.5; }
+.login-form-wrap .notice { margin-top: 16px; }
+/* INTERPRETASI: disclaimer DJBC (G11) di login — acuan tidak punya; gaya mengikuti .login-terms v0. */
+.login-disclaimer { margin: 25px 0 0; color: #756b7e; font-size: 12px; line-height: 1.7; text-align: center; }
+/* INTERPRETASI: fokus keyboard terlihat untuk tombol login (acuan tidak mendefinisikan). */
+.login-provider-button:focus-visible, .login-submit:focus-visible, .login-input-wrap input:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+@media (max-width: 720px) {
+  .login-page { display: block; }
+  .login-visual { min-height: auto; padding: 24px 22px 28px; }
+  .login-visual-copy { margin-top: 54px; }
+  .login-visual-copy h1 { font-size: 31px; }
+  .login-illustration { max-height: 185px; object-fit: cover; margin: 24px auto 22px; }
+  .login-visual-footer { font-size: 11px; }
+  .login-form-side { padding: 35px 22px 42px; }
+  .login-mobile-brand { display: flex; align-items: center; gap: 9px; margin-bottom: 40px; color: #352a3d; font-size: 16px; font-weight: 700; }
+  .login-mobile-brand .brand-mark { width: 30px; height: 30px; }
+  .login-form-wrap { width: 100%; }
+}
 
 /* Footer disclaimer (sudah ada di aplikasi, acuan tidak punya). */
 .page-footer { border-top: 1px solid var(--line); padding: 18px 38px; text-align: center; }
@@ -424,8 +480,8 @@ body.modal-open { overflow: hidden; }
 /* Pilihan panjang (uraian BTKI): gaya .candidate, teks penuh. */
 .choice-list { display: flex; flex-direction: column; gap: 6px; border: 0; padding: 0; margin: 0; min-width: 0; }
 .choice { display: flex; align-items: flex-start; gap: 10px; text-align: left; line-height: 1.45; border: 1px solid #dfe4ea; border-radius: 6px; padding: 9px 10px; font-size: 13px; color: var(--foreground); background: #fff; cursor: pointer; }
-.choice:hover { border-color: #96c8bf; background: #f8fcfb; }
-.choice:has(input:checked) { border-color: #96c8bf; background: var(--blue-bg); }
+.choice:hover { border-color: #c9a8f0; background: #faf6ff; }
+.choice:has(input:checked) { border-color: #c9a8f0; background: var(--blue-bg); }
 /* rev2 butir 3: kotak radio/checkbox berukuran tetap 16px di kiri; margin atas = (tinggi baris − 16px) / 2
    agar sejajar dengan baris pertama teks. */
 .choice input, .candidate input, .check-row input { flex: none; width: 16px; height: 16px; }
@@ -533,7 +589,7 @@ body.modal-open { overflow: hidden; }
 .data-table .primary-button, .data-table .outline-button, .data-table .danger-button { height: auto; min-height: 28px; padding: 4px 9px; font-size: 12px; margin: 0; }
 .decision-cell { display: flex; flex-direction: column; gap: 4px; min-width: 190px; }
 .cell-input { width: 100%; border: 1px solid #dfe4ea; border-radius: 6px; padding: 6px 8px; font-size: 12px; background: #fff; color: var(--foreground); }
-.cell-input:focus { outline: 0; border-color: #7fb8ae; box-shadow: 0 0 0 3px #1c7b6f14; }
+.cell-input:focus { outline: 0; border-color: #b58be6; box-shadow: 0 0 0 3px #6600cc14; }
 .diff-block { border-top: 1px solid #f0f2f5; padding-top: 10px; margin-top: 10px; }
 .diff-block > summary { cursor: pointer; font-size: 13px; font-weight: 700; color: #536070; }
 .code-block { background: #f8fafc; border: 1px solid var(--line); border-radius: 8px; padding: 10px; font-family: monospace; font-size: 12px; line-height: 1.5; overflow: auto; max-height: 260px; margin: 8px 0 0; }
