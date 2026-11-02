@@ -140,8 +140,9 @@ public class GroqTermSuggester(IConfiguration config, ILogger<GroqTermSuggester>
         };
         // response_format is a real-Groq feature; some proxies reject it. The prompt already forces JSON.
         object payload = BaseUrl.Contains("api.groq.com", StringComparison.OrdinalIgnoreCase)
-            ? new { model = Model, temperature = 0, response_format = new { type = "json_object" }, messages }
-            : new { model = Model, temperature = 0, messages };
+            ? new { model = Model, temperature = 0, stream = false, response_format = new { type = "json_object" }, messages }
+            // stream=false: some routers (9router, ag/* models) answer with SSE chunks unless told not to
+            : new { model = Model, temperature = 0, stream = false, messages };
         var body = JsonSerializer.Serialize(payload);
 
         try
