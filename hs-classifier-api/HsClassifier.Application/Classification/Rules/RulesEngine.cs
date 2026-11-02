@@ -1,4 +1,4 @@
-﻿using HsClassifier.Domain.Classification;
+using HsClassifier.Domain.Classification;
 
 namespace HsClassifier.Application.Classification.Rules;
 
@@ -183,7 +183,7 @@ public class RulesEngine(EssentialCharacterOptions? essentialCharacter = null)
         // Task 10.1: 3(a) — the heading whose description covers the most facts is the most specific;
         // structural specificity (residual "other", parts) only breaks ties. Without this, 3(c) ended up
         // choosing between weak matches purely by number (Req 13.3: no padding with weak candidates).
-        var scores = candidates.Select(c => (c, Score: Math.Round(HeadingScore(facts, c), 3) * 10 + 2.0 * Focus(facts, c) + SpecificityScore(c))).ToList();
+        var scores = candidates.Select(c => (c, Score: Math.Round(HeadingScore(facts, c), 3) * 10 + 2.0 * Focus(facts, c) + SpecificityScore(c) + MotorFit(facts, c))).ToList();
         var maxScore = scores.Max(x => x.Score);
         var mostSpecific = scores.Where(x => x.Score == maxScore).ToList();
 
@@ -509,6 +509,32 @@ public class RulesEngine(EssentialCharacterOptions? essentialCharacter = null)
     }
 
     // ─── Helpers ───────────────────────────────────────────────────────────────
+
+    private static readonly System.Text.RegularExpressions.Regex Unmotorized = new(
+        @"\b(tidak bermotor|bukan bermotor|tanpa motor)\b", System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+    private static readonly System.Text.RegularExpressions.Regex Motorized = new(
+        @"\b(bermotor|dengan motor|dilengkapi (dengan )?motor|motor bantu)\b", System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+    private static readonly System.Text.RegularExpressions.Regex PoweredAnswer = new(
+        @"motor|elektrik|listrik|bensin|diesel", System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+
+    /// <summary>
+    /// A preference (not a rule) between headings that differ by having a motor, from the "Cara kerja" answer:
+    /// manual goods favour "tidak bermotor" headings and avoid "dengan motor" ones, powered goods the other way round.
+    /// Zero when the answer is missing or mixed, or the heading says nothing about motors.
+    /// </summary>
+    public static double MotorFit(FactSet facts, CandidateHeading c)
+    {
+        var power = facts.GetValue("power_source") ?? "";
+        var manual = power.Contains("manual", StringComparison.OrdinalIgnoreCase) || power.Contains("tanpa tenaga", StringComparison.OrdinalIgnoreCase);
+        var powered = PoweredAnswer.IsMatch(power);
+        if (manual == powered) return 0;                       // missing, or both chosen
+
+        var text = c.Description.Split(" / ")[0];
+        var without = Unmotorized.IsMatch(text);
+        var with = Motorized.IsMatch(Unmotorized.Replace(text, " "));
+        if (manual) return without ? 3 : with ? -3 : 0;
+        return without ? -3 : 0;
+    }
 
     private static double SpecificityScore(CandidateHeading c)
     {
