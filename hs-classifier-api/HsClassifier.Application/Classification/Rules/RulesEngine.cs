@@ -183,7 +183,7 @@ public class RulesEngine(EssentialCharacterOptions? essentialCharacter = null)
         // Task 10.1: 3(a) — the heading whose description covers the most facts is the most specific;
         // structural specificity (residual "other", parts) only breaks ties. Without this, 3(c) ended up
         // choosing between weak matches purely by number (Req 13.3: no padding with weak candidates).
-        var scores = candidates.Select(c => (c, Score: Math.Round(HeadingScore(facts, c), 3) * 10 + 2.0 * Focus(facts, c) + SpecificityScore(c) + MotorFit(facts, c))).ToList();
+        var scores = candidates.Select(c => (c, Score: Math.Round(HeadingScore(facts, c), 3) * 10 + 2.0 * Focus(facts, c) + SpecificityScore(c) + MotorFit(facts, c) + (c.AiEndorsed ? AiEndorsementBonus : 0))).ToList();
         var maxScore = scores.Max(x => x.Score);
         var mostSpecific = scores.Where(x => x.Score == maxScore).ToList();
 
@@ -509,6 +509,9 @@ public class RulesEngine(EssentialCharacterOptions? essentialCharacter = null)
     }
 
     // ─── Helpers ───────────────────────────────────────────────────────────────
+
+    // Worth about one tenth of heading-text overlap: enough to settle a near tie, never to overrule a clearly better match
+    private const double AiEndorsementBonus = 1.0;
 
     private static readonly System.Text.RegularExpressions.Regex Unmotorized = new(
         @"\b(tidak bermotor|bukan bermotor|tanpa motor)\b", System.Text.RegularExpressions.RegexOptions.IgnoreCase);

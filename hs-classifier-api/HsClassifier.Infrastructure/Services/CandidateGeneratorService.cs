@@ -197,7 +197,7 @@ public class CandidateGeneratorService(HsClassifierDbContext db, IVersionManager
         var dict = rows.DistinctBy(r => r.Code).ToDictionary(r => r.Code, r => new CandidateHeading
         {
             Code = r.Code, Description = r.DescriptionId, ChapterCode = r.ChapterCode,
-            GenerationSource = "AI_SUGGESTION", RelevanceScore = 0.5, SourceId = r.SourceId,
+            GenerationSource = "AI_SUGGESTION", RelevanceScore = 0.5, SourceId = r.SourceId, AiEndorsed = true,
         }, StringComparer.OrdinalIgnoreCase);
         var accepted = dict.Keys.ToList();
 

@@ -185,29 +185,32 @@ public class ClassificationOrchestrator(
             var opinion = await TryAiSuggestionAsync(input, facts, ct, secondOpinion: true);
             if (opinion.Candidates.Count > 0)
             {
-                var known = candidates.Select(c => c.Code).ToHashSet();
-                var added = opinion.Candidates.Where(c => !known.Contains(c.Code)).ToList();
+                var known = candidates.ToDictionary(c => c.Code);
+                var added = opinion.Candidates.Where(c => !known.ContainsKey(c.Code)).ToList();
+                // Headings the database already had and the AI also named become endorsed (a tie-breaker only)
+                var endorsed = opinion.Candidates.Where(c => c.AiEndorsed && known.TryGetValue(c.Code, out var k) && !k.AiEndorsed)
+                    .Select(c => known[c.Code]).ToList();
+                foreach (var k in endorsed) k.AiEndorsed = true;
                 var step = opinion.Step!;
-                if (added.Count == 0)
-                    step.Reason += opinion.Candidates.Any(c => c.Code == result.LockedHeading)
-                        ? " AI mengusulkan pos yang sama dengan hasil database."
-                        : " Pos usulan AI sudah termasuk kandidat database.";
+                if (added.Count == 0 && endorsed.Count == 0)
+                    step.Reason += " Pos usulan AI sudah termasuk kandidat database.";
                 else
                 {
+                    var before = result.LockedHeading;
                     candidates = candidates.Concat(added).ToList();
                     result = _rules.ApplyKumHs(facts, candidates);
-                    // Decided on a heading only the AI proposed: that is AI-derived, so it is flagged and capped like the fallback
-                    var fromAi = result.LockedHeading is not null && added.Any(c => c.Code == result.LockedHeading);
-                    step.Reason += fromAi ? $" Pos {result.LockedHeading} berasal dari usulan AI dan dinilai aturan."
-                                          : $" Pos tambahan dari AI ditimbang aturan: {string.Join(", ", added.Select(c => c.Code))}.";
-                    if (fromAi)
+                    // Decided on a heading the AI proposed: that is AI-derived, so it is flagged and capped like the fallback
+                    var fromAi = result.LockedHeading is not null && candidates.Any(c => c.Code == result.LockedHeading && (c.AiEndorsed || added.Contains(c)));
+                    step.Reason += result.LockedHeading == before
+                        ? " AI mengusulkan pos yang sama dengan hasil database."
+                        : $" Aturan memilih pos {result.LockedHeading} (sebelumnya {before}) setelah usulan AI ditimbang.";
+                    if (fromAi && result.LockedHeading != before)
                     {
                         step.Decision = CandidateDecision.Unresolved;
                         if (result.Confidence == DomainConf.High && facts.GetValue(FactExtractionService.SubheadingChoice) is null)
                             result.Confidence = DomainConf.Medium;
                     }
-                }
-                result.ReasoningChain.Insert(0, step);
+                }                result.ReasoningChain.Insert(0, step);
             }
         }
 

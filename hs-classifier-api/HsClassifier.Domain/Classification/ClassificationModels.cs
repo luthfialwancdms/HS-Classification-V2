@@ -113,6 +113,8 @@ public class CandidateHeading
     public List<string> EnParagraphs { get; set; } = new();
     /// <summary>Full text of the heading's EN "includes ..." paragraphs (KUM HS 1 checks whether they name the goods).</summary>
     public List<string> EnInclusions { get; set; } = new();
+    /// <summary>The AI named this 4-digit heading and the database confirmed it exists. Only a tie-breaker (KUM HS 3a).</summary>
+    public bool AiEndorsed { get; set; }
     /// <summary>Exclusion/referral clauses from the chapter and section notes and the heading's EN, in full (KUM HS 1 reads them).</summary>
     public List<ExclusionNote> ExclusionNotes { get; set; } = new();
     public List<string> RequiredDiscriminators { get; set; } = new();
