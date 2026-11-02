@@ -42,12 +42,20 @@ public static class NoteExclusions
         return null;
     }
 
+    // A clause with a condition ("yang ...", "untuk ...", "if ...") excludes only the goods that meet it. The plain goods
+    // name is not that item, so such a clause never counts. Missing an exclusion costs a human look; a false one removes
+    // the right heading, so the guard errs on the side of keeping.
+    private static readonly Regex Qualifier = new(
+        @"\b(yang|untuk|dengan|tanpa|jika|bila|apabila|kecuali|khusus|dirancang|digunakan|diolah|selain|tetapi|berisi|terbuat|dibuat|ketika|sebagai|hanya|tertentu|" +
+        @"that|which|for|with|without|if|when|unless|except|specially|designed|used|made|only|whose)\b", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
     private static List<string> ItemsOf(string clause)
     {
         var text = clause.Contains(':') ? clause[(clause.LastIndexOf(':') + 1)..] : clause;
         text = Marker.Replace(text, "");
         text = Parenthetical.Replace(text, " ");
         text = Redirect.Replace(text, "");
+        if (Qualifier.IsMatch(text)) return [];
         return ItemSplit.Split(text).Select(Normalize).Where(i => i.Length > 0).ToList();
     }
 

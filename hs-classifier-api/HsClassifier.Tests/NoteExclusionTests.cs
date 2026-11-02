@@ -75,6 +75,26 @@ public class NoteExclusionTests
         Assert.Null(NoteExclusions.Find(["traktor"], note, Cand("8701")));
     }
 
+    [Theory]
+    [InlineData("biskuit", "Bab ini tidak mencakup: (a) Biskuit atau produk lain yang dibuat dari tepung, diolah khusus untuk makanan hewan (pos 23.09)")]
+    [InlineData("kasur", "Bagian ini tidak mencakup: Kasur, bantal kepala atau bantalan kursi, berisi udara atau air, dari Bab 39, 40 atau 63")]
+    [InlineData("pompa", "This heading does not cover: (a) Pumps specially designed for medical use (heading 90.18)")]
+    [InlineData("pumps", "This heading does not cover: (a) Pumps if fitted with a motor (heading 90.18)")]
+    public void A_clause_that_qualifies_the_item_is_not_an_exclusion_of_the_plain_goods(string name, string text)
+    {
+        // "biskuit ... for animals" excludes animal biscuits, not biscuits; a false exclusion is worse than a missed one
+        Assert.Null(NoteExclusions.Find([name], Note(text), Cand("1905")));
+    }
+
+    [Fact]
+    public void A_plain_item_in_a_list_without_qualifiers_still_excludes()
+    {
+        var note = Note("Bab ini tidak meliputi:\nBatugiling, batu asah atau barang lainnya dari Bab 68;\nMesin (misalnya, pompa) dari keramik (pos 69.14)");
+
+        Assert.NotNull(NoteExclusions.Find(["batu asah"], note, Cand("8413")));
+        Assert.Null(NoteExclusions.Find(["pompa"], note, Cand("8413")));
+    }
+
     [Fact]
     public void A_clause_that_sends_the_goods_nowhere_does_not_exclude()
     {
