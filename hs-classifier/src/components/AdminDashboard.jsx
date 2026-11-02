@@ -215,10 +215,77 @@ function DiffView({ version, onClose }) {
   )
 }
 
+const SIDE_STATUS = { DETERMINED: 'Ditetapkan', NEED_CLARIFICATION: 'Perlu klarifikasi', NEED_EXPERT_REVIEW: 'Review ahli', ERROR: 'Gagal validasi', EXCEPTION: 'Error' }
+const sideText = (s) => s.finalCode || SIDE_STATUS[s.status] || s.status
+
+/** Same cases on the active version and on a draft; saves nothing and does not call the AI. */
+function ShadowView({ version, onClose }) {
+  const [custom, setCustom] = useState('')
+  const [data, setData] = useState(null)
+  const { busy, error, run } = useAction()
+
+  const start = () => run(async () => {
+    setData(null)
+    const cases = custom.trim() ? JSON.parse(custom) : undefined
+    setData(await apiFetch(`/api/admin/versions/${version.id}/shadow-run`, { method: 'POST', body: JSON.stringify({ cases }) }))
+  })
+
+  return (
+    <div className="result-section">
+      <div className="subheading">
+        <div>Shadow run "{version.name}" vs versi aktif</div>
+        <button className="outline-button" onClick={onClose}>Tutup</button>
+      </div>
+      <p className="hint">
+        Kasus yang sama dijalankan di versi aktif dan di draft ini. Tidak ada yang disimpan, kuota tidak terpakai, dan AI tidak dipanggil,
+        jadi perbedaan datang dari isi data (termasuk EN dan Catatan).
+      </p>
+      <details className="diff-block">
+        <summary>Kasus sendiri (JSON, opsional; kosong = daftar bawaan)</summary>
+        <label className="field">
+          <span>Contoh: [{'{'}"name":"Pompa","facts":{'{'}"generic_name":"pompa"{'}'}{'}'}]</span>
+          <textarea id="shadow-cases" rows={5} value={custom} onChange={e => setCustom(e.target.value)} className="mono" />
+        </label>
+      </details>
+      <button className="primary-button" disabled={busy} onClick={start}>{busy ? 'Menjalankan...' : 'Jalankan shadow run'}</button>
+      <Feedback error={error} />
+      {data && (
+        <>
+          <p className="hint" role="status">{data.changed} dari {data.total} kasus berubah.</p>
+          <div className="table-scroll">
+            <table className="data-table">
+              <caption>Hasil shadow run</caption>
+              <thead>
+                <tr>
+                  <th scope="col">Kasus</th><th scope="col">Aktif: {data.active.name}</th>
+                  <th scope="col">Draft: {data.draft.name}</th><th scope="col">Berubah</th><th scope="col">Catatan yang berperan (draft)</th>
+                </tr>
+              </thead>
+              <tbody>
+                {data.rows.map(r => (
+                  <tr key={r.name}>
+                    <td>{r.name}</td>
+                    <td className="mono">{sideText(r.active)}</td>
+                    <td className="mono">{sideText(r.draft)}</td>
+                    <td className={r.changed ? 'text-warning' : undefined}>{r.changed ? 'Ya' : 'Tidak'}</td>
+                    <td>{r.draft.notes.length ? r.draft.notes.join(' | ') : '-'}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </>
+      )}
+    </div>
+  )
+}
+
 function VersionsPanel({ versions, reload }) {
   const { busy, error, notice, setNotice, run } = useAction()
   const [diffId, setDiffId] = useState(null)
+  const [shadowId, setShadowId] = useState(null)
   const diffVersion = versions.find(v => v.id === diffId)
+  const shadowVersion = versions.find(v => v.id === shadowId)
   const act = (id, action) => run(async () => {
     const res = await apiFetch(`/api/admin/versions/${id}/${action}`, { method: 'POST' })
     setNotice(res.message); await reload()
@@ -261,7 +328,12 @@ function VersionsPanel({ versions, reload }) {
                             title={v.state !== 'Indexed' ? 'Hanya versi berstatus Indexed yang dapat diaktifkan' : undefined}>Aktifkan</button>
                           {['Indexed', 'Committed'].includes(v.state) &&
                             <button className="outline-button" onClick={() => setDiffId(v.id)}>Bandingkan</button>}
+                          {['Indexed', 'Committed'].includes(v.state) &&
+                            <button className="outline-button" onClick={() => setShadowId(v.id)}>Shadow run</button>}
                         </>}
+                    {['Indexed', 'Active'].includes(v.state) &&
+                      <button className="outline-button" disabled={busy} onClick={() => act(v.id, 'clone')}
+                        title="Salin versi ini menjadi draft baru untuk memuat EN dan Catatan">Klon jadi draft</button>}
                   </div>
                 </td>
               </tr>
@@ -272,6 +344,7 @@ function VersionsPanel({ versions, reload }) {
       <p className="hint">Mengaktifkan versi menonaktifkan versi lain di rentang tanggal yang sama. Riwayat klasifikasi tetap tersimpan.</p>
       <Feedback error={error} notice={notice} />
       {diffVersion && <DiffView key={diffVersion.id} version={diffVersion} onClose={() => setDiffId(null)} />}
+      {shadowVersion && <ShadowView key={shadowVersion.id} version={shadowVersion} onClose={() => setShadowId(null)} />}
       <NewVersionForm reload={reload} />
     </>
   )
@@ -559,15 +632,21 @@ function DocxPanel({ versions, reload, openBatch }) {
   const [versionId, setVersionId] = useState('')
   const { busy, error, notice, setNotice, run } = useAction()
 
+  const [replace, setReplace] = useState(false)
+
   const reset = () => setReport(null)
   const isBtki = kind === 'btki'
+  // EN and Catatan are only loaded into a draft that is not active (the active version is never changed)
+  const isDraftKind = !isBtki
   // BTKI uploads go against a version still being prepared (re-upload allowed after a failed dry run)
-  const uploadable = versions.filter(v => ['Uploaded', 'DryRunFailed'].includes(v.state))
+  const uploadable = isBtki ? versions.filter(v => ['Uploaded', 'DryRunFailed'].includes(v.state))
+    : versions.filter(v => !v.isActive && ['Committed', 'Indexed'].includes(v.state))
   const version = versions.find(v => v.id === versionId)
 
   const analyse = () => run(async () => {
     reset()
-    const path = isBtki ? `/api/admin/btki/upload?versionId=${versionId}` : `/api/admin/${kind}/upload`
+    const path = isBtki ? `/api/admin/btki/upload?versionId=${versionId}`
+      : `/api/admin/${kind}/upload?versionId=${versionId}`
     setReport(await upload(path, isBtki ? files : files[0], isBtki ? 'files' : 'file'))
     if (isBtki) await reload()
   })
@@ -575,9 +654,14 @@ function DocxPanel({ versions, reload, openBatch }) {
     const res = await upload(`/api/admin/btki/commit/${versionId}`, files, 'files')
     setNotice(`${res.message} (${res.inserted} baris). Aktifkan versi di tab Versi.`); await reload()
   })
+  const commitDraft = () => run(async () => {
+    const res = await upload(`/api/admin/${kind}/commit/${versionId}${replace ? '?replace=true' : ''}`, files[0])
+    setNotice(`${res.message} Bandingkan dengan shadow run di tab Versi sebelum mengaktifkan.`)
+  })
 
   const dry = report?.dryRun
   const canCommit = isBtki && version?.state === 'ReadyToCommit'
+  const canCommitDraft = isDraftKind && !!report?.batchId && report.errorCount === 0
 
   return (
     <>
@@ -592,19 +676,17 @@ function DocxPanel({ versions, reload, openBatch }) {
         <label className="field">
           <span>Jenis dokumen</span>
           <div className="select-wrap">
-            <select id="docx-kind" value={kind} onChange={e => { setKind(e.target.value); setFiles([]); reset() }}>
+            <select id="docx-kind" value={kind} onChange={e => { setKind(e.target.value); setFiles([]); setVersionId(''); setReplace(false); reset() }}>
               {Object.entries(DOCX_KINDS).map(([k, l]) => <option key={k} value={k}>{l}</option>)}
             </select>
             <ChevronDown size={15} aria-hidden="true" />
           </div>
         </label>
-        {isBtki && (
-          <label className="field">
-            <span>Versi target</span>
-            <VersionSelect id="docx-version" versions={report ? versions : uploadable} value={versionId}
-              onChange={v => { setVersionId(v); reset() }} />
-          </label>
-        )}
+        <label className="field">
+          <span>{isBtki ? 'Versi target' : 'Draft target (bukan versi aktif)'}</span>
+          <VersionSelect id="docx-version" versions={report ? versions : uploadable} value={versionId}
+            onChange={v => { setVersionId(v); reset() }} />
+        </label>
         <label className="field">
           <span>{isBtki ? 'File .docx, atau satu/banyak .pdf resmi' : 'File .docx'}</span>
           <input id="docx-file" key={kind} type="file" accept={isBtki ? '.docx,.pdf' : '.docx'} multiple={isBtki}
@@ -613,12 +695,15 @@ function DocxPanel({ versions, reload, openBatch }) {
         </label>
       </div>
 
-      <button className="primary-button" disabled={files.length === 0 || busy || (isBtki && !versionId)} onClick={analyse}>
+      <button className="primary-button" disabled={files.length === 0 || busy || !versionId} onClick={analyse}>
         {busy && !report ? 'Mem-parsing...' : 'Parse & Dry Run'}
       </button>
 
       {isBtki && uploadable.length === 0 && !report && (
         <p className="notice"><AlertTriangle size={16} aria-hidden="true" /><span>Belum ada versi yang siap di-upload. Buat dulu lewat "Tambah Versi" di tab Versi.</span></p>
+      )}
+      {isDraftKind && uploadable.length === 0 && !report && (
+        <p className="notice"><AlertTriangle size={16} aria-hidden="true" /><span>Belum ada draft. Klon versi aktif lewat tombol "Klon jadi draft" di tab Versi, lalu muat dokumen ke draft itu.</span></p>
       )}
 
       {report && (
@@ -679,7 +764,21 @@ function DocxPanel({ versions, reload, openBatch }) {
               )}
             </div>
           ) : (
-            <p className="hint">Commit untuk {DOCX_KINDS[kind]} belum tersedia di API backend.</p>
+            <div className="result-section">
+              <label className="field">
+                <span><input id="docx-replace" type="checkbox" checked={replace} onChange={e => setReplace(e.target.checked)} /> Ganti data {DOCX_KINDS[kind]} yang sudah ada di draft ini</span>
+              </label>
+              <div className="row-actions">
+                <button className="primary-button" disabled={!canCommitDraft || busy} onClick={commitDraft}>Muat ke Draft</button>
+                <span className="hint">Gunakan file yang sama dengan yang divalidasi. Versi aktif tidak berubah.</span>
+              </div>
+              {!canCommitDraft && (
+                <p className="notice danger">
+                  <AlertTriangle size={16} aria-hidden="true" />
+                  <span>{report.errorCount > 0 ? 'Muat diblokir: dry run masih berisi error. Perbaiki file lalu upload ulang.' : 'Muat diblokir: dry run belum tercatat untuk draft ini.'}</span>
+                </p>
+              )}
+            </div>
           )}
         </div>
       )}
