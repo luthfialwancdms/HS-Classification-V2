@@ -77,17 +77,18 @@ Env: `VITE_API_URL` (default `http://localhost:5284`) — satu-satunya variabel 
 
 | ID | Perilaku yang harus tetap | Status P1 |
 |---|---|---|
-| G1 | Tanpa `hs_token` di localStorage → hanya layar Login, header/nav tidak dirender | ✅ `hasHeader:false`, `.login-card` tampil |
+| G1 | Tanpa `hs_token` di localStorage → hanya layar Login, header/nav tidak dirender | ✅ `hasHeader:false`, `.login-page` tampil (login v0, lihat G12) |
 | G2 | Login: field email (`type=email`, `autoComplete=username`) + password (`autoComplete=current-password`), keduanya `required` | ✅ atribut & asosiasi label (1 label per input) terverifikasi |
-| G3 | Login sukses → simpan `hs_token` + `hs_role`, masuk ke shell | ⬜ belum diuji dengan kredensial nyata (kode `login()` tidak berubah; shell terbukti render saat token ada) |
-| G4 | Login gagal → pesan error dari API tampil (`role="alert"`), tombol jadi `Memproses...` selama request | ⬜ belum diuji (butuh login gagal sungguhan); markup error = `.notice.danger` + `role="alert"` |
+| G3 | Login sukses → simpan `hs_token` + `hs_role`, masuk ke shell | ✅ (stub `fetch`, login v0) respons `{token, role}` → layar login hilang, shell render, `hs_token`=`tok-abc`, `hs_role`=`Classifier`, tepat 1 `POST /api/auth/login` dengan body `{email,password}`. Kredensial nyata ke backend asli tetap belum diuji. |
+| G4 | Login gagal → pesan error dari API tampil (`role="alert"`), tombol jadi `Memproses...` selama request | ✅ (stub `fetch`, login v0) 401 `{message:'Kredensial salah dari API.'}` → `role="alert"` memuat teks itu apa adanya, `hs_token` tetap kosong; Enter di kolom password mengirim login; saat menunggu tombol `Memproses...`, `disabled`, opacity .5 |
 | G5 | 401 dari endpoint non-login → token dihapus, kembali ke layar Login | ✅ teramati saat token dummy dipakai (401 → token/role `null` → login) |
 | G6 | Nav 4 view + filter role: Klasifikasi & Riwayat = semua; Review Ahli = `Admin`,`ExpertReviewer`; Admin Data Center = `Admin` | ✅ Admin 4 item · ExpertReviewer 3 · Classifier 2 (nav di sidebar) |
 | G7 | View aktif ditandai `aria-current="page"` | ✅ `aria-current=page` pada Klasifikasi saat aktif |
 | G8 | Badge `V2 · DATABASE MODE` tetap tampil di header | ✅ ada di `.brand-name` (`.beta`) |
 | G9 | Routing: path `/`, `/riwayat`, `/review`, `/admin`; tombol back/forward browser bekerja; URL langsung membuka view yang benar | ✅ `pushState` → `/riwayat`; `history.back()` → `/`; `viewFromPath` tidak berubah |
 | G10 | `Keluar` menghapus token/role serta mengosongkan hasil & state klarifikasi | ✅ klik Keluar → login, `hs_token`/`hs_role` = `null` |
-| G11 | Footer disclaimer "rekomendasi, bukan penetapan resmi DJBC" tetap ada | ✅ teks utuh di `.page-footer` |
+| G11 | Footer disclaimer "rekomendasi, bukan penetapan resmi DJBC" tetap ada | ✅ teks utuh di `.page-footer`; sejak login v0 teks yang sama juga tampil di layar login (`.login-disclaimer`) |
+| G12 | Login v0: tombol `Continue with SSO` / `Continue with Google` adalah `type="button"` placeholder; klik hanya menampilkan `role="status"` ("Masuk dengan SSO/Google belum tersedia."), hilang saat email/password diubah atau tombol lain ditekan; tidak ada request | ✅ (stub `fetch`) setelah klik SSO lalu Google: hitungan request = **0**, URL tetap `/`; pesan hilang saat mengetik; urutan Tab: SSO → Google → email → password → Sign in (ikut urutan DOM referensi, lihat RINGKASAN §10); semua fokus `:focus-visible` |
 
 Catatan P1 — perubahan yang **bukan** tampilan:
 - `switchView` mendapat satu baris tambahan `setMenuOpen(false)` (menutup drawer mobile setelah pindah view). Logika `pushState` + `setView` tidak berubah.

@@ -95,13 +95,13 @@ Catatan: acuan v0 menumpuk form & hasil dalam satu kolom di semua lebar. 2 kolom
 ## 4. Daftar INTERPRETASI (tidak ada di acuan v0)
 
 ### 4.1 Kelas CSS baru
-`.data-table` (+`caption/th/td/.num`), `.table-scroll`, `.mono`, `.badge.neutral`, `.badge.info`, `.state.info`, `.state.danger`, `.notice.danger`, `.notice.success`, `.login-page`, `.login-card`, `.login-brand`, `.login-sub`, `.page-footer`, `.clarify-wrap`, `.clarify-panel`, `.clarify-questions`, `.field-label`, `.hint`, `.choice-list`, `.choice`, `.sidebar-overlay`, `.result-column`, `.span-2`, `.result-section`, `.result-unresolved`, `.flag-list`, `.spinner`, `.reason-list`, `.reason-details`, `.rule-chip`, `.reason-body`, `.review-request`, `.case-date`, `.pager`, `.detail-column`, `.empty-state.compact`, `.metric-grid`, `.metric`, `.row-actions`, `.decision-cell`, `.cell-input`, `.diff-block`, `.code-block`, `.check-row`, `.file-input`, `.text-danger/.text-success/.text-warning`, `.val-old`, `.val-new`.
+`.data-table` (+`caption/th/td/.num`), `.table-scroll`, `.mono`, `.badge.neutral`, `.badge.info`, `.state.info`, `.state.danger`, `.notice.danger`, `.notice.success`, `.login-*` (disalin dari v0, lihat §10; `.login-card/.login-brand/.login-sub` dihapus), `.page-footer`, `.clarify-wrap`, `.clarify-panel`, `.clarify-questions`, `.field-label`, `.hint`, `.choice-list`, `.choice`, `.sidebar-overlay`, `.result-column`, `.span-2`, `.result-section`, `.result-unresolved`, `.flag-list`, `.spinner`, `.reason-list`, `.reason-details`, `.rule-chip`, `.reason-body`, `.review-request`, `.case-date`, `.pager`, `.detail-column`, `.empty-state.compact`, `.metric-grid`, `.metric`, `.row-actions`, `.decision-cell`, `.cell-input`, `.diff-block`, `.code-block`, `.check-row`, `.file-input`, `.text-danger/.text-success/.text-warning`, `.val-old`, `.val-new`.
 
 ### 4.2 State & fokus yang ditambahkan ke kelas v0
 `:disabled` (semua varian tombol) — acuan tidak punya gaya disabled padahal kondisi enabled/disabled adalah perilaku yang dibekukan; `:focus-visible` untuk tombol, `.nav-item`, `.chip`, `.admin-nav button`, `.case-card`, `.mobile-menu`, `.file-input`, `.check-row input`, `.choice input`, `.candidate input`, `summary`.
 
 ### 4.3 Struktur/isi
-- Login: kartu `.panel` di tengah (v0 tidak punya login), error `.notice.danger`.
+- Login: *(digantikan oleh §10)* kini dua kolom mengikuti v0; error API tetap `.notice.danger`.
 - Footer disclaimer dipertahankan (bukan bagian v0).
 - Sidebar: **tanpa** pemilih workspace, notifikasi, Pengaturan, badge angka nav, dropdown user (Q8). Version card hanya memuat teks benar ("BTKI 2022", "Mode database").
 - Banner klarifikasi memakai `.panel` + `.notice` + `.field`/`.choice`.
@@ -177,3 +177,27 @@ Tab ke-6 di Admin Data Center (hanya Admin). Aturan "hanya lapisan tampilan" dar
 - Hari mengikuti offset konfigurasi server (default UTC+7); UI menampilkan zonanya.
 
 **Sumber verifikasi:** lint + build; DOM + stub `fetch` (22 pemeriksaan, lihat bagian AI di `CHECKLIST_FUNGSI.md`). **Tidak** terverifikasi: respons nyata backend/AI (format `usage` proxy, `max_tokens` kecil pada model tertentu), penilaian visual, dan perangkat/peramban selain Chrome.
+
+---
+
+## 10. Login mengikuti v0 (branch `restyle/login-v0`)
+
+Layar login kini mengikuti `ui-design-for-hs-classification-intelligence/app/login/page.tsx` (dua kolom: panel visual ungu + form). Hanya markup `LoginScreen`, `design-system.css`, dan satu aset yang berubah; handler `submit`, `login()`, field `email`/`password`, key `hs_token`/`hs_role`, alur redirect, dan `services/` tidak berubah. Satu state tampilan ditambahkan (`info`).
+
+**Keputusan pengguna:** teks tetap Inggris (disalin persis dari v0); tema **ungu di seluruh aplikasi** (menggantikan teal D1/D2); `PT Nusantara Logistik` → `PT Solusi Manufaktur Teknologi`; kontrol non-fungsional v0 dibuang; brand `HS Intelligence` saja; disclaimer DJBC ditambahkan; ukuran font = acuan +2px (konsisten dengan halaman lain); gambar boleh dikompres; tombol `Sign in` memakai panah.
+
+**Tombol SSO dan Google adalah placeholder tanpa fungsi.** `type="button"`, tanpa jaringan/OAuth/client ID/library; klik hanya menampilkan `role="status"` ("Masuk dengan SSO belum tersedia." / "Masuk dengan Google belum tersedia."). Ikon "S"/"G" adalah huruf (bukan logo asli), `aria-hidden`.
+
+**Kontrol di v0 yang TIDAK dibuat:** `Remember me`, `Forgot password?`, toggle tampil/sembunyi password, `Terms of Service`, `Privacy Policy`.
+
+**Teks disalin persis:** `HS Intelligence`, `CUSTOMS INTELLIGENCE PLATFORM`, `Make every import decision with confidence.`, `Classify goods faster, keep your team aligned, and move through customs with clarity.`, `BTKI 2022 ready`, `AI-assisted classification`, `Built for import teams`, `Trusted workspace for PT Solusi Manufaktur Teknologi` (nama PT diganti sesuai keputusan), `WELCOME BACK`, `Sign in to your workspace`, `Continue to your customs intelligence dashboard.`, `Continue with SSO`, `Continue with Google`, `or sign in with email`, `Email address` (+ placeholder `you@company.com`), `Password` (+ placeholder `Enter your password`), `Sign in`, alt `Illustration of cargo and customs documents`, aria-label `HS Intelligence overview`.
+
+**Teks fungsional/tambahan (tidak ada di v0):** `Memproses...` (label loading lama), pesan error API (`role="alert"`), dua pesan `role="status"` di atas, disclaimer `Output merupakan rekomendasi, bukan penetapan resmi DJBC. Selalu verifikasi dengan ahli kepabeanan.` (Indonesia, teks aplikasi yang sudah ada).
+
+**Gambar:** `src/assets/login/login-illustration.png`, dari `public/login-illustration.png` v0 (1376×768, 1.140.908 B) → dikompres Pillow ke 900×502, 128 warna, **188.457 B**. Gambar v0 adalah mockup yang memuat form + tombol "Login" palsu di sisi kiri; ikut tersalin apa adanya (lihat keputusan terbuka).
+
+**Peta warna (tema ungu global, `design-system.css`):** `--primary` `#1c7b6f`→`#6600cc` (= `rgb(102,0,204)` v0); `--primary-dark` →`#4b0096`; `--blue-bg` `#e9f4f3`→`#f4edff`; turunan teal diganti ungu setara: `#c6e2dc`→`#dec8fa`, `#d6eae6`→`#e6d8fa`, `#7fb8ae`→`#b58be6`, `#96c8bf`→`#c9a8f0`, `#a9d3cb`→`#cdb2f2`, `#f1f8f6`→`#f6f0ff`, `#f8fcfb`→`#faf6ff`, `#d3e9e4`→`#e4d5f7`, `#3f7d73`→`#6a3fa6`, `#d3e6e1`→`#dcc9f5`, `#f2f9f7`→`#f6f0ff`, alpha `#1c7b6f14/26`→`#6600cc14/26`. `--navy`, `--background`, `--line`, status hijau/amber/merah tidak diubah (sama dengan v0).
+
+**Perbedaan sengaja dari v0:** font +2px; kontras teks abu-ungu `#9a909f`→`#756b7e` (WCAG) dan ikon `#a398aa`→`#8a7f93`; input tanpa padding kanan 42px (toggle password dibuang); tombol login `disabled` (opacity .5) + label `Memproses...`; fokus keyboard `outline 2px`; urutan Tab **mengikuti urutan DOM v0** (SSO, Google, lalu field, lalu Sign in) karena secara visual SSO ada di atas form — mengurutkan ulang hanya lewat CSS akan membuat urutan fokus tidak sesuai tampilan.
+
+**Sumber verifikasi:** lint + build; DOM + stub `fetch` via CDP (Chrome headless), tanpa backend asli; screenshot 1280 dan 390 diambil dan dilihat. Penilaian visual akhir milik pengguna. Tidak diverifikasi: login ke backend nyata, peramban selain Chrome, tampilan 1050/720 secara visual (hanya diukur: tanpa overflow horizontal).

@@ -46,6 +46,8 @@ Nilai persis dari `:root` acuan:
 Warna netral tambahan yang dipakai lewat hex langsung di acuan (bukan token):
 `#536070` (label form), `#667085` (nav/ikon), `#98a2b3` (eyebrow, meta), `#f0f2f5` (pemisah dalam panel), `#dfe4ea` (border input), `#f2f4f7` (ikon statistik), `#475467` (teks tegas dalam empty state).
 
+> **Diperbarui (restyle/login-v0):** pengguna memutuskan tema **ungu** (`--primary` `#6600cc`, acuan v0) berlaku di seluruh aplikasi. Kolom "teal" di tabel bawah kini berarti turunan ungu; peta nilai terbaru ada di `docs/RINGKASAN_RESTYLE.md` §10. Label INTERPRETASI untuk layar login ("acuan v0 tidak punya layar login; kartu panel di tengah") **dihapus**: login kini disalin dari `app/login/page.tsx` v0. Yang masih INTERPRETASI di login hanya disclaimer DJBC dan fokus keyboard `.login-submit`/`.login-provider-button` (ditandai di CSS).
+
 ### 2.1 Sisa palet indigo di acuan — KEPUTUSAN
 
 Acuan aslinya bertema indigo, lalu di-*re-theme* ke teal hanya sebagian. Nilai indigo berikut masih tertinggal dan **bertabrakan** dengan `--primary` teal:
@@ -221,7 +223,7 @@ Struktur shell acuan:
 | Status `NeedExpertReview` / "Review ahli" | `.badge.danger` |
 | Status `Rejected` / "Ditolak ahli" | `.badge.neutral` |
 | Koreksi `EXPERT_APPROVED` | `.badge.success` |
-| Koreksi `EXPERT_OVERRIDE` | `.badge` aksen (teal, `--blue-bg`) — acuan tidak punya ungu |
+| Koreksi `EXPERT_OVERRIDE` | `.badge` aksen (`--primary` ungu, `--blue-bg`) |
 | Reasoning `RETAINED` / `ELIMINATED` / `UNRESOLVED` | `.badge.success` / `.danger` / `.warning` |
 | Risk flag | `.chip` + tone `--amber-bg` |
 | Versi `ACTIVE` | `.state.aktif` |
