@@ -1,4 +1,4 @@
-﻿using System.Text.Json;
+using System.Text.Json;
 using HsClassifier.Application.Classification;
 using HsClassifier.Application.Classification.Rules;
 using HsClassifier.Domain.Classification;
@@ -129,7 +129,11 @@ public class ClassificationOrchestrator(
 
         // AI fallback only when the DB search failed: no candidate, or KUM HS 1 matched nothing
         string? notice = null;
-        if (!routed && (result is null || result.ReasoningChain.Any(s => s.Rule == RulesEngine.FallbackRule)))
+        var noMatch = result is null || result.ReasoningChain.Any(s => s.Rule == RulesEngine.FallbackRule);
+        // Candidates found only by weak searches (head noun, shorter phrase, function, material) are a guess, so the AI is
+        // consulted too. If it has nothing, the database result stays as it was.
+        var weak = !noMatch && candidates.Count > 0 && candidates.All(c => WeakSources.Contains(c.GenerationSource));
+        if (!routed && (noMatch || weak))
         {
             var ai = await TryAiSuggestionAsync(input, facts, ct);
             if (ai.Unavailable) notice = AiUnavailableNotice;
@@ -143,7 +147,7 @@ public class ClassificationOrchestrator(
                 if (result.Confidence == DomainConf.High && facts.GetValue(FactExtractionService.SubheadingChoice) is null)
                     result.Confidence = DomainConf.Medium;
             }
-            else
+            else if (noMatch)
             {
                 // Fallback 3c: ask the generic name once, then expert review
                 var dead = new ClassificationResult();
@@ -299,6 +303,8 @@ public class ClassificationOrchestrator(
     }
 
     // ─── AI term fallback ─────────────────────────────────────────────────────
+
+    private static readonly HashSet<string> WeakSources = ["HEADNOUN", "PHRASE", "PARTIAL", "FUNCTION", "MATERIAL"];
 
     public const string AiSuggestionKey = "ai_suggestion";
     public const string AiUnavailableNotice = "Asisten AI sedang tidak tersedia. ";
