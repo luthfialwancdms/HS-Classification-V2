@@ -22,6 +22,47 @@ namespace HsClassifier.Infrastructure.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("HsClassifier.Domain.Entities.AiTariffEstimate", b =>
+                {
+                    b.Property<string>("Code")
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasPrecision(3)
+                        .HasColumnType("datetime2(3)");
+
+                    b.Property<string>("FtaSchemes")
+                        .IsRequired()
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<string>("Model")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Pph22Basis")
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)");
+
+                    b.Property<decimal?>("Pph22Percent")
+                        .HasPrecision(7, 4)
+                        .HasColumnType("decimal(7,4)");
+
+                    b.Property<string>("PpnBasis")
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)");
+
+                    b.Property<decimal?>("PpnPercent")
+                        .HasPrecision(7, 4)
+                        .HasColumnType("decimal(7,4)");
+
+                    b.HasKey("Code");
+
+                    b.ToTable("AiTariffEstimates");
+                });
+
             modelBuilder.Entity("HsClassifier.Domain.Entities.AiUsageLog", b =>
                 {
                     b.Property<long>("Id")
@@ -37,6 +78,7 @@ namespace HsClassifier.Infrastructure.Migrations
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedAt")
+                        .HasPrecision(3)
                         .HasColumnType("datetime2(3)");
 
                     b.Property<string>("ErrorCode")
@@ -141,6 +183,30 @@ namespace HsClassifier.Infrastructure.Migrations
                     b.HasIndex("BatchId", "Decision");
 
                     b.ToTable("AmbiguityItems");
+                });
+
+            modelBuilder.Entity("HsClassifier.Domain.Entities.AppSetting", b =>
+                {
+                    b.Property<string>("Key")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasPrecision(3)
+                        .HasColumnType("datetime2(3)");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("Value")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.HasKey("Key");
+
+                    b.ToTable("AppSettings");
                 });
 
             modelBuilder.Entity("HsClassifier.Domain.Entities.AppUser", b =>

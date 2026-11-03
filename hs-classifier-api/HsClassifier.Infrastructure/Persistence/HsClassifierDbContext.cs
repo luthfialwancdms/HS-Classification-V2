@@ -25,6 +25,8 @@ public class HsClassifierDbContext : DbContext
     public DbSet<AmbiguityItem> AmbiguityItems => Set<AmbiguityItem>();
     public DbSet<AiUsageLog> AiUsageLogs => Set<AiUsageLog>();
     public DbSet<DailyUsage> DailyUsages => Set<DailyUsage>();
+    public DbSet<AppSetting> AppSettings => Set<AppSetting>();
+    public DbSet<AiTariffEstimate> AiTariffEstimates => Set<AiTariffEstimate>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -260,6 +262,30 @@ public class HsClassifierDbContext : DbContext
         {
             e.HasKey(x => new { x.UserId, x.Day });
             e.Property(x => x.Count).IsConcurrencyToken();
+        });
+
+        // AppSetting — runtime switches an Admin can change
+        modelBuilder.Entity<AppSetting>(e =>
+        {
+            e.HasKey(x => x.Key);
+            e.Property(x => x.Key).HasMaxLength(100);
+            e.Property(x => x.Value).HasMaxLength(200).IsRequired();
+            e.Property(x => x.UpdatedAt).HasPrecision(3);
+            e.Property(x => x.UpdatedBy).HasMaxLength(200);
+        });
+
+        // AiTariffEstimate — AI answer per HS code, kept until an Admin clears it
+        modelBuilder.Entity<AiTariffEstimate>(e =>
+        {
+            e.HasKey(x => x.Code);
+            e.Property(x => x.Code).HasMaxLength(20);
+            e.Property(x => x.PpnPercent).HasPrecision(7, 4);
+            e.Property(x => x.PpnBasis).HasMaxLength(300);
+            e.Property(x => x.Pph22Percent).HasPrecision(7, 4);
+            e.Property(x => x.Pph22Basis).HasMaxLength(300);
+            e.Property(x => x.FtaSchemes).HasMaxLength(1000).IsRequired();
+            e.Property(x => x.Model).HasMaxLength(100).IsRequired();
+            e.Property(x => x.CreatedAt).HasPrecision(3);
         });
     }
 }

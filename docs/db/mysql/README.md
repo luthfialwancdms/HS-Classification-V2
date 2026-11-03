@@ -20,7 +20,8 @@ Kembali ke SQL Server: hapus `Database:Provider` (`dotnet user-secrets remove "D
 
 `001_schema.sql` dibuat dari model EF dengan `dotnet ef dbcontext script` (Database__Provider=MySql). Isinya hanya `CREATE TABLE` dan `CREATE INDEX` (17 tabel, 27 indeks tambahan, 10 relasi). Jalankan sekali di database kosong. Dijalankan lagi, pernyataan pertama gagal dan tidak ada yang berubah.
 
-Migrasi EF di `HsClassifier.Infrastructure/Migrations` khusus SQL Server dan tidak dipakai untuk MySQL. Bila model berubah, buat skrip MySQL berikutnya (`002_...sql`) dari perubahan itu.
+Migrasi EF di `HsClassifier.Infrastructure/Migrations` khusus SQL Server dan tidak dipakai untuk MySQL. Bila model berubah, buat skrip MySQL berikutnya dari perubahan itu.
+`002_ai_tariff_estimate.sql` menambah dua tabel (`AppSettings`, `AiTariffEstimates`) untuk estimasi AI atas PPN, PPh 22 dan skema FTA. Jalankan sekali setelah `001_schema.sql`. Tanpa dua tabel ini aplikasi di MySQL tetap jalan, tetapi saklar estimasi AI di menu Admin tidak bisa dibaca atau disimpan.
 
 ## Riwayat
 

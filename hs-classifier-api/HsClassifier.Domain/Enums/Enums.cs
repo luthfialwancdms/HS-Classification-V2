@@ -21,5 +21,5 @@ public enum AmbiguityDecision { Pending, Approved, Rejected }
 public enum ImportKind { Btki, En, Notes }
 
 /// <summary>Why the AI was called: a classification fallback, or an admin's connection test.</summary>
-public enum AiCallKind { TermSuggest, HealthCheck }
+public enum AiCallKind { TermSuggest, HealthCheck, TariffEstimate }
 public enum AiCallStatus { Success, Failed }
