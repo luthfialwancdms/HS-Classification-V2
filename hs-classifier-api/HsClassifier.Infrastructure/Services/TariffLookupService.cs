@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace HsClassifier.Infrastructure.Services;
 
-public class TariffLookupService(HsClassifierDbContext db, IVersionManager versionManager)
+public class TariffLookupService(HsClassifierDbContext db, IVersionManager versionManager, TariffEstimateService? estimator = null)
 {
     public const string FtaDisclaimer =
         "Tarif FTA yang ditampilkan adalah referensi ketersediaan. " +
@@ -22,7 +22,7 @@ public class TariffLookupService(HsClassifierDbContext db, IVersionManager versi
 
         var line = await db.BtkiTariffLines
             .Where(t => t.VersionId == version.Id && t.Code == code)
-            .Select(t => new { t.Id })
+            .Select(t => new { t.Id, t.DescriptionId })
             .FirstOrDefaultAsync(ct);
 
         if (line is null) return result;
@@ -63,6 +63,10 @@ public class TariffLookupService(HsClassifierDbContext db, IVersionManager versi
             .FirstOrDefault();
         result.TaxDisclaimer = TaxDisclaimer;
 
+        // Optional, Admin-controlled estimate for the fields above that the database left empty.
+        if (estimator is not null)
+            result.AiEstimate = await estimator.EstimateAsync(code, line.DescriptionId, result, ct);
+
         return result;
     }
 }
@@ -76,6 +80,8 @@ public class TariffResult
     public RateInfo? Ppn { get; set; }
     public RateInfo? Pph22 { get; set; }
     public string TaxDisclaimer { get; set; } = string.Empty;
+    /// <summary>Only for fields the database has no rate for, and only while the Admin switch is on. Never an official value.</summary>
+    public AiTariffEstimateInfo? AiEstimate { get; set; }
 }
 
 public class RateInfo

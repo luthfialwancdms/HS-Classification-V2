@@ -8,7 +8,7 @@ namespace HsClassifier.Infrastructure.Services;
 public record AiUsageCounts(int Requests, int Success, int Failed, long PromptTokens, long CompletionTokens, long TotalTokens);
 
 /// <summary>Totals include connection checks; <c>Classification</c> and <c>Check</c> split them so clicks don't inflate classification use.</summary>
-public record AiUsageBlock(AiUsageCounts All, AiUsageCounts Classification, AiUsageCounts Check);
+public record AiUsageBlock(AiUsageCounts All, AiUsageCounts Classification, AiUsageCounts Check, AiUsageCounts? TariffEstimate = null);
 
 public record AiUsageDay(DateOnly Date, AiUsageBlock Usage);
 
@@ -103,7 +103,8 @@ public class AiUsageReportService(HsClassifierDbContext db, IConfiguration confi
     private static AiUsageBlock Fold(IEnumerable<Agg> aggs)
     {
         var list = aggs.ToList();
-        return new(Sum(list), Sum(list.Where(a => a.Kind == AiCallKind.TermSuggest)), Sum(list.Where(a => a.Kind == AiCallKind.HealthCheck)));
+        return new(Sum(list), Sum(list.Where(a => a.Kind == AiCallKind.TermSuggest)), Sum(list.Where(a => a.Kind == AiCallKind.HealthCheck)),
+            Sum(list.Where(a => a.Kind == AiCallKind.TariffEstimate)));
     }
 
     private static AiUsageCounts Sum(IEnumerable<Agg> aggs)

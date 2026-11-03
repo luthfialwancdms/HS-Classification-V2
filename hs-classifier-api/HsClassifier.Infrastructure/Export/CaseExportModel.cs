@@ -109,6 +109,16 @@ public class CaseExportModel
                 ? new("Tarif dari BTKI", [], [], "Tarif untuk kode ini tidak tersedia di database.")
                 : new("Tarif dari BTKI", ["Jenis", "Tarif", "Sumber"], rows,
                     $"{Tariff!.FtaDisclaimer} {Tariff.TaxDisclaimer}"));
+
+            if (Tariff?.AiEstimate is { } est)
+            {
+                var er = new List<string[]>();
+                if (est.Ppn is { } ep) er.Add(["PPN impor", $"{ep.Percent.ToString("0.##", CultureInfo.InvariantCulture)}%", ep.Basis ?? "-"]);
+                if (est.Pph22 is { } eh) er.Add(["PPh Pasal 22 impor", $"{eh.Percent.ToString("0.##", CultureInfo.InvariantCulture)}%", eh.Basis ?? "-"]);
+                if (est.FtaSchemes.Count > 0) er.Add(["Skema FTA yang mungkin berlaku (tanpa tarif)", string.Join(", ", est.FtaSchemes), "-"]);
+                s.Add(new("Estimasi AI (belum terverifikasi)", ["Jenis", "Estimasi", "Dasar"], er,
+                    "Bukan data resmi BTKI. Diisi AI hanya untuk tarif yang tidak ada di database. Verifikasi sebelum dipakai."));
+            }
         }
 
         if (Corrections.Count > 0)

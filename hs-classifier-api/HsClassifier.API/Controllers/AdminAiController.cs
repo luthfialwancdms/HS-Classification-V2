@@ -93,6 +93,7 @@ public class AdminAiController(IAiProvider provider, AiConnectionChecker checker
         tokenMasuk = b.All.PromptTokens, tokenKeluar = b.All.CompletionTokens, tokenTotal = b.All.TotalTokens,
         klasifikasi = Mini(b.Classification),
         cekKoneksi = Mini(b.Check),
+        estimasiTarif = Mini(b.TariffEstimate ?? new AiUsageCounts(0, 0, 0, 0, 0, 0)),
     };
 
     private static object Mini(AiUsageCounts c) => new

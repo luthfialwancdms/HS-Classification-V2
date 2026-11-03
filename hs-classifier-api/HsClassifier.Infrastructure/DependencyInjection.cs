@@ -37,6 +37,7 @@ public static class DependencyInjection
         services.AddSingleton<AiConnectionChecker>();
         services.AddScoped<AiUsageReportService>();
         services.AddScoped<DailyQuotaService>();
+        services.AddScoped<TariffEstimateService>();
         services.AddScoped<ExportService>();
         services.AddScoped<EnImportService>();
         services.AddScoped<LegalNotesImportService>();
