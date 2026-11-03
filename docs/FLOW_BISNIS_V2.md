@@ -322,6 +322,25 @@ Versi yang sedang aktif tidak pernah diubah. EN dan Catatan dimuat ke draft, dib
 | 4 | Tab **Versi** → **Shadow run** pada draft | Menjalankan kasus yang sama di versi aktif dan draft tanpa menyimpan apa pun, tanpa kuota, tanpa AI; menampilkan kasus yang berubah dan catatan yang berperan |
 | 5 | Bila hasilnya dapat diterima: **Aktifkan** draft. Bila tidak: **Nonaktifkan / Rollback** | Versi lama kembali ke Indexed sehingga bisa diaktifkan lagi |
 
+### 7.4 Estimasi AI untuk PPN, PPh 22 dan skema FTA
+
+Tabel tarif pajak dan FTA di database saat ini kosong untuk banyak kode, sehingga layar menampilkan "Tidak tersedia di database untuk kode ini". Admin bisa menyalakan estimasi AI untuk mengisi kekosongan itu.
+
+| # | Admin / sistem | Perilaku |
+|---|---|---|
+| 1 | Tab **Status AI** → kartu **Estimasi AI untuk PPN, PPh 22 dan FTA** | Saklar bawaannya mati. Saat mati, layar dan ekspor sama seperti sebelumnya. |
+| 2 | Saklar dinyalakan | Saat tarif sebuah kode dibuka, hanya kolom yang kosong di database yang diminta ke AI: PPN dan PPh 22 sebagai angka persen dengan dasar hukum singkat, FTA sebagai nama skema saja (tanpa tarif). Yang dikirim ke AI hanya kode HS dan uraian resminya. |
+| 3 | Jawaban AI diterima | Jawaban dibaca ketat. Angka di luar batas wajar (PPN di atas 25%, PPh 22 di atas 15%) dan nama skema dengan karakter aneh dibuang. Jawaban yang bukan JSON dihitung sebagai request gagal dan tidak menghasilkan apa pun. |
+| 4 | Hasil ditampilkan | Kartu berwarna oranye berlabel "Estimasi AI, belum terverifikasi". Nilai resmi dari database tidak pernah diganti atau dicampur: bila PPN ada di database, kartu PPN tetap resmi dan estimasi PPN dibuang. Ekspor JSON, DOCX dan PDF memuat bagian "Estimasi AI (belum terverifikasi)" dengan catatan bukan data resmi. |
+| 5 | Kode yang sama dibuka lagi | Jawaban AI disimpan per kode, jadi tidak ada request kedua. Admin bisa menghapus semua jawaban tersimpan lewat tombol **Hapus estimasi tersimpan**, dan kode berikutnya yang dibuka meminta AI lagi. |
+| 6 | Saklar dimatikan | Estimasi hilang dari layar dan ekspor. Jawaban tersimpan tidak dihapus. |
+
+Setiap request tercatat sebagai jenis "Estimasi tarif" di riwayat request AI dan ringkasan penggunaan. Bila AI tidak tersedia atau jawabannya tidak terbaca, layar tetap menampilkan "Tidak tersedia di database untuk kode ini" dan pencarian tarif tidak gagal.
+
+Keterbatasan: jawaban AI dapat berbeda dari satu panggilan ke panggilan lain (contoh PPh 22 yang dijawab 7,5% pada satu panggilan dan 2,5% pada panggilan berikutnya untuk kode yang sama), dan PPh 22 bergantung pada status importir yang tidak diketahui sistem. Karena itu hasilnya selalu berlabel estimasi. Cara yang benar untuk menghilangkan ketergantungan ini adalah memuat tarif resmi ke tabel `TaxRates` dan `FtaRates`; begitu terisi, nilai resmi otomatis menggantikan estimasi.
+
+Tabel yang ditambahkan: `AppSettings` (saklar) dan `AiTariffEstimates` (jawaban per kode). Skrip SQL Server: `docs/db/20261103070245_AddAiTariffEstimate.sql`. Skrip MySQL: `docs/db/mysql/002_ai_tariff_estimate.sql`.
+
 ## 8. Flow Sistem (Versi Sederhana)
 
 Yang terjadi di balik layar saat pengguna menekan **Analisis HS Code**:

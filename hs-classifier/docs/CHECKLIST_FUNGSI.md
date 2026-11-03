@@ -355,3 +355,17 @@ Sumber verifikasi: DOM + stub fetch (Chrome headless, `encheck.mjs`, 31 pemeriks
 | N9 | lulus | Lebar 390: halaman tidak melebar karena tabel shadow run. |
 
 Tidak diverifikasi di sini: tampilan dengan data backend asli dan akun Admin sungguhan.
+
+## 13. Estimasi AI untuk PPN, PPh 22 dan FTA (feature/ai-tariff-estimate)
+Sumber verifikasi: DOM + stub fetch (Chrome headless, `tariffcheck.mjs`, 14 pemeriksaan, semua lulus). Respons backend di-stub; logika backend diuji di xUnit (`TariffEstimateTests`, 18 tes).
+| ID | Hasil | Yang diperiksa |
+|---|---|---|
+| T1 | lulus | Bea Masuk MFN dengan satuan "Percent" dari API tampil "5%", bukan "5 (Percent)". Perbaikan `fmtRate` yang sebelumnya hanya mengenali "PERCENT". |
+| T2-T3 | lulus | Saat database tidak punya PPN/PPh 22 dan ada estimasi, kartu berkelas `estimate` menampilkan angka, dasar hukum, dan label "Estimasi AI, belum terverifikasi". |
+| T4 | lulus | Kartu FTA menjadi "FTA mungkin berlaku" dengan jumlah skema, dan petunjuk di bawahnya menyebut nama skema "tanpa tarif". |
+| T5-T7 | lulus | Tanpa estimasi (saklar mati), kartu menampilkan "Tidak tersedia di database untuk kode ini" dan kartu FTA tetap "FTA tersedia 0". |
+| T8 | lulus | Bila PPN resmi ada (10%) dan estimasi menjawab 11%, kartu PPN tetap 10% resmi tanpa label estimasi. |
+| A1-A3 | lulus | Saklar di tab Status AI: bawaan mati, menyalakan mengirim `PUT /api/admin/ai/tariff-estimate` dengan `{"aktif":true}`, tombol hapus menampilkan "3 estimasi tersimpan dihapus." lalu mati. |
+| A4-A5 | lulus | Filter riwayat punya jenis "Estimasi tarif", ringkasan penggunaan punya baris "Dari estimasi tarif". |
+| A6 | lulus | Tidak ada overflow horizontal pada 1280. |
+Tidak diverifikasi di sini: tampilan dengan akun Admin sungguhan dan basis data yang sudah memuat dua tabel baru. Satu panggilan nyata ke penyedia AI (deepseek-v4.1-flash) dengan prompt estimasi menghasilkan JSON yang bisa dibaca parser.
