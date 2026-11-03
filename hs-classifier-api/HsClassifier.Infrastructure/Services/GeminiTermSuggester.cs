@@ -41,23 +41,21 @@ public class GeminiTermSuggester(IConfiguration config, ILogger<GeminiTermSugges
         return await AiCall.ProbeAsync(Http, req, ProviderName, Host, AiCall.GeminiUsage, ct);
     }
 
-    public async Task<SuggestionResult> SuggestAsync(FactSet facts, CancellationToken ct = default)
+    public async Task<AiChatResult> ChatJsonAsync(string system, string user, CancellationToken ct = default)
     {
         var key = config["Gemini:ApiKey"];
         if (string.IsNullOrWhiteSpace(key))
         {
-            logger.LogWarning("Gemini:ApiKey not configured — AI term fallback unavailable.");
-            return new(null, Unavailable: true, Call: new(ProviderName, Host, null, AiCall.NoKey, null, null, null));
+            logger.LogWarning("Gemini:ApiKey not configured — AI requests unavailable.");
+            return new(null, Unavailable: true, new(ProviderName, Host, null, AiCall.NoKey, null, null, null));
         }
-
         var endpoint = Endpoint;
         var body = JsonSerializer.Serialize(new
         {
-            systemInstruction = new { parts = new[] { new { text = TermSuggesterPrompt.System } } },
-            contents = new[] { new { parts = new[] { new { text = TermSuggesterPrompt.UserMessage(facts) } } } },
+            systemInstruction = new { parts = new[] { new { text = system } } },
+            contents = new[] { new { parts = new[] { new { text = user } } } },
             generationConfig = new { temperature = 0, responseMimeType = "application/json" },
         });
-
         try
         {
             using var req = new HttpRequestMessage(HttpMethod.Post, endpoint)
@@ -70,23 +68,30 @@ public class GeminiTermSuggester(IConfiguration config, ILogger<GeminiTermSugges
             {
                 logger.LogWarning("Gemini call failed with HTTP {Status}.", (int)res.StatusCode);
                 return new(null, Unavailable: true,
-                    Call: new(ProviderName, Host, (int)res.StatusCode, AiCall.HttpError((int)res.StatusCode), null, null, null));
+                    new(ProviderName, Host, (int)res.StatusCode, AiCall.HttpError((int)res.StatusCode), null, null, null));
             }
-
             using var doc = JsonDocument.Parse(await res.Content.ReadAsStringAsync(ct));
             var content = doc.RootElement.GetProperty("candidates")[0]
                 .GetProperty("content").GetProperty("parts")[0].GetProperty("text").GetString();
             var usage = AiCall.GeminiUsage(doc.RootElement);
-            var (suggestion, unreadable) = TermSuggesterPrompt.Interpret(content);
-            if (unreadable) logger.LogWarning("Gemini answered HTTP 200 with text that is not the requested JSON: {Preview}", GroqTermSuggester.Preview(content));
-            return new(GroqTermSuggester.Log(logger, "Gemini", suggestion), Unavailable: unreadable,
-                Call: new(ProviderName, Host, (int)res.StatusCode, unreadable ? AiCall.Parse : null, usage.Prompt, usage.Completion, usage.Total));
+            return new(content, Unavailable: false,
+                new(ProviderName, Host, (int)res.StatusCode, null, usage.Prompt, usage.Completion, usage.Total));
         }
         catch (Exception ex) when (GroqTermSuggester.IsTransient(ex))
         {
             if (ct.IsCancellationRequested) throw;
             logger.LogWarning("Gemini call failed: {Error}", ex.GetType().Name);
-            return new(null, Unavailable: true, Call: new(ProviderName, Host, null, AiCall.Classify(ex), null, null, null));
+            return new(null, Unavailable: true, new(ProviderName, Host, null, AiCall.Classify(ex), null, null, null));
         }
+    }
+
+    public async Task<SuggestionResult> SuggestAsync(FactSet facts, CancellationToken ct = default)
+    {
+        var chat = await ChatJsonAsync(TermSuggesterPrompt.System, TermSuggesterPrompt.UserMessage(facts), ct);
+        if (chat.Unavailable) return new(null, Unavailable: true, chat.Call);
+        var (suggestion, unreadable) = TermSuggesterPrompt.Interpret(chat.Content);
+        if (unreadable) logger.LogWarning("Gemini answered HTTP 200 with text that is not the requested JSON: {Preview}", GroqTermSuggester.Preview(chat.Content));
+        return new(GroqTermSuggester.Log(logger, "Gemini", suggestion), Unavailable: unreadable,
+            unreadable ? chat.Call with { ErrorCode = AiCall.Parse } : chat.Call);
     }
 }

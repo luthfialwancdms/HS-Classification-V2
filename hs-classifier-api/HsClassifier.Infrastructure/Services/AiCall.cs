@@ -21,7 +21,16 @@ public interface IAiProvider : ITermSuggester
     bool IsConfigured { get; }
     /// <summary>One minimal request (a few tokens). Success means an HTTP 2xx answer.</summary>
     Task<AiProbeResult> ProbeAsync(CancellationToken ct = default);
+
+    /// <summary>
+    /// One chat request that asks for a JSON answer. Returns the raw model text; the caller interprets it.
+    /// Unavailable = no key, HTTP error, timeout or network failure (see <c>Call.ErrorCode</c>).
+    /// </summary>
+    Task<AiChatResult> ChatJsonAsync(string system, string user, CancellationToken ct = default);
 }
+
+/// <summary>Content is null when Unavailable. Call is metadata only.</summary>
+public record AiChatResult(string? Content, bool Unavailable, AiCallInfo Call);
 
 public static class AiCall
 {

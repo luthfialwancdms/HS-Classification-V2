@@ -124,19 +124,18 @@ public class GroqTermSuggester(IConfiguration config, ILogger<GroqTermSuggester>
         return await AiCall.ProbeAsync(Http, req, ProviderName, Host, AiCall.OpenAiUsage, ct);
     }
 
-    public async Task<SuggestionResult> SuggestAsync(FactSet facts, CancellationToken ct = default)
+    public async Task<AiChatResult> ChatJsonAsync(string system, string user, CancellationToken ct = default)
     {
         var key = config["Groq:ApiKey"];
         if (string.IsNullOrWhiteSpace(key))
         {
-            logger.LogWarning("Groq:ApiKey not configured — AI term fallback unavailable.");
-            return new(null, Unavailable: true, Call: new(ProviderName, Host, null, AiCall.NoKey, null, null, null));
+            logger.LogWarning("Groq:ApiKey not configured — AI requests unavailable.");
+            return new(null, Unavailable: true, new(ProviderName, Host, null, AiCall.NoKey, null, null, null));
         }
-
         var messages = new object[]
         {
-            new { role = "system", content = TermSuggesterPrompt.System },
-            new { role = "user", content = TermSuggesterPrompt.UserMessage(facts) },
+            new { role = "system", content = system },
+            new { role = "user", content = user },
         };
         // response_format is a real-Groq feature; some proxies reject it. The prompt already forces JSON.
         object payload = BaseUrl.Contains("api.groq.com", StringComparison.OrdinalIgnoreCase)
@@ -144,7 +143,6 @@ public class GroqTermSuggester(IConfiguration config, ILogger<GroqTermSuggester>
             // stream=false: some routers (9router, ag/* models) answer with SSE chunks unless told not to
             : new { model = Model, temperature = 0, stream = false, messages };
         var body = JsonSerializer.Serialize(payload);
-
         try
         {
             using var req = new HttpRequestMessage(HttpMethod.Post, Endpoint)
@@ -157,23 +155,30 @@ public class GroqTermSuggester(IConfiguration config, ILogger<GroqTermSuggester>
             {
                 logger.LogWarning("AI call ({BaseUrl}) failed with HTTP {Status}.", BaseUrl, (int)res.StatusCode);
                 return new(null, Unavailable: true,
-                    Call: new(ProviderName, Host, (int)res.StatusCode, AiCall.HttpError((int)res.StatusCode), null, null, null));
+                    new(ProviderName, Host, (int)res.StatusCode, AiCall.HttpError((int)res.StatusCode), null, null, null));
             }
-
             using var doc = JsonDocument.Parse(await res.Content.ReadAsStringAsync(ct));
             var content = doc.RootElement.GetProperty("choices")[0].GetProperty("message").GetProperty("content").GetString();
             var usage = AiCall.OpenAiUsage(doc.RootElement);
-            var (suggestion, unreadable) = TermSuggesterPrompt.Interpret(content);
-            if (unreadable) logger.LogWarning("AI call ({BaseUrl}) answered HTTP 200 with text that is not the requested JSON: {Preview}", BaseUrl, Preview(content));
-            return new(Log(logger, "OpenAI-compatible", suggestion), Unavailable: unreadable,
-                Call: new(ProviderName, Host, (int)res.StatusCode, unreadable ? AiCall.Parse : null, usage.Prompt, usage.Completion, usage.Total));
+            return new(content, Unavailable: false,
+                new(ProviderName, Host, (int)res.StatusCode, null, usage.Prompt, usage.Completion, usage.Total));
         }
         catch (Exception ex) when (IsTransient(ex))
         {
             if (ct.IsCancellationRequested) throw;
             logger.LogWarning("AI call ({BaseUrl}) failed: {Error}", BaseUrl, ex.GetType().Name);
-            return new(null, Unavailable: true, Call: new(ProviderName, Host, null, AiCall.Classify(ex), null, null, null));
+            return new(null, Unavailable: true, new(ProviderName, Host, null, AiCall.Classify(ex), null, null, null));
         }
+    }
+
+    public async Task<SuggestionResult> SuggestAsync(FactSet facts, CancellationToken ct = default)
+    {
+        var chat = await ChatJsonAsync(TermSuggesterPrompt.System, TermSuggesterPrompt.UserMessage(facts), ct);
+        if (chat.Unavailable) return new(null, Unavailable: true, chat.Call);
+        var (suggestion, unreadable) = TermSuggesterPrompt.Interpret(chat.Content);
+        if (unreadable) logger.LogWarning("AI call ({BaseUrl}) answered HTTP 200 with text that is not the requested JSON: {Preview}", BaseUrl, Preview(chat.Content));
+        return new(Log(logger, "OpenAI-compatible", suggestion), Unavailable: unreadable,
+            unreadable ? chat.Call with { ErrorCode = AiCall.Parse } : chat.Call);
     }
 
     internal static bool IsTransient(Exception ex) =>

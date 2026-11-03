@@ -24,6 +24,16 @@ internal sealed class FakeProvider : IAiProvider
         new AiCallInfo("openai-compatible", "api.groq.com", 200, null, 40, 12, 52));
 
     public Task<SuggestionResult> SuggestAsync(FactSet facts, CancellationToken ct = default) => OnSuggest();
+    public int ChatCalls;
+    public string? LastChatUser;
+    public Func<Task<AiChatResult>> OnChat { get; set; } = () => Task.FromResult(
+        new AiChatResult("{}", false, new("openai-compatible", "api.groq.com", 200, null, 30, 10, 40)));
+    public Task<AiChatResult> ChatJsonAsync(string system, string user, CancellationToken ct = default)
+    {
+        Interlocked.Increment(ref ChatCalls);
+        LastChatUser = user;
+        return OnChat();
+    }
     public Task<AiProbeResult> ProbeAsync(CancellationToken ct = default)
     {
         Interlocked.Increment(ref ProbeCalls);
