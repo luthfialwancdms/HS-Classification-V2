@@ -511,6 +511,9 @@ body.modal-open { overflow: hidden; }
 .result-unresolved { font-size: 18px; font-weight: 700; color: var(--navy); margin: 6px 0; }
 .result-hero .badge { align-self: flex-start; }
 .tariff-card strong { font-variant-numeric: tabular-nums; }
+.tariff-card.estimate { border-color: #f5dfad; background: var(--amber-bg); }
+.tariff-card.estimate small { color: var(--amber); }
+.estimate-hint { color: var(--amber); }
 .data-table caption { color: var(--muted); font-size: 11px; font-weight: 800; letter-spacing: .6px; text-transform: uppercase; }
 .badge.info { color: var(--primary); background: var(--blue-bg); }
 .notice.success { background: var(--green-bg); color: var(--green); border-color: #bfe6d4; }

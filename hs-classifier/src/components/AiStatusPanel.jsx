@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react'
 import { Bot, ChevronDown, ChevronLeft, ChevronRight, Info, PlugZap } from 'lucide-react'
-import { checkAiConnection, getAiStatus, getAiUsage, listAiRequests } from '../services/apiClient'
+import {
+  checkAiConnection, clearTariffEstimateCache, getAiStatus, getAiUsage, getTariffEstimate, listAiRequests, setTariffEstimate,
+} from '../services/apiClient'
 
 // Tab "Status AI" (Admin Data Center): koneksi ke AI, ringkasan penggunaan, dan riwayat request.
 // Semua angka datang dari API; tidak ada nilai bawaan atau perkiraan di sisi klien.
@@ -14,6 +16,11 @@ const fmtDay = (ymd) => new Date(`${ymd}T00:00:00`).toLocaleDateString('id-ID', 
 const offsetLabel = (min) => {
   const a = Math.abs(min)
   return `UTC${min < 0 ? '−' : '+'}${Math.floor(a / 60)}${a % 60 ? `:${String(a % 60).padStart(2, '0')}` : ''}`
+}
+
+const KIND_BADGE = {
+  HealthCheck: { text: 'Cek koneksi', tone: 'info' },
+  TariffEstimate: { text: 'Estimasi tarif', tone: 'warning' },
 }
 
 function Metric({ label, value, tone }) {
@@ -37,6 +44,7 @@ export default function AiStatusPanel() {
         </div>
       </div>
       <ConnectionCard onChecked={() => setReloadKey(k => k + 1)} />
+      <TariffEstimateCard />
       <UsageSummary reloadKey={reloadKey} />
       <RequestHistory reloadKey={reloadKey} />
     </>
@@ -120,6 +128,66 @@ function ConnectionCard({ onChecked }) {
   )
 }
 
+// ─── Estimasi tarif ───────────────────────────────────────────────────────────
+
+// Saklar estimasi AI untuk PPN, PPh 22 dan nama skema FTA. Hanya mengisi tarif yang tidak ada di database.
+function TariffEstimateCard() {
+  const [st, setSt] = useState({ loading: true, data: null, error: null })
+  const [busy, setBusy] = useState(false)
+  const [note, setNote] = useState(null)
+
+  useEffect(() => {
+    let alive = true
+    getTariffEstimate().then(
+      d => alive && setSt({ loading: false, data: d, error: null }),
+      e => alive && setSt({ loading: false, data: null, error: e.message }))
+    return () => { alive = false }
+  }, [])
+
+  const run = async (fn, after) => {
+    setBusy(true); setNote(null)
+    try { await after(await fn()) }
+    catch (e) { setSt(s => ({ ...s, error: e.message })) }
+    finally { setBusy(false) }
+  }
+  const toggle = (aktif) => run(() => setTariffEstimate(aktif), d => setSt({ loading: false, data: d, error: null }))
+  const clear = () => run(clearTariffEstimateCache, async r => {
+    setNote(`${num(r.dihapus)} estimasi tersimpan dihapus.`)
+    setSt({ loading: false, data: await getTariffEstimate(), error: null })
+  })
+
+  const d = st.data
+  return (
+    <section aria-labelledby="ai-tariff-title" className="result-section">
+      <div className="subheading">
+        <div><Bot size={17} aria-hidden="true" /><span id="ai-tariff-title">Estimasi AI untuk PPN, PPh 22 dan FTA</span></div>
+      </div>
+      <p className="hint">
+        Bila aktif, AI memberi perkiraan PPN dan PPh 22 impor serta nama skema FTA yang mungkin berlaku, hanya untuk kode yang
+        tidak punya data tarif di database. Tampil berlabel "Estimasi AI, belum terverifikasi" di layar dan di ekspor, tidak
+        pernah menggantikan nilai resmi. Skema FTA hanya nama, tanpa tarif. Bila mati, layar kembali menampilkan
+        "Tidak tersedia di database untuk kode ini".
+      </p>
+      {st.loading && <p className="hint" role="status">Memuat…</p>}
+      {st.error && <p role="alert" className="notice danger"><span>{st.error}</span></p>}
+      {d && (
+        <div className="row-actions">
+          <label className="check-row">
+            <input id="ai-tariff-switch" type="checkbox" role="switch" checked={d.aktif} disabled={busy}
+              onChange={e => toggle(e.target.checked)} />
+            <span>{d.aktif ? 'Aktif' : 'Mati'}</span>
+          </label>
+          <span className="hint">{num(d.jumlahTersimpan)} estimasi tersimpan</span>
+          <button type="button" className="outline-button" onClick={clear} disabled={busy || d.jumlahTersimpan === 0}>
+            Hapus estimasi tersimpan
+          </button>
+        </div>
+      )}
+      {note && <p className="notice" role="status"><Info size={16} aria-hidden="true" /><span>{note}</span></p>}
+    </section>
+  )
+}
+
 // ─── Ringkasan ────────────────────────────────────────────────────────────────
 
 function MetricGroup({ title, b }) {
@@ -135,6 +203,7 @@ function MetricGroup({ title, b }) {
         <Metric label="Token total" value={num(b.tokenTotal)} />
         <Metric label="Dipakai klasifikasi" value={`${num(b.klasifikasi.request)} request`} />
         <Metric label="Dari cek koneksi" value={`${num(b.cekKoneksi.request)} request · ${num(b.cekKoneksi.tokenTotal)} token`} />
+        <Metric label="Dari estimasi tarif" value={`${num(b.estimasiTarif.request)} request · ${num(b.estimasiTarif.tokenTotal)} token`} />
       </div>
     </>
   )
@@ -251,6 +320,7 @@ function RequestHistory({ reloadKey }) {
               <option value="">Semua jenis</option>
               <option value="TermSuggest">Klasifikasi</option>
               <option value="HealthCheck">Cek koneksi</option>
+              <option value="TariffEstimate">Estimasi tarif</option>
             </select>
             <ChevronDown size={15} aria-hidden="true" />
           </div>
@@ -296,8 +366,8 @@ function RequestHistory({ reloadKey }) {
               <tr key={i.id}>
                 <td>{fmtTime(i.waktu)}</td>
                 <td>
-                  <span className={`badge ${i.jenis === 'HealthCheck' ? 'info' : 'neutral'}`}>
-                    {i.jenis === 'HealthCheck' ? 'Cek koneksi' : 'Klasifikasi'}
+                  <span className={`badge ${KIND_BADGE[i.jenis]?.tone || 'neutral'}`}>
+                    {KIND_BADGE[i.jenis]?.text || 'Klasifikasi'}
                   </span>
                 </td>
                 <td>

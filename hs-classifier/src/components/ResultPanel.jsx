@@ -21,7 +21,8 @@ const STATUS_LABEL = {
   REJECTED: 'Ditolak ahli',
 }
 
-const fmtRate = r => (r.unit === 'PERCENT' ? `${r.value}%` : `${r.value} (${r.unit})`)
+// The API sends the unit as "Percent" (enum name); compare without case.
+const fmtRate = r => (String(r.unit).toUpperCase() === 'PERCENT' ? `${r.value}%` : `${r.value} (${r.unit})`)
 
 const EXPERT_BADGE = {
   EXPERT_APPROVED: ['Disetujui ahli', 'success'],
@@ -367,7 +368,19 @@ function ConfidenceSection({ detail, score }) {
 
 const MISSING = 'Tidak tersedia di database untuk kode ini'
 
-function TariffCard({ label, rate }) {
+const AI_LABEL = 'Estimasi AI, belum terverifikasi'
+
+// `estimate` ({ percent, basis }) is shown only when the database has no rate; it never replaces one.
+function TariffCard({ label, rate, estimate }) {
+  if (!rate && estimate) {
+    return (
+      <div className="tariff-card estimate">
+        <span>{label}</span>
+        <strong>{estimate.percent}%</strong>
+        <small>{AI_LABEL}{estimate.basis ? ` · ${estimate.basis}` : ''}</small>
+      </div>
+    )
+  }
   return (
     <div className="tariff-card">
       <span>{label}</span>
@@ -379,6 +392,8 @@ function TariffCard({ label, rate }) {
 
 function TariffSection({ tariffs }) {
   const fta = tariffs.ftaRates || []
+  const est = tariffs.aiEstimate
+  const ftaGuess = fta.length === 0 ? (est?.ftaSchemes || []) : []
   return (
     <div className="result-section">
       <div className="subheading">
@@ -386,13 +401,21 @@ function TariffSection({ tariffs }) {
       </div>
       <div className="tariff-grid">
         <TariffCard label="Bea Masuk MFN" rate={tariffs.mfn} />
-        <TariffCard label="PPN" rate={tariffs.ppn} />
-        <TariffCard label="PPh 22 Impor" rate={tariffs.pph22} />
-        <div className="tariff-card">
-          <span>FTA tersedia</span>
-          <strong>{fta.length}</strong>
-          <small>{fta.length > 0 ? 'skema preferensi' : 'Tidak ada tarif FTA di database untuk kode ini'}</small>
-        </div>
+        <TariffCard label="PPN" rate={tariffs.ppn} estimate={est?.ppn} />
+        <TariffCard label="PPh 22 Impor" rate={tariffs.pph22} estimate={est?.pph22} />
+        {ftaGuess.length > 0 ? (
+          <div className="tariff-card estimate">
+            <span>FTA mungkin berlaku</span>
+            <strong>{ftaGuess.length}</strong>
+            <small>{AI_LABEL}</small>
+          </div>
+        ) : (
+          <div className="tariff-card">
+            <span>FTA tersedia</span>
+            <strong>{fta.length}</strong>
+            <small>{fta.length > 0 ? 'skema preferensi' : 'Tidak ada tarif FTA di database untuk kode ini'}</small>
+          </div>
+        )}
       </div>
       {tariffs.taxDisclaimer && <p className="hint">{tariffs.taxDisclaimer}</p>}
 
@@ -418,6 +441,11 @@ function TariffSection({ tariffs }) {
             </tbody>
           </table>
         </div>
+      ) : ftaGuess.length > 0 ? (
+        <p className="hint estimate-hint">
+          <strong>{AI_LABEL}.</strong> Skema yang mungkin berlaku (nama saja, tanpa tarif): {ftaGuess.join(', ')}.
+          Tarif dan kelayakannya harus dicek di sumber resmi.
+        </p>
       ) : (
         <p className="hint">Tidak ada tarif FTA di database untuk kode ini</p>
       )}

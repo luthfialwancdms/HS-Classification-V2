@@ -265,7 +265,13 @@ export const checkAiConnection = () => apiFetch('/api/admin/ai/check', { method:
 /** Totals for today / 7 days / 30 days / all time plus the last `days` days one by one. */
 export const getAiUsage = (days = 7) => apiFetch(`/api/admin/ai/usage?days=${days}`)
 
-/** Newest-first request history. `status`: Success | Failed. `kind`: TermSuggest | HealthCheck. `from`/`to`: yyyy-MM-dd. */
+/** Newest-first request history. `status`: Success | Failed. `kind`: TermSuggest | HealthCheck | TariffEstimate. `from`/`to`: yyyy-MM-dd. */
+/** Switch for the AI estimate of PPN, PPh 22 and FTA scheme names: `{ aktif, jumlahTersimpan }`. */
+export const getTariffEstimate = () => apiFetch('/api/admin/ai/tariff-estimate')
+export const setTariffEstimate = (aktif) =>
+  apiFetch('/api/admin/ai/tariff-estimate', { method: 'PUT', body: JSON.stringify({ aktif }) })
+/** Deletes every stored estimate; the next lookup of a code asks the AI again. Returns `{ dihapus }`. */
+export const clearTariffEstimateCache = () => apiFetch('/api/admin/ai/tariff-estimate/cache', { method: 'DELETE' })
 export function listAiRequests({ status, kind, from, to, page = 1, pageSize = 20 } = {}) {
   const p = new URLSearchParams({ page, pageSize })
   if (status) p.set('status', status)
