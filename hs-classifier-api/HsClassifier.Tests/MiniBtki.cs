@@ -1,4 +1,4 @@
-using HsClassifier.Application.Classification;
+﻿using HsClassifier.Application.Classification;
 using HsClassifier.Domain.Classification;
 using HsClassifier.Domain.Entities;
 using HsClassifier.Domain.Enums;
@@ -68,6 +68,13 @@ internal sealed class MiniBtki
         ("8901.90.10", "- Tongkang tanpa tenaga penggerak sendiri", "- Barges without self-propulsion"),
         ("8905", "Kapal api, kapal pengeruk, dok terapung, crane terapung dan kapal lain yang fungsi navigasinya hanya pelengkap terhadap fungsi utamanya.", "Light-vessels, fire-floats, dredgers, floating cranes and other vessels the navigability of which is subsidiary to their main function; floating docks."),
         ("8905.90.00", "- Lain-lain", "- Other"),
+        // Bicycles: 8711 has a motor, 8712 has none (the heading texts say so)
+        ("8711", "Sepeda motor (termasuk moped) dan sepeda yang dilengkapi dengan motor bantu, dengan atau tanpa kereta samping;", "Motorcycles (including mopeds) and cycles fitted with an auxiliary motor, with or without side-cars; side-cars."),
+        ("8711.10.00", "- Dengan mesin torak pembakaran dalam bolak-balik, kapasitas silinder tidak melebihi 50 cc", "- With reciprocating internal combustion piston engine of a cylinder capacity not exceeding 50 cc"),
+        ("8711.60.00", "- Dengan motor listrik untuk penggerak", "- With electric motor for propulsion"),
+        ("8712", "Sepeda roda dua dan sepeda lainnya (termasuk sepeda roda tiga untuk pengantar), tidak bermotor.", "Bicycles and other cycles (including delivery tricycles), not motorised."),
+        ("8712.00.10", "- Sepeda roda dua", "- Bicycles with two wheels"),
+        ("8712.00.90", "- Lain-lain", "- Other"),
     ];
 
     public HsClassifierDbContext Db { get; }

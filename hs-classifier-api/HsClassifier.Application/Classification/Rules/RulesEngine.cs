@@ -1,4 +1,4 @@
-using HsClassifier.Domain.Classification;
+﻿using HsClassifier.Domain.Classification;
 
 namespace HsClassifier.Application.Classification.Rules;
 
@@ -180,6 +180,32 @@ public class RulesEngine(EssentialCharacterOptions? essentialCharacter = null)
         FactSet facts, List<CandidateHeading> candidates, ClassificationResult result)
     {
         var chain = result.ReasoningChain;
+        // Headings that differ by having a motor (8711 vs 8712) are told apart by the goods, not by text overlap. When neither
+        // "Cara kerja" nor the names say whether the goods have a motor, ask that one plain question first.
+        if (MotorHint(facts).Length == 0 && DifferByMotor(candidates))
+        {
+            result.Status = ResultStatus.NeedClarification;
+            result.MissingFacts.Add("power_source");
+            result.PendingQuestions.Add(new ClassificationQuestion
+            {
+                FactType = "power_source", InformationGain = 1.0,
+                QuestionText = "Apakah barang ini digerakkan oleh motor atau mesin?",
+                Choices =
+                [
+                    new("Manual / Tanpa tenaga", "Tidak, digerakkan tenaga manusia (dikayuh, didorong, ditarik)"),
+                    new("Elektrik / Motor listrik", "Ya, dengan motor listrik"),
+                    new("Bensin / Diesel (motor bakar)", "Ya, dengan mesin bensin atau diesel"),
+                ],
+                Impact = new CandidateImpact { CandidatesAffected = candidates.Count, RetainedCodes = candidates.Select(c => c.Code).ToList() },
+            });
+            chain.Add(new ReasoningStep
+            {
+                Rule = "KUM_HS_3A_MOTOR", Decision = CandidateDecision.Unresolved,
+                Reason = $"Pos {string.Join(", ", candidates.Select(c => c.Code))} berbeda pada ada atau tidaknya motor, dan cara kerja barang belum diketahui. Menanyakan pengguna.",
+                SourceIds = candidates.Select(c => c.SourceId ?? c.Code).ToList(),
+            });
+            return null;
+        }
         // Task 10.1: 3(a) — the heading whose description covers the most facts is the most specific;
         // structural specificity (residual "other", parts) only breaks ties. Without this, 3(c) ended up
         // choosing between weak matches purely by number (Req 13.3: no padding with weak candidates).
@@ -520,6 +546,33 @@ public class RulesEngine(EssentialCharacterOptions? essentialCharacter = null)
     private static readonly System.Text.RegularExpressions.Regex PoweredAnswer = new(
         @"motor|elektrik|listrik|bensin|diesel", System.Text.RegularExpressions.RegexOptions.IgnoreCase);
 
+    private static readonly System.Text.RegularExpressions.Regex ManualWords = new(
+        @"\b(kayuh|dikayuh|gowes|pedal|fixie|fixed[- ]?gear|manual|tanpa (tenaga|motor|mesin)|tidak bermotor|non[- ]?motor)\b",
+        System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+    private static readonly System.Text.RegularExpressions.Regex PoweredWords = new(
+        @"\b(listrik|elektrik|electric|bensin|diesel|mesin|bermotor|motor)\b", System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+
+    /// <summary>
+    /// Whether the goods have a motor. The "Cara kerja" answer (power_source) wins; without it the names and the free-text
+    /// answers are read ("Sepeda Fixie", "Sepeda Kayuh", "Sepeda listrik"). Empty when the text says nothing or both ways.
+    /// </summary>
+    public static string MotorHint(FactSet facts)
+    {
+        var given = facts.GetValue("power_source");
+        if (!string.IsNullOrWhiteSpace(given)) return given;
+        var text = string.Join(' ', new[] { "generic_name", "commercial_name", "capacity", "form", "primary_use", "supporting_documents" }
+            .Select(facts.GetValue).Where(v => !string.IsNullOrWhiteSpace(v)));
+        var manual = ManualWords.IsMatch(text);
+        var powered = PoweredWords.IsMatch(ManualWords.Replace(text, " "));
+        return manual == powered ? "" : manual ? "Manual / Tanpa tenaga" : "Elektrik / Motor listrik";
+    }
+
+    /// <summary>True when the candidates include both a "tidak bermotor" heading and a "dengan motor" one.</summary>
+    private static bool DifferByMotor(IEnumerable<CandidateHeading> candidates)
+    {
+        var texts = candidates.Select(c => c.Description.Split(" / ")[0]).ToList();
+        return texts.Any(t => Unmotorized.IsMatch(t)) && texts.Any(t => Motorized.IsMatch(Unmotorized.Replace(t, " ")));
+    }
     /// <summary>
     /// A preference (not a rule) between headings that differ by having a motor, from the "Cara kerja" answer:
     /// manual goods favour "tidak bermotor" headings and avoid "dengan motor" ones, powered goods the other way round.
@@ -527,7 +580,7 @@ public class RulesEngine(EssentialCharacterOptions? essentialCharacter = null)
     /// </summary>
     public static double MotorFit(FactSet facts, CandidateHeading c)
     {
-        var power = facts.GetValue("power_source") ?? "";
+        var power = MotorHint(facts);
         var manual = power.Contains("manual", StringComparison.OrdinalIgnoreCase) || power.Contains("tanpa tenaga", StringComparison.OrdinalIgnoreCase);
         var powered = PoweredAnswer.IsMatch(power);
         if (manual == powered) return 0;                       // missing, or both chosen
