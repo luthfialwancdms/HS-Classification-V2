@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { RefreshCw, ShieldCheck, Zap } from 'lucide-react'
+import { AlertTriangle, RefreshCw, ShieldCheck, Zap } from 'lucide-react'
 import dropdownMaster from '../data/dropdown_master.json'
 import SelectField from './SelectField'
 import RadioGroupField from './RadioGroupField'
@@ -70,6 +70,9 @@ export default function ClassificationForm({ onSubmit, isLoading, onReset, submi
   }
 
   const { dropdown_fields, text_fields } = dropdownMaster
+
+  // Fungsi yang biasanya bergantung pada ada atau tidaknya motor; Cara kerja yang kosong membuat mesin harus menebak.
+  const needsCaraKerja = /^(Mengangkut|Mengangkat|Menggali|Menggerakkan|Pertanian)/.test(form.fungsi_utama) && form.cara_kerja.length === 0
   const textFieldMap = Object.fromEntries(text_fields.map((f) => [f.key, f]))
 
   const renderField = (key) => {
@@ -153,6 +156,16 @@ export default function ClassificationForm({ onSubmit, isLoading, onReset, submi
               </div>
             ))}
           </div>
+          {section.fields.includes('cara_kerja') && needsCaraKerja && (
+            <p role="status" className="notice" id="cara-kerja-hint">
+              <AlertTriangle size={16} aria-hidden="true" />
+              <span>
+                Cara kerja belum diisi. Untuk barang transportasi atau mesin, pilih apakah barang digerakkan tenaga manual,
+                motor listrik, atau mesin bensin/diesel. Tanpa itu sistem bisa salah memilih antara pos bermotor dan tidak bermotor
+                (misalnya sepeda biasa dan sepeda motor).
+              </span>
+            </p>
+          )}
         </div>
       ))}
 
