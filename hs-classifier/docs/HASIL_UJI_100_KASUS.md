@@ -86,3 +86,23 @@ Ditetapkan salah yang tersisa: mentega → 1804 (mentega kakao; AI tidak selalu 
 Bertanya pada pos salah (17): sepeda motor, rokok kretek, bensin, LPG, lem kayu, kantong dan botol plastik, tas kulit, koper, kaos katun, celana jeans, kemeja pria, benang katun, handuk, besi beton, paku, monitor.
 
 Saran berikutnya: periksa kasus yang ditetapkan dengan High (air mineral) dengan aturan yang sama, kurangi bobot bahan dan fungsi dalam kecocokan teks pos (penyebab "Sepeda motor" ke rantai besi), dan perluas pendapat kedua ke hasil yang masih bertanya.
+## Kasus #262: sepeda fixie masuk ke sepeda motor
+
+Laporan: "Sepeda Fixie Wilson" (nama generik "Sepeda", bahan aluminium, fungsi "Mengangkut orang") berakhir di review ahli dengan kandidat 8711.10.xx (sepeda motor), setelah mesin menanyakan kapasitas silinder dan dijawab "Sepeda Kayuh".
+
+Penyebab:
+- Kolom "Cara kerja" kosong, jadi fakta `power_source` tidak ada. Pembeda bermotor (8711) dan tidak bermotor (8712) dari perbaikan sebelumnya hanya jalan bila fakta itu terisi. Tanpanya kedua pos sama kuat dan KUM HS 3(a) memilih 8711 dari skor teks.
+- Mesin lalu menanyakan hal yang salah (kapasitas silinder, karena subpos 8711 dibedakan oleh cc), dan jawaban teks "Sepeda Kayuh" diabaikan karena bukan angka.
+
+Perbaikan:
+1. **Petunjuk dari teks.** Bila `power_source` kosong, nama generik, nama dagang, jawaban kapasitas, bentuk, penggunaan, dan spesifikasi dibaca. Kata "kayuh", "gowes", "pedal", "fixie", "manual", "tanpa motor", "tidak bermotor" berarti tanpa tenaga. Kata "listrik", "bensin", "diesel", "mesin", "motor" berarti bermotor. Bila teks bertentangan atau tidak menyebut apa pun, tidak ada petunjuk.
+2. **Pertanyaan langsung.** Bila kandidat berbeda pada ada atau tidaknya motor dan tidak ada petunjuk, mesin bertanya satu hal sebelum memilih pos: "Apakah barang ini digerakkan oleh motor atau mesin?" dengan tiga pilihan (Manual / Tanpa tenaga, Elektrik / Motor listrik, Bensin / Diesel). Jawabannya disimpan sebagai `power_source`. Langkahnya tercatat sebagai `KUM_HS_3A_MOTOR`.
+3. **Peringatan di form.** Bila Fungsi utama berupa mengangkut, mengangkat, menggali, menggerakkan, atau pertanian, tetapi Cara kerja kosong, muncul catatan agar Cara kerja diisi.
+
+Diuji di data asli (SQL Server lokal, tanpa AI):
+- Kasus #262 persis seperti laporan: pos 8712, bertanya subpos sepeda biasa (8712.00.10 dan seterusnya), tidak ada pertanyaan kapasitas.
+- "Sepeda" tanpa petunjuk apa pun: bertanya apakah barang digerakkan motor.
+- "Sepeda" dengan jawaban "Manual / Tanpa tenaga": pos 8712.
+- 100 kasus uji: hasil identik dengan sebelumnya (tidak ada regresi).
+
+Tes backend 462 lulus, 2 dilewati. Peringatan form diuji di browser (9 pemeriksaan).
