@@ -53,3 +53,6 @@ appsettings.Local.json
 docs/
 .kiro/
 graphify-out/
+
+# Local UI design archive
+/ui-design-for-hs-classification-intelligence.zip
